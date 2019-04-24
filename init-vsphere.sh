@@ -27,7 +27,8 @@ bosh create-env \
   -o $BOSH_DEPLOYMENT_HOME/uaa.yml \
   -o $BOSH_DEPLOYMENT_HOME/credhub.yml \
   -o $BOSH_DEPLOYMENT_HOME/vsphere/cpi.yml \
-  -o $OPS_FILE_PATH/bosh/op-network.yml \
+  -o $OPS_FILE_PATH/bosh/op-local-releases.yml \
+  -o $OPS_FILE_PATH/bosh/op-local-vsphere-release.yml \
   -o $OPS_FILE_PATH/bosh/op-bosh-vm.yml \
   -o $OPS_FILE_PATH/bosh/op-uaa.yml \
   -o $OPS_FILE_PATH/bosh/op-credhub.yml \

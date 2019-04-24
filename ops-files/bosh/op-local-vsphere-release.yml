@@ -1,0 +1,9 @@
+---
+
+- type: replace
+  path: /releases/name=bosh-vsphere-cpi/url
+  value: file://((downloads_dir))/bosh-vsphere-cpi-release-50.tgz
+
+- type: replace
+  path: /resource_pools/name=vms/stemcell/url
+  value: file://((downloads_dir))/bosh-stemcell-3586.24-vsphere-esxi-ubuntu-trusty-go_agent.tgz

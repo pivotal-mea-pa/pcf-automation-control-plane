@@ -7,6 +7,8 @@ dns_servers:
 internal_ip:
 dns_name: 
 
+downloads_dir:
+
 network_name:
 vcenter_dc: 
 vcenter_ds: 
