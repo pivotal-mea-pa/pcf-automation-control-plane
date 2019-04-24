@@ -1,0 +1,19 @@
+---
+
+- type: replace
+  path: /instance_groups/name=bosh/properties/openstack/connection_options?
+  value:
+    ssl_verify_peer: false
+
+- type: replace
+  path: /cloud_provider/properties/openstack/connection_options?
+  value:
+    ssl_verify_peer: false
+
+- type: replace
+  path: /instance_groups/name=bosh/properties/openstack/boot_from_volume?
+  value: true
+
+- type: replace
+  path: /cloud_provider/properties/openstack/boot_from_volume?
+  value: true

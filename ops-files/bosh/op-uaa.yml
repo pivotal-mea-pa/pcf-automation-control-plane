@@ -1,0 +1,18 @@
+---
+
+- type: replace
+  path: /variables/name=uaa_ssl/options/common_name?
+  value: ((dns_name))
+
+- type: replace
+  path: /variables/name=uaa_ssl/options/alternative_names/-
+  value: ((dns_name))
+
+- type: replace
+  path: /variables/name=uaa_service_provider_ssl/options/common_name?
+  value: ((dns_name))
+  
+- type: replace
+  path: /variables/name=uaa_service_provider_ssl/options/alternative_names/-
+  value: ((dns_name))
+  

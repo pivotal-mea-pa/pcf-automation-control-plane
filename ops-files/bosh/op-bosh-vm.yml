@@ -1,0 +1,18 @@
+---
+# - type: replace
+#   path: /resource_pools/name=vms/env/bosh/password?
+#   value: '*' # generate using: mkpasswd -m sha-512 -s
+
+- type: replace
+  path: /resource_pools/name=vms/cloud_properties/root_disk?
+  value:
+    size: 100
+
+- type: replace
+  path: /variables/name=director_ssl/options/common_name?
+  value: ((dns_name))
+  
+- type: replace
+  path: /variables/name=director_ssl/options/alternative_names/-
+  value: ((dns_name))
+  
