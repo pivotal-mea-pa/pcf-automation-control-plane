@@ -1,0 +1,19 @@
+---
+director_name: bosh-control-plane
+internal_cidr:
+internal_gw:
+dns_servers:
+
+internal_ip:
+dns_name: 
+
+network_name:
+vcenter_dc: 
+vcenter_ds: 
+vcenter_ip: 
+vcenter_user: 
+vcenter_password: 
+vcenter_templates: 
+vcenter_vms: 
+vcenter_disks: 
+vcenter_cluster:

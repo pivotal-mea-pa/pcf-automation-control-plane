@@ -26,8 +26,7 @@ bosh create-env \
   $BOSH_DEPLOYMENT_HOME/bosh.yml \
   -o $BOSH_DEPLOYMENT_HOME/uaa.yml \
   -o $BOSH_DEPLOYMENT_HOME/credhub.yml \
-  -o $BOSH_DEPLOYMENT_HOME/openstack/cpi.yml \
-  -o $OPS_FILE_PATH/bosh/op-openstack.yml \
+  -o $BOSH_DEPLOYMENT_HOME/vsphere/cpi.yml \
   -o $OPS_FILE_PATH/bosh/op-network.yml \
   -o $OPS_FILE_PATH/bosh/op-bosh-vm.yml \
   -o $OPS_FILE_PATH/bosh/op-uaa.yml \
@@ -43,8 +42,7 @@ bosh interpolate \
   $BOSH_DEPLOYMENT_HOME/bosh.yml \
   -o $BOSH_DEPLOYMENT_HOME/uaa.yml \
   -o $BOSH_DEPLOYMENT_HOME/credhub.yml \
-  -o $BOSH_DEPLOYMENT_HOME/openstack/cpi.yml \
-  -o $OPS_FILE_PATH/bosh/op-openstack.yml \
+  -o $BOSH_DEPLOYMENT_HOME/vsphere/cpi.yml \
   -o $OPS_FILE_PATH/bosh/op-network.yml \
   -o $OPS_FILE_PATH/bosh/op-bosh-vm.yml \
   -o $OPS_FILE_PATH/bosh/op-uaa.yml \
@@ -60,13 +58,6 @@ if [[ $? -eq 0 ]]; then
 
   cat << ---EOF > $ROOT_DIR/.envrc
 source_up .envrc
-
-export OS_AUTH_URL='$(bosh interpolate --no-color $BOSH_MANIFEST --path /cloud_provider/properties/openstack/auth_url)'
-export OS_PROJECT_DOMAIN_NAME='$(bosh interpolate --no-color $BOSH_MANIFEST --path /cloud_provider/properties/openstack/domain)'
-export OS_PROJECT_NAME='$(bosh interpolate --no-color $BOSH_MANIFEST --path /cloud_provider/properties/openstack/project)'
-export OS_USER_DOMAIN_NAME='$(bosh interpolate --no-color $BOSH_MANIFEST --path /cloud_provider/properties/openstack/domain)'
-export OS_USERNAME='$(bosh interpolate --no-color $BOSH_MANIFEST --path /cloud_provider/properties/openstack/username)'
-export OS_PASSWORD='$(bosh interpolate --no-color $BOSH_MANIFEST --path /cloud_provider/properties/openstack/api_key)'
 
 export BOSH_ENVIRONMENT='$(bosh interpolate $ROOT_DIR/vars.yml --path /dns_name)'
 export BOSH_CA_CERT='$(bosh interpolate --no-color $CREDS_PATH --path /director_ssl/ca)'
