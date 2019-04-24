@@ -33,8 +33,7 @@ bosh create-env \
   -o $OPS_FILE_PATH/bosh/op-credhub.yml \
   -o $OPS_FILE_PATH/bosh/op-uaa-url.yml \
   --vars-store=$CREDS_PATH \
-  --vars-file=$ROOT_DIR/vars.yml \
-  --var-file=private_key=$KEYS_PATH/pcf.pem \
+  --vars-file=$ROOT_DIR/vars.yml
   --state=$STATE_PATH
 fi
 
@@ -48,8 +47,7 @@ bosh interpolate \
   -o $OPS_FILE_PATH/bosh/op-uaa.yml \
   -o $OPS_FILE_PATH/bosh/op-credhub.yml \
   -o $OPS_FILE_PATH/bosh/op-uaa-url.yml \
-  --vars-file=$ROOT_DIR/vars.yml \
-  --var-file=private_key=$KEYS_PATH/pcf.pem > $BOSH_MANIFEST
+  --vars-file=$ROOT_DIR/vars.yml > $BOSH_MANIFEST
 
 set +e
 which direnv 2>&1 >/dev/null
