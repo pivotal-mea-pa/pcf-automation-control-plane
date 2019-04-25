@@ -1,0 +1,20 @@
+---
+#
+# Ensure download names are synced with urls in vendor/bosh-deployment
+#
+
+- type: replace
+  path: /releases/name=bosh/url
+  value: file://((downloads_dir))/bosh-266.4.0-ubuntu-trusty-3586.24-20180621-165809-30266228-20180621165813.tgz
+
+- type: replace
+  path: /releases/name=bpm/url
+  value: file://((downloads_dir))/bpm-0.6.0-ubuntu-trusty-3586.24-20180618-221823-499813904-20180618221841.tgz
+
+- type: replace
+  path: /releases/name=uaa/url
+  value: file://((downloads_dir))/uaa-60-ubuntu-trusty-3586.24-20180626-235737-955768119-20180626235749.tgz
+  
+- type: replace
+  path: /releases/name=credhub/url
+  value: file://((downloads_dir))/credhub-1.9.3-ubuntu-trusty-3586.24-20180618-221934-781997794-20180618221943.tgz

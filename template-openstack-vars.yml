@@ -7,6 +7,8 @@ dns_servers:
 internal_ip:
 dns_name: 
 
+downloads_dir:
+
 auth_url:
 openstack_domain:
 openstack_project:

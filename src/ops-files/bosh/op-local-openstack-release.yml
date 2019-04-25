@@ -1,0 +1,12 @@
+---
+#
+# Ensure download names are synced with urls in vendor/bosh-deployment
+#
+
+- type: replace
+  path: /releases/name=bosh-vsphere-cpi/url
+  value: file://((downloads_dir))/bosh-openstack-cpi-release-38.tgz
+
+- type: replace
+  path: /resource_pools/name=vms/stemcell/url
+  value: file://((downloads_dir))/bosh-stemcell-3586.24-openstack-kvm-ubuntu-trusty-go_agent.tgz

@@ -1,4 +1,7 @@
 ---
+#
+# Ensure download names are synced with urls in vendor/bosh-deployment
+#
 
 - type: replace
   path: /releases/name=bosh-vsphere-cpi/url
