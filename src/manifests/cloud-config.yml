@@ -1,47 +1,141 @@
 azs:
-- name: AZ0
-  cloud_properties:
-    availability_zone: nova
-
-vm_types:
-- name: small
-  cloud_properties:
-    instance_type: small
-- name: medium
-  cloud_properties:
-    instance_type: small
-- name: large
-  cloud_properties:
-    instance_type: large
-
-disk_types:
-- name: default
-  disk_size: 3000
-- name: large
-  disk_size: 50_000
+- cloud_properties: {}
+  name: AZ0
 
 networks:
-- name: default
-  type: manual
+- name: pcf-management
   subnets:
-  - range: 10.10.0.0/24
-    gateway: 10.10.0.1
-    az: z1
-    dns: [8.8.8.8]
-    cloud_properties:
-      net_id: net-b98ab66e-6fae-4c6a-81af-566e630d21d1
-  - range: 10.10.1.0/24
-    gateway: 10.10.1.1
-    az: z2
-    dns: [8.8.8.8]
-    cloud_properties:
-      net_id: net-85940t48-8ffe-3c3a-81af-27d499ff9842
-- name: vip
+  - azs:
+    - AZ0
+    cloud_properties: {}      
+    dns: [dns_servers]
+    gateway: ((pcf_management_network_gateway))
+    range: ((pcf_management_network_cidr))
+    reserved: ((pcf_management_network_reserved_ranges))
+    static: ((pcf_management_network_static_ips))
+  type: manual
+- name: pcf-releng
+  subnets:
+  - azs:
+    - AZ0
+    cloud_properties: {}
+    dns: [dns_servers]
+    gateway: ((pcf_releng_network_gateway))
+    range: ((pcf_releng_network_cidr))
+    reserved: ((pcf_releng_network_reserved_ranges))
+    static: ((pcf_releng_network_static_ips))
+  type: manual
+- cloud_properties: {}
+  name: vip-network
   type: vip
 
+vm_types:
+- cloud_properties: {}
+  name: small
+- cloud_properties: {}
+  name: medium
+- cloud_properties: {}
+  name: large
+- cloud_properties: {}
+  name: xlarge
+
+vm_extensions:
+- cloud_properties: {}
+  name: public_ip
+
+disk_types:
+- cloud_properties: {}
+  disk_size: 1024
+  name: "1024"
+- cloud_properties: {}
+  disk_size: 2048
+  name: "2048"
+- cloud_properties: {}
+  disk_size: 5120
+  name: "5120"
+- cloud_properties: {}
+  disk_size: 10240
+  name: "10240"
+- cloud_properties: {}
+  disk_size: 20480
+  name: "20480"
+- cloud_properties: {}
+  disk_size: 30720
+  name: "30720"
+- cloud_properties: {}
+  disk_size: 51200
+  name: "51200"
+- cloud_properties: {}
+  disk_size: 76800
+  name: "76800"
+- cloud_properties: {}
+  disk_size: 102400
+  name: "102400"
+- cloud_properties: {}
+  disk_size: 153600
+  name: "153600"
+- cloud_properties: {}
+  disk_size: 204800
+  name: "204800"
+- cloud_properties: {}
+  disk_size: 307200
+  name: "307200"
+- cloud_properties: {}
+  disk_size: 512000
+  name: "512000"
+- cloud_properties: {}
+  disk_size: 768000
+  name: "768000"
+- cloud_properties: {}
+  disk_size: 1048576
+  name: "1048576"
+- cloud_properties: {}
+  disk_size: 2097152
+  name: "2097152"
+- cloud_properties: {}
+  disk_size: 3145728
+  name: "3145728"
+- cloud_properties: {}
+  disk_size: 4194304
+  name: "4194304"
+- cloud_properties: {}
+  disk_size: 6291456
+  name: "6291456"
+- cloud_properties: {}
+  disk_size: 8388608
+  name: "8388608"
+- cloud_properties: {}
+  disk_size: 10485760
+  name: "10485760"
+- cloud_properties: {}
+  disk_size: 12582912
+  name: "12582912"
+- cloud_properties: {}
+  disk_size: 14680064
+  name: "14680064"
+- cloud_properties: {}
+  disk_size: 16777216
+  name: "16777216"
+- cloud_properties: {}
+  disk_size: 20971520
+  name: "20971520"
+- cloud_properties: {}
+  disk_size: 25165824
+  name: "25165824"
+- cloud_properties: {}
+  disk_size: 29360128
+  name: "29360128"
+- cloud_properties: {}
+  disk_size: 33554432
+  name: "33554432"
+
 compilation:
-  workers: 5
-  reuse_compilation_vms: true
   az: AZ0
+  network: pcf-management
+  reuse_compilation_vms: true
+  vm_extensions: []
   vm_type: large
-  network: default
+  workers: 4
+  env:
+    bosh:
+      password: '*'

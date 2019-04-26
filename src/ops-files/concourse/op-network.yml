@@ -1,0 +1,41 @@
+---
+
+- type: replace
+  path: /instance_groups/name=web/networks/0/name?
+  value: pcf-releng
+
+- type: replace
+  path: /instance_groups/name=web/networks/0/static_ips?
+  value: [((concourse_web_ip))]
+
+- type: replace
+  path: /instance_groups/name=web/jobs/name=web/properties/external_url?
+  value: https://((concourse_external_host))
+
+- type: replace
+  path: /instance_groups/name=web/jobs/name=web/properties/tls?/bind_port?
+  value: 443
+
+- type: replace
+  path: /instance_groups/name=web/jobs/name=web/properties/tls?/cert?
+  value: ((atc_tls))
+
+- type: replace
+  path: /instance_groups/name=db/networks/0/name?
+  value: pcf-releng
+
+- type: replace
+  path: /instance_groups/name=worker/networks/0/name?
+  value: pcf-releng
+
+- type: replace
+  path: /variables/-
+  value:
+    name: atc_tls
+    type: certificate
+    options:
+      ca: ((/cp/default_ca))
+      alternative_names: 
+      - ((concourse_web_ip))
+      - ((concourse_external_host))
+      organization: atcOrg

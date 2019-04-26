@@ -1,0 +1,44 @@
+---
+
+- type: replace
+  path: /azs/name=AZ0/cloud_properties?
+  value:
+    availability_zone: nova
+
+- type: replace
+  path: /networks/name=pcf-management/cloud_properties?
+  value:
+    net_id: ((pcf_management_network_id))
+
+- type: replace
+  path: /networks/name=pcf-releng/cloud_properties?
+  value:
+    net_id: ((pcf_releng_network_id))
+
+- type: replace
+  path: /vm_types/name=small/cloud_properties?  
+  value:
+    instance_type: m1.small
+    root_disk:
+      size: 23
+
+- type: replace
+  path: /vm_types/name=medium/cloud_properties?
+  value:
+    instance_type: m1.medium
+    root_disk:
+      size: 43
+
+- type: replace
+  path: /vm_types/name=large/cloud_properties?
+  value:
+    instance_type: m1.large
+    root_disk:
+      size: 83
+
+- type: replace
+  path: /vm_types/name=xlarge/cloud_properties?
+  value:
+    instance_type: m1.xlarge
+    root_disk:
+      size: 163

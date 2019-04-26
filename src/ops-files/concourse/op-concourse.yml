@@ -1,0 +1,21 @@
+---
+
+- type: replace
+  path: /name?
+  value: ((concourse_name))
+
+- type: replace
+  path: /instance_groups/name=web/vm_type?
+  value: small
+
+- type: replace
+  path: /instance_groups/name=db/vm_type?
+  value: large
+
+- type: replace
+  path: /instance_groups/name=db/persistent_disk_type?
+  value: "102400"
+
+- type: replace
+  path: /instance_groups/name=worker/vm_type?
+  value: xlarge

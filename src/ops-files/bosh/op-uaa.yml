@@ -1,5 +1,29 @@
 ---
 
+# Create concourse client
+- type: replace
+  path: /instance_groups/name=bosh/jobs/name=uaa/properties/uaa/clients/concourse?
+  value:
+    access-token-validity: 3600
+    refresh-token-validity: 86400
+    authorities: concourse.admin
+    authorized-grant-types: password,refresh_token
+    redirect-uri: "https://((concourse_external_host)/sky/issuer/callback"
+    override: true
+    scope: "openid,email,profile"
+    secret: ((concourse_client_secret))
+
+# Enable admin user access to concourse client
+- type: replace
+  path: /instance_groups/name=bosh/jobs/name=uaa/properties/uaa/scim/users/name=admin/groups/-
+  value: concourse.admin
+
+- type: replace
+  path: /variables/-
+  value:
+    name: concourse_client_secret
+    type: password
+
 - type: replace
   path: /variables/name=uaa_ssl/options/common_name?
   value: ((dns_name))

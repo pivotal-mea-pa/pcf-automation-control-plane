@@ -13,6 +13,7 @@ fi
 bosh_deployment_home=${root_dir}/vendor/bosh-deployment
 concourse_deployment_home=${root_dir}/vendor/concourse-bosh-deployment
 scripts_file_path=${root_dir}/src/scripts
+manifests_file_path=${root_dir}/src/manifests
 ops_file_path=${root_dir}/src/ops-files
 keys_path=${root_dir}/keys
 
@@ -20,6 +21,8 @@ mkdir -p ${root_dir}/.state
 state_path=${root_dir}/.state/cp-state.json 
 creds_path=${root_dir}/.state/cp-creds.yml
 bosh_manifest=${root_dir}/.state/cp-manifest.yml
+concourse_manifest=${root_dir}/.state/concourse-manifest.yml
+cloud_config=${root_dir}/.state/cp-cloud-config.yml
 
 downloads_dir=$(bosh interpolate --no-color ${root_dir}/vars.yml --path /downloads_dir)
 

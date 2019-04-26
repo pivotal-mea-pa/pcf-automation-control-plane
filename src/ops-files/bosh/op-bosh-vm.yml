@@ -1,4 +1,9 @@
 ---
+
+- type: replace
+  path: /name?
+  value: ((director_name))
+
 # - type: replace
 #   path: /resource_pools/name=vms/env/bosh/password?
 #   value: '*' # generate using: mkpasswd -m sha-512 -s

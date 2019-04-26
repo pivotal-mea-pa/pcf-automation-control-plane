@@ -21,9 +21,9 @@ if [[ -n $update \
     -o ${ops_file_path}/bosh/op-uaa.yml \
     -o ${ops_file_path}/bosh/op-credhub.yml \
     -o ${ops_file_path}/bosh/op-uaa-url.yml \
-    --vars-store=${creds_path} \
-    --vars-file=${root_dir}/vars.yml \
+    -l ${root_dir}/vars.yml \
     --var-file=private_key=${keys_path}/pcf.pem \
+    --vars-store=${creds_path} \
     --state=$state_path
 fi
 
@@ -39,8 +39,12 @@ bosh interpolate \
   -o ${ops_file_path}/bosh/op-uaa.yml \
   -o ${ops_file_path}/bosh/op-credhub.yml \
   -o ${ops_file_path}/bosh/op-uaa-url.yml \
-  --vars-file=${root_dir}/vars.yml \
+  -l ${root_dir}/vars.yml \
   --var-file=private_key=${keys_path}/pcf.pem > $bosh_manifest
+
+bosh interpolate \
+  $manifests_file_path/cloud-config.yml \
+  -o ${ops_file_path}/cloud-config/op-${iaas}.yml > $cloud_config
 
 set +e
 read -r -d '' iaas_env << EOV

@@ -1,0 +1,21 @@
+---
+
+- type: replace
+  path: /instance_groups/name=web/jobs/name=web/properties/generic_oauth?
+  value:
+    client_id: ((/cp/concourse_client_id))
+    client_secret: ((/cp/concourse_client_secret))
+    auth_url: ((/cp/uaa_url))/oauth/authorize
+    token_url: ((/cp/uaa_url))/oauth/token
+    userinfo_url: ((/cp/uaa_url))/userinfo
+    scopes: ''
+    groups_key: 'groups'
+    display_name: 'Control Plane UAA'
+
+- type: replace
+  path: /instance_groups/name=web/jobs/name=web/properties/main_team?/auth/oauth/users
+  value: ((main_team.oauth.oauth_users))
+
+- type: replace
+  path: /instance_groups/name=web/jobs/name=web/properties/main_team?/auth/oauth/groups
+  value: ((main_team.oauth.oauth_groups))
