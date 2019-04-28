@@ -1,7 +1,9 @@
 #!/bin/bash
 
-if [[ -z $iaas ]]; then
-  echo "IAAS name is not speficied!"
+if [[ -z $iaas \
+  || ( $action != create-manifests-only \
+    && $action != deploy ) ]]; then
+  echo "USAGE: init.sh <IAAS> [ create-manifests-only | deploy ]"
   exit 1
 fi
 

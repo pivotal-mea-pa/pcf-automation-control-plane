@@ -26,9 +26,10 @@ bosh interpolate \
   -l ${root_dir}/vars.yml \
   --var-file=private_key=${keys_path}/pcf.pem > $bosh_manifest
 
-if [[ -n $update \
-  || ! -e $state_path \
-  || ! -e $creds_path ]]; then
+if [[ $action != create-manifests-only
+  && ( $action == deploy \
+    || ! -e $state_path \
+    || ! -e $creds_path ) ]]; then
 
   bosh create-env $bosh_manifest \
     --var-file=private_key=${keys_path}/pcf.pem \

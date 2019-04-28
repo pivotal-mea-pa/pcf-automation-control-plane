@@ -19,8 +19,8 @@ concourse_name=$(bosh interpolate ${root_dir}/vars.yml --path /concourse_name)
 
 set +e
 bosh -n deployments | grep "$concourse_name" 2>&1 >/dev/null
-if [[ -n $update \
-  || $? -ne 0 ]]; then
+if [[ $action != create-manifests-only \
+  && ($action == deploy || $? -ne 0) ]]; then
 
   set -e
   bosh -n -d $concourse_name deploy $concourse_manifest

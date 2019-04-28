@@ -1,7 +1,7 @@
 #!/bin/bash
 
 iaas=$1
-update=$2
+action=${2:-create-manifests-only}
 
 set -eu
 root_dir=$(cd $(dirname "$(ls -l $0 | awk '{ print $NF }')")/.. && pwd)
