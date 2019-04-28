@@ -1,13 +1,45 @@
 ---
-director_name: bosh-control-plane
+director_name: cp-bosh
 internal_cidr:
 internal_gw:
 dns_servers:
 
 internal_ip:
-dns_name: 
+dns_name:
+
+ubuntu_sha1:
+ubuntu_stemcell:
 
 downloads_dir:
+
+# Concourse
+
+concourse_name: cp-concourse
+concourse_web_ip:
+concourse_external_host:
+
+concourse_db_persistent_disk_type:
+concourse_worker_vm_type:
+concourse_deployment_name:
+
+# Minio
+
+minio_name: cp-minio
+minio_ip:
+minio_default_bucket:
+
+# Ops Manager / PCF
+
+ops_manager_host:
+ops_manager_user:
+ops_manager_password:
+ops_manager_decryption_phrase:
+
+pas_credhub_encryption_key:
+
+# Minio
+
+# CPI / Cloud Config Vars
 
 auth_url:
 openstack_domain:
@@ -18,5 +50,25 @@ openstack_password:
 region:
 az:
 default_key_name:
-default_security_groups: []
+default_security_groups:
 net_id:
+
+pcf_management_network_id:
+pcf_management_network_cidr:
+pcf_management_network_gateway:
+pcf_management_network_reserved_ranges:
+pcf_management_network_static_ips:
+
+pcf_releng_network_id:
+pcf_releng_network_cidr:
+pcf_releng_network_gateway:
+pcf_releng_network_reserved_ranges:
+pcf_releng_network_static_ips:
+pcf_releng_network_security_groups:
+
+# Branding
+
+login_branding_company_name:
+login_branding_product_logo:
+login_branding_square_logo:
+login_branding_footer_legal_text:
