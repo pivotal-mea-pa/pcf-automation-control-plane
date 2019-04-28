@@ -1,5 +1,10 @@
 ---
 
+# Disable self-service links
+- type: replace
+  path: /instance_groups/name=bosh/jobs/name=uaa/properties/login/self_service_links_enabled?
+  value: false
+
 # Create concourse client
 - type: replace
   path: /instance_groups/name=bosh/jobs/name=uaa/properties/uaa/clients/concourse?
@@ -7,8 +12,8 @@
     access-token-validity: 3600
     refresh-token-validity: 86400
     authorities: concourse.admin
-    authorized-grant-types: password,refresh_token
-    redirect-uri: "https://((concourse_external_host)/sky/issuer/callback"
+    authorized-grant-types: password,refresh_token,authorization_code
+    redirect-uri: https://((concourse_external_host))/sky/issuer/callback
     override: true
     scope: "openid,email,profile"
     secret: ((concourse_client_secret))

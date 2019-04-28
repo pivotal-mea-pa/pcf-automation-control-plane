@@ -1,23 +1,25 @@
 #!/bin/bash
 
+
+apply_local_download_ops_rules=""
+if [[ -n $downloads_dir && $downloads_dir != null ]]; then
+  apply_local_download_ops_rules="-o ${{ops_file_path}}/minio/op-local-releases.yml"
+fi
+
+bosh interpolate \
+  ${manifests_file_path}/minio.yml \
+  $apply_local_download_ops_rules \
+  -l ${root_dir}/vars.yml > $minio_manifest
+
+minio_name=$(bosh interpolate ${root_dir}/vars.yml --path /minio_name)
+
+set +e
+bosh -n deployments | grep "$minio_name" 2>&1 >/dev/null
 if [[ -n $update \
-  || ! -e $state_path \
-  || ! -e $creds_path ]]; then
+  || $? -ne 0 ]]; then
 
-  deploy -d concourse concourse.yml \
-    -l ../versions.yml \
-    --vars-store cluster-creds.yml \
-    -o operations/static-web.yml \
-    -o operations/basic-auth.yml \
-    --var local_user.username=admin \
-    --var local_user.password=admin \
-    --var web_ip=10.244.15.2 \
-    --var external_url=http://10.244.15.2:8080 \
-    --var network_name=concourse \
-    --var web_vm_type=concourse \
-    --var db_vm_type=concourse \
-    --var db_persistent_disk_type=db \
-    --var worker_vm_type=concourse \
-    --var deployment_name=concourse
-
+  set -e
+  bosh -n -d $minio_name deploy $minio_manifest
+else
+  set -e
 fi

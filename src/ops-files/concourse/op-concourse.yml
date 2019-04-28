@@ -9,8 +9,16 @@
   value: small
 
 - type: replace
+  path: /instance_groups/name=web/azs?
+  value: [AZ0]
+
+- type: replace
   path: /instance_groups/name=db/vm_type?
   value: large
+
+- type: replace
+  path: /instance_groups/name=db/azs?
+  value: [AZ0]
 
 - type: replace
   path: /instance_groups/name=db/persistent_disk_type?
@@ -19,3 +27,7 @@
 - type: replace
   path: /instance_groups/name=worker/vm_type?
   value: xlarge
+
+- type: replace
+  path: /instance_groups/name=worker/azs?
+  value: [AZ0]

@@ -1,0 +1,8 @@
+---
+#
+# Ensure download names are synced with urls in src/manifests/minio.yml
+#
+
+- type: replace
+  path: /releases/name=minio/url
+  value: file://((downloads_dir))/minio-boshrelease-2019-04-23T23-50-36Z.tgz

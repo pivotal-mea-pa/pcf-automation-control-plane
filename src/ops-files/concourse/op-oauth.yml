@@ -11,11 +11,12 @@
     scopes: ''
     groups_key: 'groups'
     display_name: 'Control Plane UAA'
+    ca_cert: ((/cp/default_ca))
 
 - type: replace
   path: /instance_groups/name=web/jobs/name=web/properties/main_team?/auth/oauth/users
-  value: ((main_team.oauth.oauth_users))
+  value: admin
 
 - type: replace
   path: /instance_groups/name=web/jobs/name=web/properties/main_team?/auth/oauth/groups
-  value: ((main_team.oauth.oauth_groups))
+  value: concourse.admin

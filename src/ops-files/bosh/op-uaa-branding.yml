@@ -1,0 +1,10 @@
+---
+
+# Product branding
+- type: replace
+  path: /instance_groups/name=bosh/jobs/name=uaa/properties/login/branding?
+  value:
+    company_name: '((login_branding_company_name))'
+    product_logo: '((login_branding_product_logo))'
+    square_logo: '((login_branding_square_logo))'
+    footer_legal_text: '((login_branding_footer_legal_text))'

@@ -1,0 +1,88 @@
+---
+name: ((minio_name))
+
+releases:
+- name: "minio"
+  sha1: "85b1a1a8226be622f0f84ac905abbe418a370890"
+  url: "https://bosh.io/d/github.com/minio/minio-boshrelease?v=2019-04-23T23-50-36Z"
+  version: "2019-04-23T23-50-36Z"
+
+stemcells:
+- alias: xenial
+  os: ubuntu-xenial
+  version: latest
+
+variables:
+- name: /cp/minio_accesskey
+  type: password
+- name: /cp/minio_secretkey
+  type: password
+
+instance_groups:
+- name: minio
+  azs: [AZ0]
+  instances: 1
+  jobs:
+  - name: minio-server
+    release: minio
+    templates:
+    - name: minio-server
+    provides:
+      minio-server: {as: minio-link}
+    properties:
+      credential:
+        accesskey: ((/cp/minio_accesskey))
+        secretkey: ((/cp/minio_secretkey))
+      port: 9000
+  networks:
+  - name: pcf-releng
+    static_ips: ((minio_ip))
+  vm_type: medium
+  persistent_disk_type: "204800"
+  stemcell: xenial
+
+- name: tests
+  azs: [AZ0]
+  instances: 1
+  lifecycle: errand
+  post_deploy: true
+  jobs:
+  - name: smoke-tests
+    release: minio
+    templates:
+    - name: smoke-tests
+    consumes:
+      minio: {from: minio-link}
+  networks:
+  - name: pcf-releng
+  vm_type: small
+  persistent_disk_type: "2048"
+  stemcell: xenial
+
+- name: bucket-seeding # To create default buckets after manifest-deploy
+  azs: [AZ0]
+  instances: 1
+  lifecycle: errand
+  post_deploy: true
+  jobs:
+  - name: mc
+    release: minio
+    templates:
+    - name: mc
+    consumes:
+      minio: {from: minio-link}
+    properties:
+      script: |
+        #!/bin/sh
+        mc mb ((minio_default_bucket))
+  networks:
+  - name: pcf-releng
+  vm_type: small
+  persistent_disk_type: "2048"
+  stemcell: xenial
+
+update:
+  canaries: 1
+  canary_watch_time: 1000-30000
+  update_watch_time: 1000-30000
+  max_in_flight: 1

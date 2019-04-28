@@ -1,0 +1,16 @@
+---
+#
+# Ensure download names are synced with urls in vendor/concourse-bosh-deployment/versions.yml
+#
+
+- type: replace
+  path: /releases/name=concourse/url
+  value: file://((downloads_dir))/concourse-bosh-release-5.1.0.tgz
+
+- type: replace
+  path: /releases/name=bpm/url
+  value: file://((downloads_dir))/bpm-release-1.0.4.tgz
+
+- type: replace
+  path: /releases/name=postgres/url
+  value: file://((downloads_dir))/postgres-release-36.tgz

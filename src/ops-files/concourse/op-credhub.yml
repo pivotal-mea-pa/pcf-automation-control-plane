@@ -6,4 +6,4 @@
     client_secret: ((/cp/credhub_client_secret))
     tls:
       ca_cert:
-        certificate: ((/cp/default_ca))
+        certificate: ((/cp/default_ca.ca))

@@ -21,8 +21,9 @@ mkdir -p ${root_dir}/.state
 state_path=${root_dir}/.state/cp-state.json 
 creds_path=${root_dir}/.state/cp-creds.yml
 bosh_manifest=${root_dir}/.state/cp-manifest.yml
-concourse_manifest=${root_dir}/.state/concourse-manifest.yml
 cloud_config=${root_dir}/.state/cp-cloud-config.yml
+concourse_manifest=${root_dir}/.state/concourse-manifest.yml
+minio_manifest=${root_dir}/.state/minio-manifest.yml
 
 downloads_dir=$(bosh interpolate --no-color ${root_dir}/vars.yml --path /downloads_dir)
 
@@ -30,3 +31,15 @@ if [[ ! -e ${bosh_deployment_home}/${iaas} ]]; then
   echo "Unknown IAAS name '$iaas'!"
   exit 1
 fi
+
+set +e
+which shasum 2>&1 >/dev/null
+if [[ $? -ne 0 ]]; then
+  echo "Unable to locate shasum cli."
+  exit 1
+fi
+
+checksums_path=${root_dir}/.state/checksums
+touch $checksums_path
+source $checksums_path
+

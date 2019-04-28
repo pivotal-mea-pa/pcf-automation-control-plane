@@ -1,21 +1,29 @@
 #!/bin/bash
 
+apply_local_download_ops_rules=""
+if [[ -n $downloads_dir && $downloads_dir != null ]]; then
+  apply_local_download_ops_rules="-o ${{ops_file_path}}/concourse/op-local-releases.yml"
+fi
+
 bosh interpolate \
   ${concourse_deployment_home}/cluster/concourse.yml \
+  $apply_local_download_ops_rules \
   -o ${ops_file_path}/concourse/op-concourse.yml \
   -o ${ops_file_path}/concourse/op-network.yml \
   -o ${ops_file_path}/concourse/op-credhub.yml \
+  -o ${ops_file_path}/concourse/op-oauth.yml \
   -l ${concourse_deployment_home}/versions.yml \
   -l ${root_dir}/vars.yml > $concourse_manifest
 
-    # --vars-store cluster-creds.yml \
-    # -o operations/static-web.yml \
-    # -o operations/basic-auth.yml \
-    # --var local_user.username=admin \
-    # --var local_user.password=admin \
+concourse_name=$(bosh interpolate ${root_dir}/vars.yml --path /concourse_name)
 
-    # --var web_vm_type=concourse \
-    # --var db_vm_type=concourse \
-    # --var db_persistent_disk_type=db \
-    # --var worker_vm_type=concourse \
-    # --var deployment_name=concourse
+set +e
+bosh -n deployments | grep "$concourse_name" 2>&1 >/dev/null
+if [[ -n $update \
+  || $? -ne 0 ]]; then
+
+  set -e
+  bosh -n -d $concourse_name deploy $concourse_manifest
+else
+  set -e
+fi

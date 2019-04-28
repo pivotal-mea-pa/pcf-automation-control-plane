@@ -34,7 +34,7 @@
     name: atc_tls
     type: certificate
     options:
-      ca: ((/cp/default_ca))
+      ca: /cp/default_ca
       alternative_names: 
       - ((concourse_web_ip))
       - ((concourse_external_host))
