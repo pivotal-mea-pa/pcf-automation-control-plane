@@ -6,3 +6,4 @@
 - type: replace
   path: /releases/name=minio/url
   value: file://((downloads_dir))/minio-boshrelease-2019-04-23T23-50-36Z.tgz
+  # https://bosh.io/d/github.com/minio/minio-boshrelease?v=2019-04-23T23-50-36Z

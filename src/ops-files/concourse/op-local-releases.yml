@@ -6,11 +6,14 @@
 - type: replace
   path: /releases/name=concourse/url
   value: file://((downloads_dir))/concourse-bosh-release-5.1.0.tgz
+  # https://bosh.io/d/github.com/concourse/concourse-bosh-release?v=5.1.0
 
 - type: replace
   path: /releases/name=bpm/url
   value: file://((downloads_dir))/bpm-release-1.0.4.tgz
+  # https://bosh.io/d/github.com/cloudfoundry-incubator/bpm-release?v=1.0.4
 
 - type: replace
   path: /releases/name=postgres/url
   value: file://((downloads_dir))/postgres-release-36.tgz
+  # https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=36
