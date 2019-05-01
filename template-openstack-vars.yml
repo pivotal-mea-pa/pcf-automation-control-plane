@@ -37,7 +37,12 @@ ops_manager_decryption_phrase:
 
 pas_credhub_encryption_key:
 
-# Minio
+# Branding
+
+login_branding_company_name:
+login_branding_product_logo:
+login_branding_square_logo:
+login_branding_footer_legal_text:
 
 # CPI / Cloud Config Vars
 
@@ -65,10 +70,3 @@ pcf_releng_network_gateway:
 pcf_releng_network_reserved_ranges:
 pcf_releng_network_static_ips:
 pcf_releng_network_security_groups:
-
-# Branding
-
-login_branding_company_name:
-login_branding_product_logo:
-login_branding_square_logo:
-login_branding_footer_legal_text:
