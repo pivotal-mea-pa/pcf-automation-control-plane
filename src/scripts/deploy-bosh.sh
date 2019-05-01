@@ -51,9 +51,22 @@ source ${root_dir}/src/scripts/set-credhub-vars.sh
 
 upload_ubuntu_stemcell_sha1=$(bosh interpolate ${root_dir}/vars.yml --path /ubuntu_sha1)
 if [[ "$upload_ubuntu_stemcell_sha1" != "$ubuntu_stemcell_sha1" ]]; then
+
+  if [[ -n $downloads_dir && $downloads_dir != null ]]; then
+    stemcell_file=$(find $downloads_dir -name 'bosh-*-go_agent*' -print | head -1)
+    if [[ -n $stemcell_file ]]; then
+      stemcell_url="file://${stemcell_file}"
+    else
+      echo "Unable to find stemcell in downloads dir."
+      exit 1
+    fi
+  else
+    stemcell_url=$(bosh interpolate ${root_dir}/vars.yml --path /ubuntu_stemcell)
+  fi
+
   bosh -n upload-stemcell \
     --sha1 $upload_ubuntu_stemcell_sha1 \
-    $(bosh interpolate ${root_dir}/vars.yml --path /ubuntu_stemcell)
+    $stemcell_url
 
   (grep "^ubuntu_stemcell_sha1=" .state/checksums 2>&1 >/dev/null \
       && sed -i "s|^ubuntu_stemcell_sha1=.*|ubuntu_stemcell_sha1=${upload_ubuntu_stemcell_sha1}|" .state/checksums) \
