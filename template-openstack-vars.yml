@@ -37,6 +37,12 @@ ops_manager_decryption_phrase:
 
 pas_credhub_encryption_key:
 
+# automation configuration repo
+
+init_automation_repo: no
+automation_git_repo_path:
+automation_git_private_key:
+
 # Branding
 
 login_branding_company_name:
