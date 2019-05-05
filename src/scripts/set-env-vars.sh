@@ -12,7 +12,7 @@ export BOSH_CLIENT='admin'
 export BOSH_CLIENT_SECRET='$(bosh interpolate --no-color $creds_path --path /admin_password)'
 
 export CREDHUB_SERVER=https://$(bosh interpolate ${root_dir}/vars.yml --path /dns_name):8844
-export CREDHUB_CA_CERT='$BOSH_CA_CERT'
+export CREDHUB_CA_CERT='\$BOSH_CA_CERT'
 export CREDHUB_CLIENT=credhub-admin
 export CREDHUB_SECRET='$(bosh interpolate --no-color $creds_path --path /credhub_admin_client_secret)'
 
