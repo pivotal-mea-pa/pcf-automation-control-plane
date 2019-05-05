@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eu
 
 if [[ -z $iaas \
   || ( $action != create-manifests-only \

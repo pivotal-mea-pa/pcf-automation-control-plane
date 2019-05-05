@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/bin/bash -eu
 
 apply_local_download_ops_rules=""
 if [[ -n $downloads_dir && $downloads_dir != null ]]; then

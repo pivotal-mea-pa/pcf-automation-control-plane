@@ -10,3 +10,6 @@ source ${root_dir}/src/scripts/common.sh
 source ${root_dir}/src/scripts/deploy-bosh.sh
 source ${root_dir}/src/scripts/deploy-concourse.sh
 source ${root_dir}/src/scripts/deploy-minio.sh
+
+[[ $(bosh interpolate ${root_dir}/vars.yml --path /init_automation_repo) != true ]] || \
+  source ${root_dir}/src/scripts/init-automation-repo.sh

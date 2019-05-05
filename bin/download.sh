@@ -1,6 +1,7 @@
 #!/bin/bash
 
-action=${1:-}
+iaas=${1:vsphere}
+action=${2:-}
 
 set -eu
 root_dir=$(cd $(dirname "$(ls -l $0 | awk '{ print $NF }')")/.. && pwd)
@@ -17,6 +18,15 @@ else
 fi
 
 downloads=$(find ${root_dir}/src -name "op-local-releases.yml" -exec cat {} \; | awk '/# https?:\/\//{ print $2 }')
+for u in $downloads; do 
+  if [[ $action == show ]]; then
+    echo "Download: $u"
+  else
+    curl -JLO $u
+  fi
+done
+
+downloads=$(find ${root_dir}/src -name "op-local-${iaas}-releases.yml" -exec cat {} \; | awk '/# https?:\/\//{ print $2 }')
 for u in $downloads; do 
   if [[ $action == show ]]; then
     echo "Download: $u"

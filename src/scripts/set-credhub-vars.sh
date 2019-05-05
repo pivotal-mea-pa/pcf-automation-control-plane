@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eu
 
 updated_creds_sha1=$(cat ${root_dir}/vars.yml $creds_path | shasum | cut -d' ' -f1)
 

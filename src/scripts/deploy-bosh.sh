@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/bash -eu
 
 apply_local_download_ops_rules=""
 if [[ -n $downloads_dir && $downloads_dir != null ]]; then
-  apply_local_download_ops_rules="-o ${{ops_file_path}}/bosh/op-local-releases.yml -o ${{ops_file_path}}/bosh/op-local-${iaas}-release.yml"
+  apply_local_download_ops_rules="-o ${{ops_file_path}}/bosh/op-local-releases.yml -o ${{ops_file_path}}/bosh/op-local-${iaas}-releases.yml"
 fi
 
 apply_branding_ops_rules=""

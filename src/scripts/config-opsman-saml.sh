@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/bash -eu
 
-set -xe
+set -xeu
 root_dir=$(cd $(dirname "$(ls -l $0 | awk '{ print $NF }')")/.. && pwd)
 
 curl  -k "https://${OM_TARGET}/api/v0/setup" \
@@ -21,7 +21,7 @@ curl  -k "https://${OM_TARGET}/api/v0/setup" \
 sleep 10
 om curl -p "/uaa/saml/metadata" -o om-sp-metadata.xml
 
-${root_dir}/bin/create_saml_sp.sh -i \
+${root_dir}/src/scripts/create_saml_sp.sh -i \
   -t "$UAA_TARGET" \
   -c "$UAA_ADMIN_CLIENT" \
   -p "$UAA_ADMIN_CLIENT_SECRET" \
