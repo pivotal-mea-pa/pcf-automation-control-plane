@@ -34,5 +34,5 @@ if [[ $? -eq 0 ]]; then
   direnv allow
 else
   echo "INFO: Unable to find 'direnv' CLI in system path. The '.envrc' has been created but will not be sourced."
-  source ${root_dir}/.envrc
 fi
+source ${root_dir}/.envrc
