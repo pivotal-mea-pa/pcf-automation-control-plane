@@ -1,6 +1,8 @@
 #!/bin/bash -u
 
-updated_creds_sha1=$(cat ${root_dir}/vars.yml $creds_path | shasum | cut -d' ' -f1)
+updated_creds_sha1=$(echo -e \
+  "$(cat ${root_dir}/vars.yml $creds_path $HOME/.ssh/git.pem) $automation_git_repo_path" \
+  | shasum | cut -d' ' -f1)
 
 set +e
 which credhub 2>&1 >/dev/null
@@ -48,6 +50,12 @@ if [[ $? -eq 0 ]]; then
       -w "$(bosh interpolate ${root_dir}/vars.yml --path /ops_manager_decryption_phrase)"
     credhub set -n "/pcf/pas_credhub_encryption_key" -t password \
       -w "$(bosh interpolate ${root_dir}/vars.yml --path /pas_credhub_encryption_key)"
+
+    credhub set -n "/pcf/config_git_repo_url" -t value \
+      -v "$automation_git_repo_path"
+    credhub set -n "/pcf/config_git_repo_key" -t ssh \
+      -p "$HOME/.ssh/git.pem" \
+      -u "$HOME/.ssh/git.pem.pub"
 
     (grep "^creds_sha1=" .state/checksums 2>&1 >/dev/null \
         && sed -i "s|^creds_sha1=.*|creds_sha1=${updated_creds_sha1}|" .state/checksums) \

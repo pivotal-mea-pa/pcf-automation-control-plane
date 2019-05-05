@@ -45,6 +45,43 @@ if [[ $? -ne 0 ]]; then
   echo "Unable to locate shasum cli."
   exit 1
 fi
+set -e
+
+init_automation_repo=$(bosh interpolate ${root_dir}/vars.yml --path /init_automation_repo)
+automation_git_repo_path=$(bosh interpolate ${root_dir}/vars.yml --path /automation_git_repo_path)
+automation_git_private_key=$(bosh interpolate ${root_dir}/vars.yml --path /automation_git_private_key)
+
+if [[ -z $automation_git_repo_path || $automation_git_repo_path == null ]]; then
+
+  local_itf=$(ip a | awk '/^[0-9]+: (eth|ens?)[0-9]+:/{ print substr($2,1,length($2)-1) }' | head -1)
+  local_ip=$(ifconfig $local_itf | awk '/inet addr:/{ print substr($2,6) }')
+
+  [[ -e $HOME/.ssh/git.pem ]] || \
+    ssh-keygen -t rsa -b 4096 -N "" -f $HOME/.ssh/git.pem
+
+  set +e
+  grep "Host $local_ip" $HOME/.ssh/config >/dev/null 2>&1
+  if [[ $? -ne 0 ]]; then
+
+    touch $HOME/.ssh/config
+    cat << ---EOF >> $HOME/.ssh/config
+
+Host $local_ip
+  AddKeysToAgent yes
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  IdentityFile $HOME/.ssh/git.pem
+---EOF
+
+  fi
+  set -e
+  
+  automation_git_repo_path=git@${local_ip}:pcf-configuration.git
+  automation_git_private_key=$(cat $HOME/.ssh/git.pem)
+  local_git_server=yes
+else
+  local_git_server=no
+fi
 
 checksums_path=${root_dir}/.state/checksums
 touch $checksums_path
