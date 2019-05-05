@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash -u
 
 while getopts ":t:c:p:n:m:s:i" opt; do
     case $opt in

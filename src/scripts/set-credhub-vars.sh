@@ -1,7 +1,8 @@
-#!/bin/bash -eu
+#!/bin/bash -u
 
 updated_creds_sha1=$(cat ${root_dir}/vars.yml $creds_path | shasum | cut -d' ' -f1)
 
+set +e
 which credhub 2>&1 >/dev/null
 if [[ $? -eq 0 ]]; then
   set -e

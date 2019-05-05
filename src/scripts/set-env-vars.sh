@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash -u
 
 cat << ---EOF > ${root_dir}/.envrc
 export root_dir=$root_dir

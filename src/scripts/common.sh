@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash -u
 
 if [[ -z $iaas \
   || ( $action != create-manifests-only \
@@ -34,6 +34,11 @@ if [[ ! -e ${bosh_deployment_home}/${iaas} ]]; then
   exit 1
 fi
 
+if [[ ! -e $creds_path && $action == create-manifests-only ]]; then
+  echo "Credential store file is missing. You may need to deploy the environment first."
+  exit 1
+fi
+
 set +e
 which shasum 2>&1 >/dev/null
 if [[ $? -ne 0 ]]; then
@@ -45,3 +50,6 @@ checksums_path=${root_dir}/.state/checksums
 touch $checksums_path
 source $checksums_path
 
+set +u
+[[ -n $creds_sha1 ]] || \
+  creds_sha1=""
