@@ -2,6 +2,7 @@
 
 automation_git_repo_path=$(bosh interpolate ${root_dir}/vars.yml --path /automation_git_repo_path)
 automation_git_private_key=$(bosh interpolate ${root_dir}/vars.yml --path /automation_git_private_key)
+create_repo=no
 
 if [[ -z $automation_git_repo_path || $automation_git_repo_path == null ]]; then
   
@@ -22,6 +23,8 @@ if [[ -z $automation_git_repo_path || $automation_git_repo_path == null ]]; then
     sudo cp $HOME/.ssh/git.pem.pub /home/git/.ssh/authorized_keys
     sudo git init --bare /home/git/pcf-configuration.git
     sudo chown -R git:git /home/git
+
+    create_repo=yes
   fi
 
   local_itf=$(ip a | awk '/^[0-9]+: (eth|ens?)[0-9]+:/{ print substr($2,1,length($2)-1) }' | head -1)
@@ -51,15 +54,23 @@ fi
 rm -fr ${root_dir}/.config
 git clone $automation_git_repo_path ${root_dir}/.config
 
-mkdir -p ${root_dir}/.config/config
-mkdir -p ${root_dir}/.config/foundations/default/vars
-mkdir -p ${root_dir}/.config/foundations/default/env
-mkdir -p ${root_dir}/.config/foundations/default/state
+if [[ $create_repo == yes ]]; then
 
-touch ${root_dir}/.config/config/.keep
-touch ${root_dir}/.config/foundations/default/vars/.keep
-touch ${root_dir}/.config/foundations/default/env/.keep
-touch ${root_dir}/.config/foundations/default/state/.keep
-git add .
-git commit -m "initial"
-git push
+  mkdir -p ${root_dir}/.config/config
+  mkdir -p ${root_dir}/.config/foundations/default/vars
+  mkdir -p ${root_dir}/.config/foundations/default/env
+  mkdir -p ${root_dir}/.config/foundations/default/state
+
+  touch ${root_dir}/.config/config/.keep
+  touch ${root_dir}/.config/foundations/default/vars/.keep
+  touch ${root_dir}/.config/foundations/default/env/.keep
+  touch ${root_dir}/.config/foundations/default/state/.keep
+
+  pushd ${root_dir}/.config
+
+  git config user.name "automation"
+  git config push.default simple
+  git add .
+  git commit -m "initial"
+  git push
+fi
