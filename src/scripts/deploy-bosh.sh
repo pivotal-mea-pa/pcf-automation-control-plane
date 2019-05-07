@@ -30,7 +30,6 @@ bosh interpolate \
   -o ${ops_file_path}/bosh/op-uaa.yml \
   -o ${ops_file_path}/bosh/op-credhub.yml \
   -o ${ops_file_path}/bosh/op-uaa-url.yml \
-  $key_file \
   -l ${root_dir}/vars.yml > $bosh_manifest
 
 if [[ $action != create-manifests-only
@@ -39,7 +38,7 @@ if [[ $action != create-manifests-only
     || ! -e $creds_path ) ]]; then
 
   bosh create-env $bosh_manifest \
-    --var-file=private_key=${keys_path}/pcf.pem \
+    $key_file \
     --vars-store=${creds_path} \
     --state=$state_path
 fi
