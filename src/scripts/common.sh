@@ -90,10 +90,9 @@ else
   local_git_server=no
 fi
 
+ubuntu_stemcell_sha1=""
+creds_sha1=""
+
 checksums_path=${root_dir}/.state/checksums
 touch $checksums_path
 source $checksums_path
-
-set +u
-[[ -n $creds_sha1 ]] || \
-  creds_sha1=""
