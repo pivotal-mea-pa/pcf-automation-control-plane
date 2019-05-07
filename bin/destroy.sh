@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -e
+set -eux
+root_dir=$(cd $(dirname "$(ls -l $0 | awk '{ print $NF }')")/.. && pwd)
 
 echo -e "\n!!! WARNING DELETING ALL DEPLOYMENTS !!!\n"
 
@@ -10,7 +11,7 @@ done
 
 key_file=""
 if [[ -e ${keys_path}/pcf.pem ]]; then
-  key_file="--var-file=private_key=${keys_path}/pcf.pem"
+  key_file="--var-file=private_key=${root_dir}/keys/pcf.pem"
 fi
 
 bosh delete-env \
