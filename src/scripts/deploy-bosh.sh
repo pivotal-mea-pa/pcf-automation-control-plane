@@ -2,12 +2,17 @@
 
 apply_local_download_ops_rules=""
 if [[ -n $downloads_dir && $downloads_dir != null ]]; then
-  apply_local_download_ops_rules="-o ${{ops_file_path}}/bosh/op-local-releases.yml -o ${{ops_file_path}}/bosh/op-local-${iaas}-releases.yml"
+  apply_local_download_ops_rules="-o ${ops_file_path}/bosh/op-local-releases.yml -o ${ops_file_path}/bosh/op-local-${iaas}-releases.yml"
 fi
 
 apply_branding_ops_rules=""
 if [[ "$(bosh interpolate ${root_dir}/vars.yml --path /login_branding_company_name)" != "null" ]]; then
   apply_branding_ops_rules="-o ${ops_file_path}/bosh/op-uaa-branding.yml"
+fi
+
+key_file=""
+if [[ -e ${keys_path}/pcf.pem ]]; then
+  key_file="--var-file=private_key=${keys_path}/pcf.pem"
 fi
 
 bosh interpolate \
@@ -23,8 +28,8 @@ bosh interpolate \
   -o ${ops_file_path}/bosh/op-uaa.yml \
   -o ${ops_file_path}/bosh/op-credhub.yml \
   -o ${ops_file_path}/bosh/op-uaa-url.yml \
-  -l ${root_dir}/vars.yml \
-  --var-file=private_key=${keys_path}/pcf.pem > $bosh_manifest
+  $key_file \
+  -l ${root_dir}/vars.yml > $bosh_manifest
 
 if [[ $action != create-manifests-only
   && ( $action == deploy \

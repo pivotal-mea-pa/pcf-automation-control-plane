@@ -2,7 +2,7 @@
 
 apply_local_download_ops_rules=""
 if [[ -n $downloads_dir && $downloads_dir != null ]]; then
-  apply_local_download_ops_rules="-o ${{ops_file_path}}/concourse/op-local-releases.yml"
+  apply_local_download_ops_rules="-o ${ops_file_path}/concourse/op-local-releases.yml"
 fi
 
 bosh interpolate \
