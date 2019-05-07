@@ -10,6 +10,6 @@ export OS_PROJECT_NAME='$(bosh interpolate --no-color $bosh_manifest --path /clo
 export OS_USER_DOMAIN_NAME='$(bosh interpolate --no-color $bosh_manifest --path /cloud_provider/properties/openstack/domain)'
 export OS_USERNAME='$(bosh interpolate --no-color $bosh_manifest --path /cloud_provider/properties/openstack/username)'
 export OS_PASSWORD='$(bosh interpolate --no-color $bosh_manifest --path /cloud_provider/properties/openstack/api_key)'
-export OS_REGION='$(bosh interpolate ${root_dir}/vars.yml --path /region'
+export OS_REGION='$(bosh interpolate ${root_dir}/vars.yml --path /region)'
 EOV
 set -e
