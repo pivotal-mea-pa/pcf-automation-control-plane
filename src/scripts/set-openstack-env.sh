@@ -1,4 +1,6 @@
-#!/bin/bash -u
+#!/bin/bash
+
+set -eux
 
 set +e
 read -r -d '' iaas_env << EOV

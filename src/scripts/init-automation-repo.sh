@@ -1,6 +1,6 @@
-#!/bin/bash -u
+#!/bin/bash
 
-create_repo=no
+set -eux
 
 if [[ $local_git_server == yes \
   && ! -e /home/git/pcf-configuration.git ]]; then

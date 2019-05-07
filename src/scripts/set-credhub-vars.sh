@@ -1,4 +1,6 @@
-#!/bin/bash -u
+#!/bin/bash
+
+set -eux
 
 updated_creds_sha1=$(echo -e \
   "$(cat ${root_dir}/vars.yml $creds_path $HOME/.ssh/git.pem) $automation_git_repo_path" \
