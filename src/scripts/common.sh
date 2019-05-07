@@ -58,7 +58,7 @@ if [[ -z $automation_git_repo_path || $automation_git_repo_path == null ]]; then
   local_itf=$(ip a | awk '/^[0-9]+: (eth|ens?)[0-9]+:/{ print substr($2,1,length($2)-1) }' | head -1)
   local_ip=$(ifconfig $local_itf | awk '/inet addr:/{ print substr($2,6) }')
 
-  if [[ -n $local_ip ]]; then
+  if [[ -z $local_ip ]]; then
     echo "Unable to determine the this host's IP for setting up git remote environment on this host."
     exit 1
   fi
