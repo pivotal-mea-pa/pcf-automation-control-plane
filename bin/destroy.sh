@@ -10,7 +10,7 @@ for d in $(bosh deployments | awk '/bosh-/{ print $1 }'); do
 done
 
 key_file=""
-if [[ -e ${keys_path}/pcf.pem ]]; then
+if [[ -e ${root_dir}/keys/pcf.pem ]]; then
   key_file="--var-file=private_key=${root_dir}/keys/pcf.pem"
 fi
 
