@@ -18,10 +18,6 @@ concourse_name: cp-concourse
 concourse_web_ip:
 concourse_external_host:
 
-concourse_db_persistent_disk_type:
-concourse_worker_vm_type:
-concourse_deployment_name:
-
 # Minio
 
 minio_name: cp-minio
