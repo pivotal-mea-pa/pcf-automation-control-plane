@@ -26,14 +26,14 @@ git clone $automation_git_repo_path ${root_dir}/.config
 if [[ ! -e ${root_dir}/.config/config/.keep ]]; then
 
   mkdir -p ${root_dir}/.config/config
-  mkdir -p ${root_dir}/.config/foundations/default/vars
-  mkdir -p ${root_dir}/.config/foundations/default/env
-  mkdir -p ${root_dir}/.config/foundations/default/state
+  mkdir -p ${root_dir}/.config/foundations/sandbox/vars
+  mkdir -p ${root_dir}/.config/foundations/sandbox/env
+  mkdir -p ${root_dir}/.config/foundations/sandbox/state
 
   touch ${root_dir}/.config/config/.keep
-  touch ${root_dir}/.config/foundations/default/vars/.keep
-  touch ${root_dir}/.config/foundations/default/env/.keep
-  touch ${root_dir}/.config/foundations/default/state/.keep
+  touch ${root_dir}/.config/foundations/sandbox/vars/.keep
+  touch ${root_dir}/.config/foundations/sandbox/env/.keep
+  touch ${root_dir}/.config/foundations/sandbox/state/.keep
 
   pushd ${root_dir}/.config
 
