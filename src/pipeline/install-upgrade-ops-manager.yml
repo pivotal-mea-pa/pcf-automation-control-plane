@@ -1,0 +1,288 @@
+resources:
+- name: pcf-automation-tasks
+  type: s3
+  source:
+    access_key_id: ((/cp/s3_accesskey))
+    secret_access_key: ((/cp/s3_secretkey))
+    endpoint: ((/cp/s3_url))
+    bucket: pivnet-products
+    regexp: .*tasks-(.*).zip
+
+- name: pcf-automation-image
+  type: s3
+  source:
+    access_key_id: ((/cp/s3_accesskey))
+    secret_access_key: ((//cp/s3_secretkey))
+    endpoint: ((/cp/s3_url))
+    bucket: pivnet-products
+    regexp: .*image-(.*).tgz
+
+- name: opsman-image
+  type: s3
+  source:
+    access_key_id: ((/cp/s3_accesskey))
+    secret_access_key: ((//cp/s3_secretkey))
+    endpoint: ((/cp/s3_url))
+    bucket: pivnet-products
+    regexp: ((opsman_image_s3_versioned_regexp)) # vsphere ex: pcf-vsphere-(.*).ova
+
+- name: installation
+  type: s3
+  source:
+    access_key_id: ((/cp/s3_accesskey))
+    secret_access_key: ((//cp/s3_secretkey))
+    endpoint: ((/cp/s3_url))
+    bucket: pcf-((foundation-name))-exports
+    regexp: installation/installation-(.*).zip
+
+# configurations
+
+- name: configuration
+  type: git
+  source:
+    private_key: ((/pcf/config_git_repo_key.private_key))
+    uri: ((/pcf/config_git_repo_url))
+    branch: master
+
+- name: variable
+  type: git
+  source:
+    private_key: ((/pcf/config_git_repo_key.private_key))
+    uri: ((/pcf/config_git_repo_url))
+    branch: master
+
+# triggers used to have jobs do something in a timely manner
+
+- name: one-time-trigger
+  type: time
+  source:
+    interval: 999999h
+
+- name: daily-trigger
+  type: time
+  source:
+    interval: 24h
+
+jobs:
+- name: install-opsman
+  serial: true
+  serial_groups: [ install ]
+  plan:
+  - aggregate:
+    - get: pcf-automation-image
+      params:
+        unpack: true
+    - get: pcf-automation-tasks
+      params:
+        unpack: true
+    - get: one-time-trigger
+      trigger: true
+    - get: opsman-image
+    - get: configuration
+
+  - task: credhub-interpolate
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_SERVER: ((/cp/credhub_url))
+      CREDHUB_CLIENT: ((/cp/credhub_client_id))
+      CREDHUB_SECRET: ((/cp/credhub_client_secret))
+      CREDHUB_CA_CERT: ((/cp/default_ca))
+      PREFIX: '/pcf-((foundation-name))'
+      INTERPOLATION_PATH: "config"
+    input_mapping:
+      files: configuration
+    output_mapping:
+      interpolated-files: interpolated-configs
+
+  - task: create-vm
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/create-vm.yml
+    input_mapping:
+      image: opsman-image
+      state: configuration
+      config: interpolated-configs
+    params:
+      VARS_FILES: foundations/((foundation-name))/vars
+      STATE_FILE: foundations/((foundation-name))/state/state.yml
+      OPSMAN_CONFIG_FILE: opsman.yml      
+    ensure: &make-state-commit
+      do:
+        - task: make-commit
+          image: pcf-automation-image
+          file: pcf-automation-tasks/tasks/make-git-commit.yml
+          input_mapping:
+            repository: configuration
+            file-source: generated-state
+          output_mapping:
+            repository-commit: configuration-commit
+          params:
+            FILE_SOURCE_PATH: state.yml
+            FILE_DESTINATION_PATH: foundations/((foundation-name))/state/state.yml
+            GIT_AUTHOR_EMAIL: "pcf-pipeline-bot@example.com"
+            GIT_AUTHOR_NAME: "PCF Automation Bot"
+            COMMIT_MESSAGE: 'Update state file'
+        - put: configuration
+          params:
+            repository: configuration-commit
+            merge: true
+
+  - task: configure-authentication
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/configure-authentication.yml
+    attempts: 10
+    input_mapping:
+      env: interpolated-configs
+      config: interpolated-configs
+    params:
+      ENV_FILE: config/env.yml
+      AUTH_CONFIG_FILE: auth.yml
+
+  # - task: configure-director
+  #   image: pcf-automation-image
+  #   file: pcf-automation-tasks/tasks/configure-director.yml
+  #   input_mapping:
+  #     config: interpolated-configs
+  #     env: interpolated-configs
+  #   params:
+  #     ENV_FILE: ((foundation-name))/config/env.yml
+  #     DIRECTOR_CONFIG_FILE: ((foundation-name))/config/director.yml
+
+  # - task: apply-director-changes
+  #   image: pcf-automation-image
+  #   file: pcf-automation-tasks/tasks/apply-director-changes.yml
+  #   input_mapping:
+  #     env: interpolated-configs
+  #   params:
+  #     ENV_FILE: ((foundation-name))/config/env.yml
+
+# - name: staged-director-config
+#   serial: true
+#   plan:
+#   - aggregate:
+#     - get: pcf-automation-tasks
+#       params: {unpack: true}
+#     - get: pcf-automation-image
+#       params: {unpack: true}
+#     - get: configuration
+
+#   - task: credhub-interpolate
+#     image: pcf-automation-image
+#     file: pcf-automation-tasks/tasks/credhub-interpolate.yml
+#     params:
+#       CREDHUB_SERVER: ((/cp/credhub_url))
+#       CREDHUB_CLIENT: ((/cp/credhub_client_id))
+#       CREDHUB_SECRET: ((/cp/credhub_client_secret))
+#       CREDHUB_CA_CERT: ((/cp/default_ca))
+#       PREFIX: '/pcf-((foundation-name))'
+#       INTERPOLATION_PATH: "((foundation-name))/config"
+#     input_mapping:
+#       files: configuration
+#     output_mapping:
+#       interpolated-files: interpolated-configs
+
+#   - task: staged-director-config
+#     image: pcf-automation-image
+#     file: pcf-automation-tasks/tasks/staged-director-config.yml    
+#     input_mapping:
+#       env: interpolated-configs
+#     params:
+#       ENV_FILE: ((foundation-name))/config/env.yml
+#     output_mapping:
+#       generated-config: director-state
+
+# - name: export-installation
+#   serial: true
+#   plan:
+#   - aggregate:
+#     - get: daily-trigger
+#       trigger: true
+#     - get: pcf-automation-image
+#       params:
+#         unpack: true
+#     - get: pcf-automation-tasks
+#       params:
+#         unpack: true
+#     - get: configuration
+#     - get: variable
+
+#   - task: credhub-interpolate
+#     image: pcf-automation-image
+#     file: pcf-automation-tasks/tasks/credhub-interpolate.yml
+#     params:
+#       CREDHUB_SERVER: ((/cp/credhub_url))
+#       CREDHUB_CLIENT: ((/cp/credhub_client_id))
+#       CREDHUB_SECRET: ((/cp/credhub_client_secret))
+#       CREDHUB_CA_CERT: ((/cp/default_ca))
+#       PREFIX: '/pcf-((foundation-name))'
+#       INTERPOLATION_PATH: "((foundation-name))/config"
+#     input_mapping:
+#       files: configuration
+#     output_mapping:
+#       interpolated-files: interpolated-configs
+      
+#   - task: export-installation
+#     image: pcf-automation-image
+#     file: pcf-automation-tasks/tasks/export-installation.yml
+#     input_mapping:
+#       env: interpolated-configs
+#     params:
+#       ENV_FILE: ((foundation-name))/config/env.yml
+#   - put: installation
+#     params:
+#       file: installation/installation-*.zip
+
+# - name: upgrade-opsman
+#   serial: true
+#   serial_groups: [ install ]
+#   plan:
+#   - aggregate:
+#     - get: one-time-trigger
+#       passed: [ install-opsman ]
+#     - get: pcf-automation-image
+#       params:
+#         unpack: true
+#       trigger: true
+#     - get: pcf-automation-tasks
+#       params:
+#         unpack: true
+#     - get: opsman-image
+#     - get: installation
+#       passed: [ export-installation ]
+#     - get: configuration
+
+#   - task: credhub-interpolate
+#     image: pcf-automation-image
+#     file: pcf-automation-tasks/tasks/credhub-interpolate.yml
+#     params:
+#       CREDHUB_SERVER: ((/cp/credhub_url))
+#       CREDHUB_CLIENT: ((/cp/credhub_client_id))
+#       CREDHUB_SECRET: ((/cp/credhub_client_secret))
+#       CREDHUB_CA_CERT: ((/cp/default_ca))
+#       PREFIX: '/pcf-((foundation-name))'
+#       INTERPOLATION_PATH: "((foundation-name))/config"
+#     input_mapping:
+#       files: configuration
+#     output_mapping:
+#       interpolated-files: interpolated-configs
+
+#   - task: upgrade-opsman
+#     image: pcf-automation-image
+#     file: pcf-automation-tasks/tasks/upgrade-opsman.yml
+#     input_mapping:
+#       image: opsman-image
+#       state: configuration
+#       config: interpolated-configs
+#       env: interpolated-configs
+#     params:
+#       ENV_FILE: ((foundation-name))/config/env.yml
+#       OPSMAN_CONFIG_FILE: ((foundation-name))/config/opsman.yml
+#       STATE_FILE: ((foundation-name))/state/state.yml
+#     ensure: *make-state-commit
+#   - task: apply-director-changes
+#     image: pcf-automation-image
+#     file: pcf-automation-tasks/tasks/apply-director-changes.yml
+#     input_mapping:
+#       env: interpolated-configs
+#     params:
+#       ENV_FILE: ((foundation-name))/config/env.yml

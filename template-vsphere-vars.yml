@@ -30,10 +30,11 @@ minio_default_bucket:
 
 # Ops Manager / PCF
 
-ops_manager_host:
-ops_manager_user:
-ops_manager_password:
-ops_manager_decryption_phrase:
+opsman_sandbox_host:
+opsman_sandbox_user:
+opsman_sandbox_password:
+opsman_sandbox_decryption_phrase:
+opsman_sandbox_ssh_password:
 
 pas_credhub_encryption_key:
 

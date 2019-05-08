@@ -13,9 +13,9 @@ stemcells:
   version: latest
 
 variables:
-- name: /cp/minio_accesskey
+- name: /cp/s3_accesskey
   type: password
-- name: /cp/minio_secretkey
+- name: /cp/s3_secretkey
   type: password
 
 instance_groups:
