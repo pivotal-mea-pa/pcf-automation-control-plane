@@ -22,7 +22,7 @@
 
 - type: replace
   path: /instance_groups/name=db/persistent_disk_type?
-  value: "102400"
+  value: "51200"
 
 - type: replace
   path: /instance_groups/name=worker/vm_type?

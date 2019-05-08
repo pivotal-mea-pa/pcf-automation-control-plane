@@ -38,7 +38,7 @@ instance_groups:
   - name: pcf-releng
     static_ips: ((minio_ip))
   vm_type: medium
-  persistent_disk_type: "204800"
+  persistent_disk_type: "102400"
   stemcell: xenial
 
 - name: tests
