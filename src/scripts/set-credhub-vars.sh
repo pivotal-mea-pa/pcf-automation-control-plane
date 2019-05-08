@@ -37,9 +37,6 @@ if [[ $? -eq 0 ]]; then
     credhub set -n "/cp/credhub_client_secret" -t password \
       -w "$(bosh interpolate --no-color $creds_path --path /credhub_admin_client_secret)"
 
-    credhub set -n "/cp/s3_url" -t value \
-      -v "http://$(bosh interpolate ${root_dir}/vars.yml --path /minio_host):9000"
-
     credhub set -n "/cp/concourse_client_id" -t value \
       -v "concourse"
     credhub set -n "/cp/concourse_client_secret" -t password \
@@ -72,6 +69,12 @@ if [[ $? -eq 0 ]]; then
       -w "$(bosh interpolate ${root_dir}/vars.yml --path /opsman_sandbox_ssh_password)"
     credhub set -n "/pcf-sandbox/pas-credhub-encryption_key" -t password \
       -w "$(bosh interpolate ${root_dir}/vars.yml --path /pas_credhub_encryption_key)"
+
+    credhub set -n "/concourse/main/deploy-sandbox/config_git_repo_url" -t value \
+      -v "$automation_git_repo_path"
+    credhub set -n "/concourse/main/deploy-sandbox/config_git_repo_key" -t ssh \
+      -p "$HOME/.ssh/git.pem" \
+      -u "$HOME/.ssh/git.pem.pub"
 
     (grep "^creds_sha1=" .state/checksums 2>&1 >/dev/null \
         && sed -i "s|^creds_sha1=.*|creds_sha1=${updated_creds_sha1}|" .state/checksums) \
