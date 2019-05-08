@@ -70,6 +70,13 @@ if [[ $? -eq 0 ]]; then
     credhub set -n "/pcf-sandbox/pas-credhub-encryption_key" -t password \
       -w "$(bosh interpolate ${root_dir}/vars.yml --path /pas_credhub_encryption_key)"
 
+    credhub set -n "/concourse/main/deploy-sandbox/credhub_url" -t value \
+      -v "https://$(bosh interpolate ${root_dir}/vars.yml --path /dns_name):8844"
+    credhub set -n "/concourse/main/deploy-sandbox/credhub_client_id" -t value \
+      -v "credhub-admin"
+    credhub set -n "/concourse/main/deploy-sandbox/credhub_client_secret" -t password \
+      -w "$(bosh interpolate --no-color $creds_path --path /credhub_admin_client_secret)"
+
     credhub set -n "/concourse/main/deploy-sandbox/config_git_repo_url" -t value \
       -v "$automation_git_repo_path"
     credhub set -n "/concourse/main/deploy-sandbox/config_git_repo_key" -t ssh \

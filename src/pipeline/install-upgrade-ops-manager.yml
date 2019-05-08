@@ -12,7 +12,7 @@ resources:
   type: s3
   source:
     access_key_id: ((s3_accesskey))
-    secret_access_key: ((/s3_secretkey))
+    secret_access_key: ((s3_secretkey))
     endpoint: ((s3_url))
     bucket: pivnet-products
     regexp: .*image-(.*).tgz
@@ -21,7 +21,7 @@ resources:
   type: s3
   source:
     access_key_id: ((s3_accesskey))
-    secret_access_key: ((/s3_secretkey))
+    secret_access_key: ((s3_secretkey))
     endpoint: ((s3_url))
     bucket: pivnet-products
     regexp: ((opsman_image_s3_versioned_regexp)) # vsphere ex: pcf-vsphere-(.*).ova
@@ -30,7 +30,7 @@ resources:
 #   type: s3
 #   source:
 #     access_key_id: ((s3_accesskey))
-#     secret_access_key: ((/s3_secretkey))
+#     secret_access_key: ((s3_secretkey))
 #     endpoint: ((s3_url))
 #     bucket: pcf-exports
 #     regexp: ((foundation-name))/installation-(.*).zip
