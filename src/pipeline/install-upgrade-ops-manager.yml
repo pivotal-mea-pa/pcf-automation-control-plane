@@ -26,14 +26,14 @@ resources:
     bucket: pivnet-products
     regexp: ((opsman_image_s3_versioned_regexp)) # vsphere ex: pcf-vsphere-(.*).ova
 
-- name: installation
-  type: s3
-  source:
-    access_key_id: ((/cp/s3_accesskey))
-    secret_access_key: ((//cp/s3_secretkey))
-    endpoint: ((/cp/s3_url))
-    bucket: pcf-((foundation-name))-exports
-    regexp: installation/installation-(.*).zip
+# - name: installation
+#   type: s3
+#   source:
+#     access_key_id: ((/cp/s3_accesskey))
+#     secret_access_key: ((//cp/s3_secretkey))
+#     endpoint: ((/cp/s3_url))
+#     bucket: pcf-((foundation-name))-exports
+#     regexp: installation/installation-(.*).zip
 
 # configurations
 
@@ -58,10 +58,10 @@ resources:
   source:
     interval: 999999h
 
-- name: daily-trigger
-  type: time
-  source:
-    interval: 24h
+# - name: daily-trigger
+#   type: time
+#   source:
+#     interval: 24h
 
 jobs:
 - name: install-opsman
