@@ -26,7 +26,7 @@ concourse_deployment_name:
 
 minio_name: cp-minio
 minio_ip:
-minio_default_bucket:
+minio_host:
 
 # Ops Manager / PCF
 
@@ -38,7 +38,7 @@ opsman_sandbox_ssh_password:
 
 pas_credhub_encryption_key:
 
-# automation configuration repo
+# Automation configuration repo
 
 init_automation_repo: no
 automation_git_repo_path:
@@ -53,16 +53,16 @@ login_branding_footer_legal_text:
 
 # CPI / Cloud Config Vars
 
+vcenter_ip:
+vcenter_user:
+vcenter_password:
+vcenter_dc:
+vcenter_ds:
+vcenter_templates:
+vcenter_cluster:
 network_name:
-vcenter_dc: 
-vcenter_ds: 
-vcenter_ip: 
-vcenter_user: 
-vcenter_password: 
-vcenter_templates: 
 vcenter_vms: 
 vcenter_disks: 
-vcenter_cluster:
 
 pcf_management_network_name:
 pcf_management_network_cidr:

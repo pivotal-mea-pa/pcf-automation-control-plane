@@ -1,0 +1,9 @@
+---
+
+flavor:
+availability_zone:
+key_pair_name:
+security_group_name:
+net_id:
+public_ip:
+private_ip:

@@ -2,8 +2,9 @@
 
 set -eux
 
+set_foundation_creds=no
 updated_creds_sha1=$(echo -e \
-  "$(cat ${root_dir}/vars.yml $creds_path $HOME/.ssh/git.pem) $automation_git_repo_path" \
+  "$(cat ${root_dir}/vars.yml $creds_path $HOME/.ssh/git.pem)" \
   | shasum | cut -d' ' -f1)
 
 set +e
@@ -91,6 +92,8 @@ if [[ $? -eq 0 ]]; then
     (grep "^creds_sha1=" .state/checksums 2>&1 >/dev/null \
         && sed -i "s|^creds_sha1=.*|creds_sha1=${updated_creds_sha1}|" .state/checksums) \
     || echo -e "creds_sha1=${updated_creds_sha1}" >> .state/checksums
+
+    set_foundation_creds=yes
   fi
 else
   echo "INFO: Unable to find 'credhub' CLI in system path. Credhub will not be updated."

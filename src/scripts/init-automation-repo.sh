@@ -43,3 +43,6 @@ if [[ ! -e ${root_dir}/.config/config/.keep ]]; then
   git commit -m "initial"
   git push
 fi
+
+[[ $set_foundation_creds != yes ]] || \
+  source ${root_dir}/src/scripts/set-foundation-creds.sh

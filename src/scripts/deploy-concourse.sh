@@ -26,6 +26,4 @@ if [[ $action != create-manifests-only \
 
   set -e
   bosh -n -d $concourse_name deploy $concourse_manifest
-else
-  set -e
 fi
