@@ -44,12 +44,12 @@ resources:
     uri: ((/pcf/config_git_repo_url))
     branch: master
 
-- name: variable
-  type: git
-  source:
-    private_key: ((/pcf/config_git_repo_key.private_key))
-    uri: ((/pcf/config_git_repo_url))
-    branch: master
+# - name: variable
+#   type: git
+#   source:
+#     private_key: ((/pcf/config_git_repo_key.private_key))
+#     uri: ((/pcf/config_git_repo_url))
+#     branch: master
 
 # triggers used to have jobs do something in a timely manner
 
