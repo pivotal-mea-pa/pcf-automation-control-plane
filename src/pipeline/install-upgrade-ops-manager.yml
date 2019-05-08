@@ -2,46 +2,46 @@ resources:
 - name: pcf-automation-tasks
   type: s3
   source:
-    access_key_id: ((/cp/s3_accesskey))
-    secret_access_key: ((/cp/s3_secretkey))
-    endpoint: ((/cp/s3_url))
+    access_key_id: ((s3_accesskey))
+    secret_access_key: ((s3_secretkey))
+    endpoint: ((s3_url))
     bucket: pivnet-products
     regexp: .*tasks-(.*).zip
 
 - name: pcf-automation-image
   type: s3
   source:
-    access_key_id: ((/cp/s3_accesskey))
-    secret_access_key: ((//cp/s3_secretkey))
-    endpoint: ((/cp/s3_url))
+    access_key_id: ((s3_accesskey))
+    secret_access_key: ((/s3_secretkey))
+    endpoint: ((s3_url))
     bucket: pivnet-products
     regexp: .*image-(.*).tgz
 
 - name: opsman-image
   type: s3
   source:
-    access_key_id: ((/cp/s3_accesskey))
-    secret_access_key: ((//cp/s3_secretkey))
-    endpoint: ((/cp/s3_url))
+    access_key_id: ((s3_accesskey))
+    secret_access_key: ((/s3_secretkey))
+    endpoint: ((s3_url))
     bucket: pivnet-products
     regexp: ((opsman_image_s3_versioned_regexp)) # vsphere ex: pcf-vsphere-(.*).ova
 
 # - name: installation
 #   type: s3
 #   source:
-#     access_key_id: ((/cp/s3_accesskey))
-#     secret_access_key: ((//cp/s3_secretkey))
-#     endpoint: ((/cp/s3_url))
-#     bucket: pcf-((foundation-name))-exports
-#     regexp: installation/installation-(.*).zip
+#     access_key_id: ((s3_accesskey))
+#     secret_access_key: ((/s3_secretkey))
+#     endpoint: ((s3_url))
+#     bucket: pcf-exports
+#     regexp: ((foundation-name))/installation-(.*).zip
 
 # configurations
 
 - name: configuration
   type: git
   source:
-    private_key: ((/pcf/config_git_repo_key.private_key))
-    uri: ((/pcf/config_git_repo_url))
+    private_key: ((config_git_repo_key.private_key))
+    uri: ((config_git_repo_url))
     branch: master
 
 # - name: variable
@@ -84,10 +84,10 @@ jobs:
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/credhub-interpolate.yml
     params:
-      CREDHUB_SERVER: ((/cp/credhub_url))
-      CREDHUB_CLIENT: ((/cp/credhub_client_id))
-      CREDHUB_SECRET: ((/cp/credhub_client_secret))
-      CREDHUB_CA_CERT: ((/cp/default_ca))
+      CREDHUB_SERVER: ((credhub_url))
+      CREDHUB_CLIENT: ((credhub_client_id))
+      CREDHUB_SECRET: ((credhub_client_secret))
+      CREDHUB_CA_CERT: ((default_ca))
       PREFIX: '/pcf-((foundation-name))'
       INTERPOLATION_PATH: "config"
     input_mapping:
@@ -170,10 +170,10 @@ jobs:
 #     image: pcf-automation-image
 #     file: pcf-automation-tasks/tasks/credhub-interpolate.yml
 #     params:
-#       CREDHUB_SERVER: ((/cp/credhub_url))
-#       CREDHUB_CLIENT: ((/cp/credhub_client_id))
-#       CREDHUB_SECRET: ((/cp/credhub_client_secret))
-#       CREDHUB_CA_CERT: ((/cp/default_ca))
+#       CREDHUB_SERVER: ((credhub_url))
+#       CREDHUB_CLIENT: ((credhub_client_id))
+#       CREDHUB_SECRET: ((credhub_client_secret))
+#       CREDHUB_CA_CERT: ((default_ca))
 #       PREFIX: '/pcf-((foundation-name))'
 #       INTERPOLATION_PATH: "((foundation-name))/config"
 #     input_mapping:
@@ -210,10 +210,10 @@ jobs:
 #     image: pcf-automation-image
 #     file: pcf-automation-tasks/tasks/credhub-interpolate.yml
 #     params:
-#       CREDHUB_SERVER: ((/cp/credhub_url))
-#       CREDHUB_CLIENT: ((/cp/credhub_client_id))
-#       CREDHUB_SECRET: ((/cp/credhub_client_secret))
-#       CREDHUB_CA_CERT: ((/cp/default_ca))
+#       CREDHUB_SERVER: ((credhub_url))
+#       CREDHUB_CLIENT: ((credhub_client_id))
+#       CREDHUB_SECRET: ((credhub_client_secret))
+#       CREDHUB_CA_CERT: ((default_ca))
 #       PREFIX: '/pcf-((foundation-name))'
 #       INTERPOLATION_PATH: "((foundation-name))/config"
 #     input_mapping:
@@ -255,10 +255,10 @@ jobs:
 #     image: pcf-automation-image
 #     file: pcf-automation-tasks/tasks/credhub-interpolate.yml
 #     params:
-#       CREDHUB_SERVER: ((/cp/credhub_url))
-#       CREDHUB_CLIENT: ((/cp/credhub_client_id))
-#       CREDHUB_SECRET: ((/cp/credhub_client_secret))
-#       CREDHUB_CA_CERT: ((/cp/default_ca))
+#       CREDHUB_SERVER: ((credhub_url))
+#       CREDHUB_CLIENT: ((credhub_client_id))
+#       CREDHUB_SECRET: ((credhub_client_secret))
+#       CREDHUB_CA_CERT: ((default_ca))
 #       PREFIX: '/pcf-((foundation-name))'
 #       INTERPOLATION_PATH: "((foundation-name))/config"
 #     input_mapping:
