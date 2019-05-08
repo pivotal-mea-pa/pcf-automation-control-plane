@@ -58,18 +58,18 @@ if [[ $? -eq 0 ]]; then
     credhub set -n "/pcf-sandbox/vcenter-user" -t value \
       -v "$(bosh interpolate ${root_dir}/vars.yml --path /vcenter_user)"
     credhub set -n "/pcf-sandbox/vcenter-password" -t password \
-      -v "$(bosh interpolate ${root_dir}/vars.yml --path /vcenter_password)"
+      -w "$(bosh interpolate ${root_dir}/vars.yml --path /vcenter_password)"
 
     credhub set -n "/pcf-sandbox/opsman-host" -t value \
       -v "$(bosh interpolate ${root_dir}/vars.yml --path /opsman_sandbox_host)"
     credhub set -n "/pcf-sandbox/opsman-user" -t value \
       -v "$(bosh interpolate ${root_dir}/vars.yml --path /opsman_sandbox_user)"
     credhub set -n "/pcf-sandbox/opsman-password" -t password \
-      -v "$(bosh interpolate ${root_dir}/vars.yml --path /opsman_sandbox_password)"
+      -w "$(bosh interpolate ${root_dir}/vars.yml --path /opsman_sandbox_password)"
     credhub set -n "/pcf-sandbox/opsman-decryption_phrase" -t password \
-      -v "$(bosh interpolate ${root_dir}/vars.yml --path /opsman_sandbox_decryption_phrase)"
+      -w "$(bosh interpolate ${root_dir}/vars.yml --path /opsman_sandbox_decryption_phrase)"
     credhub set -n "/pcf-sandbox/opsman-ssh-password" -t password \
-      -v "$(bosh interpolate ${root_dir}/vars.yml --path /opsman_sandbox_ssh_password)"
+      -w "$(bosh interpolate ${root_dir}/vars.yml --path /opsman_sandbox_ssh_password)"
     credhub set -n "/pcf-sandbox/pas-credhub-encryption_key" -t password \
       -w "$(bosh interpolate ${root_dir}/vars.yml --path /pas_credhub_encryption_key)"
 
