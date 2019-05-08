@@ -1,0 +1,74 @@
+{
+  "variables": {
+    "identity_endpoint": "{{env `OS_AUTH_URL`}}",
+    "domain_name": "{{env `OS_PROJECT_DOMAIN_NAME`}}",
+    "tenant_name": "{{env `OS_PROJECT_NAME`}}",
+    "username": "{{env `OS_USERNAME`}}",
+    "password": "{{env `OS_PASSWORD`}}",
+    "region": "{{env `OS_REGION`}}",
+    "source_image_name": "",
+    "network_uuid": "",
+    "security_group": "",
+    "ssh_keypair_name": "",
+    "image_build_name": "",
+    "root_dir": ""
+  },
+  "builders": [
+    {
+      "type": "openstack",
+      "insecure": "true",
+      "identity_endpoint": "{{user `identity_endpoint`}}",
+      "domain_name": "{{user `domain_name`}}",
+      "tenant_name": "{{user `tenant_name`}}",
+      "username": "{{user `username`}}",
+      "password": "{{user `password`}}",
+      "region": "{{user `region`}}",
+      "source_image_name": "{{user `source_image_name`}}",
+      "volume_size": 30,
+      "use_blockstorage_volume": true,
+      "flavor": "m1.large",
+      "networks": [
+        "{{user `network_uuid`}}"
+      ],
+      "security_groups": [
+        "{{user `security_group`}}"
+      ],
+      "ssh_keypair_name": "{{user `ssh_keypair_name`}}",
+      "ssh_private_key_file": "{{user `root_dir`}}/keys/pcf.pem",
+      "user_data_file": "{{user `root_dir`}}/src/stemcells/scripts/prepare-windows-for-build.ps1",
+      "image_name": "{{user `image_build_name`}}",
+      "communicator": "winrm",
+      "winrm_username": "Administrator",
+      "winrm_password": "P@ssw0rd",
+      "winrm_timeout": "3600s"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "{{user `root_dir`}}/src/stemcells/scripts/configure-win2012r2-stemcell.ps1",
+      "destination": "C:\\Temp\\configure-win2012r2-stemcell.ps1"
+    },
+    {
+      "type": "file",
+      "source": "{{user `root_dir`}}/src/stemcells/scripts/sysprep-win2012r2-stemcell.ps1",
+      "destination": "C:\\Temp\\sysprep-win2012r2-stemcell.ps1"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Temp\\configure-win2012r2-stemcell.ps1"
+      ]
+    },
+    {
+      "type": "shell-local",
+      "command": "sleep 60"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Temp\\sysprep-win2012r2-stemcell.ps1"
+      ]
+    }
+  ]
+}
