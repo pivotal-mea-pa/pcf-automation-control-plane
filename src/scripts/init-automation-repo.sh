@@ -2,6 +2,8 @@
 
 set -eux
 
+num_foundations=$(bosh interpolate ${root_dir}/vars.yml --path /number_foundations)
+
 if [[ $local_git_server == yes \
   && ! -e /home/git/pcf-configuration.git ]]; then
 
@@ -25,15 +27,18 @@ git clone $automation_git_repo_path ${root_dir}/.config
 
 if [[ ! -e ${root_dir}/.config/config/.keep ]]; then
 
-  mkdir -p ${root_dir}/.config/config
-  mkdir -p ${root_dir}/.config/foundations/sandbox/vars
-  mkdir -p ${root_dir}/.config/foundations/sandbox/env
-  mkdir -p ${root_dir}/.config/foundations/sandbox/state
+  cp -r ${root_dir}/src/pipeline/config/templates .config
 
-  touch ${root_dir}/.config/config/.keep
-  touch ${root_dir}/.config/foundations/sandbox/vars/.keep
-  touch ${root_dir}/.config/foundations/sandbox/env/.keep
-  touch ${root_dir}/.config/foundations/sandbox/state/.keep
+  for i in $(seq 0 $((num_foundations-1))); do
+    name=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/name)
+
+    mkdir -p ${root_dir}/.config/foundations/${name}/vars
+    cp ${root_dir}/src/pipeline/config/foundations/vars/opsman-${iaas}.yml \
+      ${root_dir}/.config/foundations/${name}/vars/opsman/opsman.yml
+
+    cp -r ${root_dir}/src/pipeline/config/foundations/env \
+      ${root_dir}/.config/foundations/${name}
+  done
 
   pushd ${root_dir}/.config
 

@@ -8,7 +8,6 @@ if [[ $set_foundation_creds == yes ]]; then
   s3_accesskey=$(credhub get -n /cp/s3_accesskey -q)
   s3_secretkey=$(credhub get -n /cp/s3_secretkey -q)
 
-  num_foundations=$(bosh interpolate ${root_dir}/vars.yml --path /number_foundations)
   for i in $(seq 0 $((num_foundations-1))); do
     name=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/name)
 
