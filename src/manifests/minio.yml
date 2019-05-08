@@ -31,8 +31,8 @@ instance_groups:
       minio-server: {as: minio-link}
     properties:
       credential:
-        accesskey: ((/cp/minio_accesskey))
-        secretkey: ((/cp/minio_secretkey))
+        accesskey: ((/cp/s3_accesskey))
+        secretkey: ((/cp/s3_secretkey))
       port: 9000
   networks:
   - name: pcf-releng
