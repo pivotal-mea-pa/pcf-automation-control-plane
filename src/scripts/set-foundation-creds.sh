@@ -14,6 +14,11 @@ if [[ $set_foundation_creds == yes ]]; then
     credhub set -n "/concourse/main/deploy-${name}/foundation_name" \
       -t value -v "$name"
 
+    credhub set -n "/concourse/main/deploy-${name}/config_git_repo_url" -t value \
+      -v "$automation_git_repo_path"
+    credhub set -n "/concourse/main/deploy-${name}/config_git_repo_key" -t ssh \
+      -p "$automation_git_private_key"
+
     credhub set -n "/concourse/main/deploy-${name}/s3_url" 
       -t value -v "http://${s3_host}:9000"
     credhub set -n "/concourse/main/deploy-${name}/s3_accesskey" \
