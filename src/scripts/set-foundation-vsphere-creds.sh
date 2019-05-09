@@ -15,3 +15,6 @@ credhub set -n "/concourse/main/deploy-${name}/vcenter_password"
 
 credhub set -n "/concourse/main/deploy-${name}/vcenter_vm_folder" 
   -t value -v "pcf-vms-${name}"
+
+credhub set -n "/concourse/main/deploy-${name}/opsman_image_s3_versioned_regexp" \
+  -t value -v "pcf-vsphere-(.*).ova"
