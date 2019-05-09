@@ -28,18 +28,18 @@ if [[ $set_foundation_creds == yes ]]; then
     credhub set -n "/concourse/main/deploy-${name}/config_git_repo_key" -t ssh \
       -p "$automation_git_private_key"
 
-    credhub set -n "/concourse/main/deploy-${name}/s3_url" 
+    credhub set -n "/concourse/main/deploy-${name}/s3_url" \
       -t value -v "http://${s3_host}:9000"
     credhub set -n "/concourse/main/deploy-${name}/s3_accesskey" \
       -t password -w "$s3_accesskey"
-    credhub set -n "/concourse/main/deploy-${name}/s3_secretkey"\
+    credhub set -n "/concourse/main/deploy-${name}/s3_secretkey" \
       -t password -w "$s3_secretkey"
 
-    credhub set -n "/concourse/main/deploy-${name}/credhub_url" 
+    credhub set -n "/concourse/main/deploy-${name}/credhub_url" \
       -t value -v "$credhub_url"
-    credhub set -n "/concourse/main/deploy-${name}/credhub_client_id" 
+    credhub set -n "/concourse/main/deploy-${name}/credhub_client_id" \
       -t value -v "$credhub_client_id"
-    credhub set -n "/concourse/main/deploy-${name}/credhub_client_secret" 
+    credhub set -n "/concourse/main/deploy-${name}/credhub_client_secret" \
       -t value -v "$credhub_client_secret"
 
     opsman_host=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_host)
@@ -48,27 +48,27 @@ if [[ $set_foundation_creds == yes ]]; then
     opsman_decryption_phrase=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_decryption_phrase)
     opsman_ssh_password=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_ssh_password)
 
-    credhub set -n "/concourse/main/deploy-${name}/opsman_host" 
+    credhub set -n "/concourse/main/deploy-${name}/opsman_host" \
       -t value -v "$opsman_host"
-    credhub set -n "/concourse/main/deploy-${name}/opsman_user" 
+    credhub set -n "/concourse/main/deploy-${name}/opsman_user" \
       -t value -v "$opsman_user"
 
     if [[ "$opsman_password" == "*" ]]; then
       credhub generate -n "/concourse/main/deploy-${name}/opsman_password" -t password
     else
-      credhub set -n "/concourse/main/deploy-${name}/opsman_password" 
+      credhub set -n "/concourse/main/deploy-${name}/opsman_password" \
         -t password -w "$opsman_password"
     fi
     if [[ "$opsman_decryption_phrase" == "*" ]]; then
       credhub generate -n "/concourse/main/deploy-${name}/opsman_decryption_phrase" -t password
     else
-      credhub set -n "/concourse/main/deploy-${name}/opsman_decryption_phrase" 
+      credhub set -n "/concourse/main/deploy-${name}/opsman_decryption_phrase" \
         -t password -w "$opsman_decryption_phrase"
     fi
     if [[ "$opsman_ssh_password" == "*" ]]; then
       credhub generate -n "/concourse/main/deploy-${name}/opsman_ssh_password" -t password
     else
-      credhub set -n "/concourse/main/deploy-${name}/opsman_ssh_password" 
+      credhub set -n "/concourse/main/deploy-${name}/opsman_ssh_password" \
         -t password -w "$opsman_ssh_password"
     fi
 
