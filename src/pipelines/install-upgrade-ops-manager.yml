@@ -87,7 +87,7 @@ jobs:
       CREDHUB_SERVER: ((credhub_url))
       CREDHUB_CLIENT: ((credhub_client_id))
       CREDHUB_SECRET: ((credhub_client_secret))
-      CREDHUB_CA_CERT: ((default_ca))
+      CREDHUB_CA_CERT: ((default_ca.ca))
       PREFIX: '/concourse/main/deploy-((foundation_name))'
       INTERPOLATION_PATH: "templates foundations/((foundation_name))/env"
     input_mapping:
@@ -173,7 +173,7 @@ jobs:
 #       CREDHUB_SERVER: ((credhub_url))
 #       CREDHUB_CLIENT: ((credhub_client_id))
 #       CREDHUB_SECRET: ((credhub_client_secret))
-#       CREDHUB_CA_CERT: ((default_ca))
+#       CREDHUB_CA_CERT: ((default_ca.ca))
 #       PREFIX: '/concourse/main/deploy-((foundation_name))'
 #       INTERPOLATION_PATH: "((foundation_name))/config"
 #     input_mapping:
@@ -213,7 +213,7 @@ jobs:
 #       CREDHUB_SERVER: ((credhub_url))
 #       CREDHUB_CLIENT: ((credhub_client_id))
 #       CREDHUB_SECRET: ((credhub_client_secret))
-#       CREDHUB_CA_CERT: ((default_ca))
+#       CREDHUB_CA_CERT: ((default_ca.ca))
 #       PREFIX: '/concourse/main/deploy-((foundation_name))'
 #       INTERPOLATION_PATH: "((foundation_name))/config"
 #     input_mapping:
@@ -258,7 +258,7 @@ jobs:
 #       CREDHUB_SERVER: ((credhub_url))
 #       CREDHUB_CLIENT: ((credhub_client_id))
 #       CREDHUB_SECRET: ((credhub_client_secret))
-#       CREDHUB_CA_CERT: ((default_ca))
+#       CREDHUB_CA_CERT: ((default_ca.ca))
 #       PREFIX: '/concourse/main/deploy-((foundation_name))'
 #       INTERPOLATION_PATH: "((foundation_name))/config"
 #     input_mapping:

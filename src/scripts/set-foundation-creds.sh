@@ -21,7 +21,7 @@ if [[ $set_foundation_creds == yes ]]; then
       -t value -v "$name"
 
     credhub set -n "/concourse/main/deploy-${name}/default_ca" \
-      -t certificate -c "$default_ca"
+      -t certificate -r "$default_ca"
 
     credhub set -n "/concourse/main/deploy-${name}/config_git_repo_url" -t value \
       -v "$automation_git_repo_path"
