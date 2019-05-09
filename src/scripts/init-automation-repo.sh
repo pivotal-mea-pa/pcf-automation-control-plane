@@ -25,29 +25,29 @@ fi
 rm -fr ${root_dir}/.config
 git clone $automation_git_repo_path ${root_dir}/.config
 
-if [[ ! -e ${root_dir}/.config/config/.keep ]]; then
+# if [[ ! -e ${root_dir}/.config/templates ]]; then
 
-  cp -r ${root_dir}/src/pipelines/config/templates .config
+#   cp -r ${root_dir}/src/pipelines/config/templates .config
 
-  for i in $(seq 0 $((num_foundations-1))); do
-    name=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/name)
+#   for i in $(seq 0 $((num_foundations-1))); do
+#     name=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/name)
 
-    mkdir -p ${root_dir}/.config/foundations/${name}/vars
-    cp ${root_dir}/src/pipelines/config/foundations/vars/opsman-${iaas}.yml \
-      ${root_dir}/.config/foundations/${name}/vars/opsman/opsman.yml
+#     mkdir -p ${root_dir}/.config/foundations/${name}/vars
+#     cp ${root_dir}/src/pipelines/config/foundations/vars/opsman-${iaas}.yml \
+#       ${root_dir}/.config/foundations/${name}/vars/opsman/opsman.yml
 
-    cp -r ${root_dir}/src/pipelines/config/foundations/env \
-      ${root_dir}/.config/foundations/${name}
-  done
+#     cp -r ${root_dir}/src/pipelines/config/foundations/env \
+#       ${root_dir}/.config/foundations/${name}
+#   done
 
-  pushd ${root_dir}/.config
+#   pushd ${root_dir}/.config
 
-  git config user.name "automation"
-  git config push.default simple
-  git add .
-  git commit -m "initial"
-  git push
-fi
+#   git config user.name "automation"
+#   git config push.default simple
+#   git add .
+#   git commit -m "initial"
+#   git push
+# fi
 
 [[ $set_foundation_creds != yes ]] || \
   source ${root_dir}/src/scripts/set-foundation-creds.sh
