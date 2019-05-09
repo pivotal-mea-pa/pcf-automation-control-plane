@@ -104,7 +104,7 @@ jobs:
       config: configuration
       vars: interpolated-configs
     params:
-      VARS_FILES: vars/foundations/((foundation_name))/vars
+      VARS_FILES: vars/foundations/((foundation_name))/vars/opsman.yml
       STATE_FILE: foundations/((foundation_name))/state/state.yml
       OPSMAN_CONFIG_FILE: templates/opsman.yml
     ensure: &make-state-commit
