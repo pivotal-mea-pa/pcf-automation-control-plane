@@ -12,5 +12,5 @@ packer build \
   -var "ssh_keypair_name=pcf" \
   -var "image_build_name=windows2012r2-stemcell" \
   -var "root_dir=${root_dir}" \
-  src/stemcells/packer/windows2012r2.json
-  
+  src/stemcells/packer/windows2012r2.json 2>&1 \
+  | tee -a ${root_dir}/build-windows2012r2-stemcell.log
