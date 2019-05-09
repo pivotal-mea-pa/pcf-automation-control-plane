@@ -27,16 +27,16 @@ git clone $automation_git_repo_path ${root_dir}/.config
 
 if [[ ! -e ${root_dir}/.config/config/.keep ]]; then
 
-  cp -r ${root_dir}/src/pipeline/config/templates .config
+  cp -r ${root_dir}/src/pipelines/config/templates .config
 
   for i in $(seq 0 $((num_foundations-1))); do
     name=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/name)
 
     mkdir -p ${root_dir}/.config/foundations/${name}/vars
-    cp ${root_dir}/src/pipeline/config/foundations/vars/opsman-${iaas}.yml \
+    cp ${root_dir}/src/pipelines/config/foundations/vars/opsman-${iaas}.yml \
       ${root_dir}/.config/foundations/${name}/vars/opsman/opsman.yml
 
-    cp -r ${root_dir}/src/pipeline/config/foundations/env \
+    cp -r ${root_dir}/src/pipelines/config/foundations/env \
       ${root_dir}/.config/foundations/${name}
   done
 
