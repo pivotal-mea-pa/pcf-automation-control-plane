@@ -1,5 +1,12 @@
 ---
 
+auth_url: ((auth_url))
+project_domain_name: ((openstack_domain))
+project_name: ((openstack_project))
+user_domain_name: ((openstack_domain))
+username: ((openstack_username))
+password: ((openstack_password))
+vm_name: ((opsman_instance_name))
 flavor:
 availability_zone:
 key_pair_name:

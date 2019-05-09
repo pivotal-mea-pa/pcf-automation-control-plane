@@ -1,8 +1,12 @@
 ---
 
+vcenter_ip: ((vcenter_ip))
+vcenter_user: ((vcenter_user))
+vcenter_password: ((vcenter_password))
 vcenter_datacenter:
 vcenter_datastore:
 vcenter_resource_pool:
+vcenter_vm_folder: ((vcenter_vm_folder))
 
 opsman_vm_name:
 opsman_disk_type:
@@ -14,4 +18,6 @@ opsman_ntp:
 opsman_network:
 opsman_netmask:
 opsman_gateway:
+opsman_host: ((opsman_host))
+opsman_ssh_password: ((opsman_ssh_password))
 opsman_ssh_public_key:
