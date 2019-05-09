@@ -21,3 +21,6 @@ credhub set -n "/concourse/main/deploy-${name}/openstack_password"
 
 credhub set -n "/concourse/main/deploy-${name}/opsman_instance_name" 
   -t password -w "pcf-opsman-${name}"
+
+credhub set -n "/concourse/main/deploy-${name}/opsman_image_s3_versioned_regexp" \
+  -t value -v "ops-manager-openstack-(.*).raw"
