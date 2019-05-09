@@ -23,6 +23,7 @@ concourse_external_host:
 minio_name: cp-minio
 minio_ip:
 minio_host:
+minio_default_bucket: pivnet-products
 
 # Ops Manager / PCF
 
