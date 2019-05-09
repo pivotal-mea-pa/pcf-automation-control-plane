@@ -33,8 +33,11 @@ if [[ ! -e ${root_dir}/.config/templates ]]; then
     name=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/name)
 
     mkdir -p ${root_dir}/.config/foundations/${name}/vars
+
     cp ${root_dir}/src/pipelines/config/foundations/vars/opsman-${iaas}.yml \
-      ${root_dir}/.config/foundations/${name}/vars/opsman/opsman.yml
+      ${root_dir}/.config/foundations/${name}/vars/opsman.yml
+    cp ${root_dir}/src/pipelines/config/foundations/vars/auth.yml \
+      ${root_dir}/.config/foundations/${name}/vars/auth.yml
 
     cp -r ${root_dir}/src/pipelines/config/foundations/env \
       ${root_dir}/.config/foundations/${name}
