@@ -89,7 +89,7 @@ jobs:
       CREDHUB_SECRET: ((credhub_client_secret))
       CREDHUB_CA_CERT: ((default_ca.ca))
       PREFIX: '/concourse/main/deploy-((foundation_name))'
-      #INTERPOLATION_PATH: "templates foundations/((foundation_name))/env"
+      INTERPOLATION_PATH: "foundations/((foundation_name))"
     input_mapping:
       files: configuration
     output_mapping:
@@ -135,8 +135,8 @@ jobs:
       env: interpolated-configs
       config: interpolated-configs
     params:
-      ENV_FILE: config/env.yml
-      AUTH_CONFIG_FILE: auth.yml
+      ENV_FILE: foundations/((foundation_name))/env/env.yml
+      AUTH_CONFIG_FILE: foundations/((foundation_name))/vars/auth.yml
 
   # - task: configure-director
   #   image: pcf-automation-image
