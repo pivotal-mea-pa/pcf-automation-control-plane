@@ -61,8 +61,7 @@
       ]
     },
     {
-      "type": "shell-local",
-      "command": "sleep 60"
+      "type": "windows-update"
     },
     {
       "type": "windows-shell",

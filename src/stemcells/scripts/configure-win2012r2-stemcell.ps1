@@ -71,17 +71,17 @@ Set-ItemProperty `
 Enable-NetFirewallRule -DisplayGroup "Remote Desktop" -Verbose
 
 # Setup command line Windows update module
-Invoke-WebRequest `
-  -uri "https://gallery.technet.microsoft.com/scriptcenter/2d191bcd-3308-4edd-9de2-88dff796b0bc/file/41459/47/PSWindowsUpdate.zip" `
-  -outfile "C:\Temp\Downloads\PSWindowsUpdate.zip"
+# Invoke-WebRequest `
+#   -uri "https://gallery.technet.microsoft.com/scriptcenter/2d191bcd-3308-4edd-9de2-88dff796b0bc/file/41459/47/PSWindowsUpdate.zip" `
+#   -outfile "C:\Temp\Downloads\PSWindowsUpdate.zip"
 
-Unzip `
-  "C:\Temp\Downloads\PSWindowsUpdate.zip" `
-  "C:\Program Files\WindowsPowerShell\Modules"
+# Unzip `
+#   "C:\Temp\Downloads\PSWindowsUpdate.zip" `
+#   "C:\Program Files\WindowsPowerShell\Modules"
 
-# Update windows
-Import-Module PSWindowsUpdate
-Install-WindowsUpdate -Verbose -AcceptAll -AutoReboot
+# # Update windows
+# Import-Module PSWindowsUpdate
+# Install-WindowsUpdate -Verbose -AcceptAll -AutoReboot
 
 # Reboot if update does not auto reboot
 Stop-Transcript
