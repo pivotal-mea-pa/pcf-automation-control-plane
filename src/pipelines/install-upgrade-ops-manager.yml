@@ -101,10 +101,11 @@ jobs:
     input_mapping:
       image: opsman-image
       state: configuration
-      config: interpolated-configs
+      config: configuration
+      vars: interpolated-configs
     params:
-      VARS_FILES: config/foundations/((foundation_name))/vars
-      STATE_FILE: config/foundations/((foundation_name))/state/state.yml
+      VARS_FILES: vars/foundations/((foundation_name))/vars
+      STATE_FILE: foundations/((foundation_name))/state/state.yml
       OPSMAN_CONFIG_FILE: templates/opsman.yml
     ensure: &make-state-commit
       do:
