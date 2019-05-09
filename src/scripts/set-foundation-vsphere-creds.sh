@@ -12,3 +12,6 @@ credhub set -n "/concourse/main/deploy-${name}/vcenter_user"
   -t value -v "$vcenter_user"
 credhub set -n "/concourse/main/deploy-${name}/vcenter_password" 
   -t password -w "$vcenter_password"
+
+credhub set -n "/concourse/main/deploy-${name}/vcenter_vm_folder" 
+  -t value -v "pcf-vms-${name}"
