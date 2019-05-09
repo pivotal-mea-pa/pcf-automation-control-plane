@@ -89,7 +89,7 @@ jobs:
       CREDHUB_SECRET: ((credhub_client_secret))
       CREDHUB_CA_CERT: ((default_ca.ca))
       PREFIX: '/concourse/main/deploy-((foundation_name))'
-      INTERPOLATION_PATH: "templates foundations/((foundation_name))/env"
+      #INTERPOLATION_PATH: "templates foundations/((foundation_name))/env"
     input_mapping:
       files: configuration
     output_mapping:
