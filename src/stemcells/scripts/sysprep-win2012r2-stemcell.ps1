@@ -52,10 +52,10 @@ New-Item -ItemType "file" -path "C:\Program Files\Cloudbase Solutions\Cloudbase-
 </unattend>
 "@
 
-# Write-Output "Optimizing disk..."
-# Optimize-Disk
-# Write-Output "Compressing disk..."
-# Compress-Disk
+Write-Output "Optimizing disk..."
+Optimize-Disk
+Write-Output "Compressing disk..."
+Compress-Disk
 
 Write-Output "Executing Sysprep..."
 C:\Windows\System32\Sysprep\Sysprep.exe /oobe /generalize /quiet /shutdown `

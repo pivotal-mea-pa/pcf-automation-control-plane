@@ -36,7 +36,7 @@ function Unzip
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # Ensure .NET 3.5 is installed
-Install-WindowsFeature Net-Framework-Core
+# Install-WindowsFeature Net-Framework-Core
 
 # Download Bosh Modules and agent
 [string]$BoshVersion = "1200.32"
@@ -51,18 +51,20 @@ Unzip `
   "C:\Temp\Downloads\bosh-psmodules.zip" `
   "C:\Program Files\WindowsPowerShell\Modules"
 
+$ErrorActionPreference = "SilentlyContinue"
 Install-CFFeatures
 Protect-CFCell
 Install-Agent -IaaS openstack -agentZipPath "C:\Temp\Downloads\agent.zip"
+$ErrorActionPreference = "Stop"
 
 # OpenSSH
-[string]$OpenSSHVersion = "v7.9.0.0p1-Beta"
-Invoke-WebRequest `
-  -uri "https://github.com/PowerShell/Win32-OpenSSH/releases/download/${OpenSSHVersion}/OpenSSH-Win64.zip" `
-  -outfile "C:\Temp\Downloads\OpenSSH-Win64.zip"
+# [string]$OpenSSHVersion = "v7.9.0.0p1-Beta"
+# Invoke-WebRequest `
+#   -uri "https://github.com/PowerShell/Win32-OpenSSH/releases/download/${OpenSSHVersion}/OpenSSH-Win64.zip" `
+#   -outfile "C:\Temp\Downloads\OpenSSH-Win64.zip"
 
-Unblock-File "C:\Temp\Downloads\OpenSSH-Win64.zip"
-Install-SSHD -SSHZipFile "C:\Temp\Downloads\OpenSSH-Win64.zip"
+# Unblock-File "C:\Temp\Downloads\OpenSSH-Win64.zip"
+# Install-SSHD -SSHZipFile "C:\Temp\Downloads\OpenSSH-Win64.zip"
 
 # Enable RDP
 Set-ItemProperty `
@@ -81,7 +83,10 @@ Enable-NetFirewallRule -DisplayGroup "Remote Desktop" -Verbose
 
 # # Update windows
 # Import-Module PSWindowsUpdate
-# Install-WindowsUpdate -Verbose -AcceptAll -AutoReboot
+
+# $Script = {ipmo PSWindowsUpdate; Get-WUInstall -AcceptAll -AutoReboot `
+#   | Out-File -Append C:\Temp\Logs\stemcell-config.log}
+# Invoke-WUInstall -ComputerName $env:computername -Script $Script
 
 # Reboot if update does not auto reboot
 Stop-Transcript

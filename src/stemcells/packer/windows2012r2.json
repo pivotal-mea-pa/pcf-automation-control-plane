@@ -11,7 +11,14 @@
     "security_group": "",
     "ssh_keypair_name": "",
     "image_build_name": "",
-    "root_dir": ""
+    "root_dir": "",
+    "windows_managment_framework_url": "",
+    "visual_studio_download_url": "",
+    "nuget_download_url": "",
+    "pswindowsupdate_download_url": "",
+    "bosh_ps_modules_download_url": "",
+    "bosh_agent_download_url": "",
+    "openssh_win64_download_url": ""
   },
   "builders": [
     {
@@ -35,7 +42,7 @@
       ],
       "ssh_keypair_name": "{{user `ssh_keypair_name`}}",
       "ssh_private_key_file": "{{user `root_dir`}}/keys/pcf.pem",
-      "user_data_file": "{{user `root_dir`}}/src/stemcells/scripts/prepare-windows-for-build.ps1",
+      "user_data_file": "{{user `root_dir`}}/src/stemcells/scripts/windows/prepare.ps1",
       "image_name": "{{user `image_build_name`}}",
       "communicator": "winrm",
       "winrm_username": "Administrator",
@@ -46,28 +53,44 @@
   "provisioners": [
     {
       "type": "file",
-      "source": "{{user `root_dir`}}/src/stemcells/scripts/configure-win2012r2-stemcell.ps1",
-      "destination": "C:\\Temp\\configure-win2012r2-stemcell.ps1"
-    },
-    {
-      "type": "file",
-      "source": "{{user `root_dir`}}/src/stemcells/scripts/sysprep-win2012r2-stemcell.ps1",
-      "destination": "C:\\Temp\\sysprep-win2012r2-stemcell.ps1"
+      "source": "{{user `root_dir`}}/src/stemcells/scripts/windows/",
+      "destination": "C:\\Stemcell-Build\\Scripts"
     },
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Temp\\configure-win2012r2-stemcell.ps1"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 {{user `windows_managment_framework_url`}} {{user `visual_studio_download_url`}} {{user `nuget_download_url`}} {{user `pswindowsupdate_download_url`}} {{user `bosh_ps_modules_download_url`}} {{user `bosh_agent_download_url`}} {{user `openssh_win64_download_url`}}"
       ]
-    },
-    {
-      "type": "windows-update"
     },
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Temp\\sysprep-win2012r2-stemcell.ps1"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-packages.ps1"
       ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-modules.ps1"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\configure-stemcell.ps1"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\windows-update.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
     }
   ]
 }

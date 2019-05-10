@@ -1,9 +1,17 @@
 #ps1_sysnative
 
+$ErrorActionPreference = "SilentlyContinue"
+Stop-Transcript | out-null
+
+New-Item "C:\Stemcell-Build\Logs" -ItemType Directory
+New-Item "C:\Stemcell-Build\Downloads" -ItemType Directory
+New-Item "C:\Stemcell-Build\Scripts" -ItemType Directory
+
 Write-Output "Running User Data Script"
 Set-ExecutionPolicy Unrestricted -Scope LocalMachine -Force -ErrorAction Ignore
 
 # Don't set this before Set-ExecutionPolicy as it throws an error
+Start-Transcript -path "C:\Stemcell-Build\Logs\build.log" -append
 $ErrorActionPreference = "stop"
 
 Write-Output "Setting Administrator password"
@@ -31,3 +39,5 @@ cmd.exe /c net stop winrm
 cmd.exe /c sc config winrm start= auto
 cmd.exe /c net start winrm
 cmd.exe /c wmic useraccount where "name='Administrator'" set PasswordExpires=FALSE
+
+Stop-Transcript
