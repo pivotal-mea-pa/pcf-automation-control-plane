@@ -14,13 +14,12 @@ openssh_version="v7.9.0.0p1-Beta"
 # Download 
 
 packer build \
-  -var "windows_managment_framework_url=https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win8.1AndW2K12R2-KB3191564-x64.msu" \
-  -var "visual_studio_download_url=https://s3.eu-central-1.amazonaws.com/mevansam-share/public/vs_community__378995140.1557481685.exe" \
+  -var "wmf51_download_url=https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win8.1AndW2K12R2-KB3191564-x64.msu" \
+  -var "vs_download_url=https://s3.eu-central-1.amazonaws.com/mevansam-share/public/vs_community__378995140.1557481685.exe" \
   -var "nuget_download_url=https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" \
-  -var "pswindowsupdate_download_url=https://psg-prod-eastus.azureedge.net/packages/pswindowsupdate.${pswindowsupdate_version}.nupkg" \
   -var "bosh_ps_modules_download_url=https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/releases/download/${bosh_version}/bosh-psmodules.zip" \
   -var "bosh_agent_download_url=https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/releases/download/${bosh_version}/agent.zip" \
-  -var "openssh_win64_download_url=https://github.com/PowerShell/Win32-OpenSSH/releases/download/${openssh_version}/OpenSSH-Win64.zip"
+  -var "openssh_win64_download_url=https://github.com/PowerShell/Win32-OpenSSH/releases/download/${openssh_version}/OpenSSH-Win64.zip" \
   -var "source_image_name=WindowsServer2012R2-STD" \
   -var "network_uuid=cb8b849f-dfd2-4b18-a1c6-f1b11edca4f4" \
   -var "security_group=pcf" \

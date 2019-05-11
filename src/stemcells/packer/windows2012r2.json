@@ -12,10 +12,9 @@
     "ssh_keypair_name": "",
     "image_build_name": "",
     "root_dir": "",
-    "windows_managment_framework_url": "",
-    "visual_studio_download_url": "",
+    "wmf51_download_url": "",
+    "vs_download_url": "",
     "nuget_download_url": "",
-    "pswindowsupdate_download_url": "",
     "bosh_ps_modules_download_url": "",
     "bosh_agent_download_url": "",
     "openssh_win64_download_url": ""
@@ -59,13 +58,25 @@
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 {{user `windows_managment_framework_url`}} {{user `visual_studio_download_url`}} {{user `nuget_download_url`}} {{user `pswindowsupdate_download_url`}} {{user `bosh_ps_modules_download_url`}} {{user `bosh_agent_download_url`}} {{user `openssh_win64_download_url`}}"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-wmf51.ps1 {{user `wmf51_download_url`}}"
       ]
     },
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-packages.ps1"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-vs.ps1 {{user `vs_download_url`}} {{user `nuget_download_url`}}"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-bosh.ps1 {{user `bosh_ps_modules_download_url`}} {{user `bosh_agent_download_url`}} {{user `openssh_win64_download_url`}}"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-wmf51.ps1"
       ]
     },
     {
@@ -74,7 +85,16 @@
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-modules.ps1"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-vs.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-psmodules.ps1"
       ]
     },
     {
@@ -84,13 +104,16 @@
       ]
     },
     {
-      "type": "windows-shell",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\windows-update.ps1"
-      ]
+      "type": "windows-update"
     },
     {
       "type": "windows-restart"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\optimize.ps1"
+      ]
     }
   ]
 }

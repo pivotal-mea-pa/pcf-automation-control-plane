@@ -5,666 +5,312 @@
 [1;32m==> openstack: Using existing SSH private key[0m
 [0;32m    openstack: Found Image ID: 16d8f793-c156-4be6-bee0-7f52add860e0[0m
 [1;32m==> openstack: Creating volume...[0m
-[1;32m==> openstack: Waiting for volume packer_5cd52069-c45b-56ef-52de-07051c6830a8 (volume id: d6c378ec-f2f6-407b-8dd6-c0c00a7738ad) to become available...[0m
-[0;32m    openstack: Volume ID: d6c378ec-f2f6-407b-8dd6-c0c00a7738ad[0m
+[1;32m==> openstack: Waiting for volume packer_5cd7205a-25b3-bae5-600d-862b8e78e21c (volume id: aa946dfa-98ce-48e1-9f93-33c8cd0cc4b7) to become available...[0m
+[0;32m    openstack: Volume ID: aa946dfa-98ce-48e1-9f93-33c8cd0cc4b7[0m
 [1;32m==> openstack: Launching server...[0m
 [1;32m==> openstack: Launching server...[0m
-[0;32m    openstack: Server ID: 1a15d840-f4b0-41d1-a813-3d7f138e2068[0m
+[0;32m    openstack: Server ID: 7298f3a1-35f2-44aa-ad3a-254714c4b705[0m
 [1;32m==> openstack: Waiting for server to become ready...[0m
 [1;32m==> openstack: Skipping waiting for password since WinRM password set...[0m
 [0;32m    openstack: Floating IP not required[0m
-[1;32m==> openstack: Using winrm communicator to connect: 192.168.101.203[0m
+[1;32m==> openstack: Using winrm communicator to connect: 192.168.101.215[0m
 [1;32m==> openstack: Waiting for WinRM to become available...[0m
-[1;31m==> openstack: #< CLIXML[0m
 [0;32m    openstack: WinRM connected.[0m
+[1;31m==> openstack: #< CLIXML[0m
 [1;32m==> openstack: Connected to WinRM![0m
 [1;31m==> openstack: <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>[0m
-[1;32m==> openstack: Uploading /home/ubuntu/pivotal/pcf-automation-control-plane/src/stemcells/scripts/configure-win2012r2-stemcell.ps1 => C:\Temp\configure-win2012r2-stemcell.ps1[0m
-configure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [===================================================================] 100.00%
-[1Aconfigure-win2012r2-stemcell.ps1 2.91 KiB / 2.91 KiB [================================================================] 100.00% 7s
-[1;32m==> openstack: Uploading /home/ubuntu/pivotal/pcf-automation-control-plane/src/stemcells/scripts/sysprep-win2012r2-stemcell.ps1 => C:\Temp\sysprep-win2012r2-stemcell.ps1[0m
-sysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [=====================================================================] 100.00%
-[1Asysprep-win2012r2-stemcell.ps1 3.06 KiB / 3.06 KiB [==================================================================] 100.00% 7s
+[1;32m==> openstack: Uploading /home/ubuntu/pivotal/pcf-automation-control-plane/src/stemcells/scripts/windows/ => C:\Stemcell-Build\Scripts[0m
 [1;32m==> openstack: Provisioning with windows-shell...[0m
-[1;32m==> openstack: Provisioning with shell script: /tmp/windows-shell-provisioner572896059[0m
-[0;32m    openstack: C:\Users\Administrator>PowerShell.exe -ExecutionPolicy Bypass C:\Temp\configure-win2012r2-stemcell.ps1[0m
-[0;32m    openstack:     Directory: C:\Temp[0m
-[0;32m    openstack: Mode                LastWriteTime     Length Name[0m
-[0;32m    openstack: ----                -------------     ------ ----[0m
-[0;32m    openstack: d----         5/10/2019   6:58 AM            Logs[0m
-[0;32m    openstack: d----         5/10/2019   6:58 AM            Downloads[0m
-[0;32m    openstack: Transcript started, output file is C:\Temp\Logs\stemcell-config.log[0m
+[1;32m==> openstack: Provisioning with shell script: /tmp/windows-shell-provisioner662174323[0m
+[0;32m    openstack: C:\Users\Administrator>PowerShell.exe -ExecutionPolicy Bypass C:\Stemcell-Build\Scripts\download-wmf51.ps1 https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win8.1AndW2K12R2-KB3191564-x64.msu[0m
+[0;32m    openstack: Transcript started, output file is C:\Stemcell-Build\Logs\build.log[0m
 [0;32m    openstack: Waiting for internet connectivity...[0m
-[0;32m    openstack: 2019-05-10T06:59:29.0703642+00:00 Getting WinRM config[0m
-[0;32m    openstack: 2019-05-10T06:59:29.2891495+00:00 Config     MaxEnvelopeSizekb = 500     MaxTimeoutms = 1800000     MaxBatchItems = 32000     MaxProviderRequests = 4294967295     Client         NetworkDelayms = 5000         URLPrefix = wsman         AllowUnencrypted = true         Auth             Basic = true             Digest = true             Kerberos = true             Negotiate = true             Certificate = true             CredSSP = false         DefaultPorts             HTTP = 5985             HTTPS = 5986         TrustedHosts     Service         RootSDDL = O:NSG:BAD:P(A;;GA;;;BA)(A;;GR;;;IU)S:P(AU;FA;GA;;;WD)(AU;SA;GXGW;;;WD)         MaxConcurrentOperations = 4294967295         MaxConcurrentOperationsPerUser = 1500         EnumerationTimeoutms = 240000         MaxConnections = 300         MaxPacketRetrievalTimeSeconds = 120         AllowUnencrypted = true         Auth             Basic = true             Kerberos = true             Negotiate = true             Certificate = false             CredSSP = true             CbtHardeningLevel = Relaxed         DefaultPorts             HTTP = 5985             HTTPS = 5986         IPv4Filter = *         IPv6Filter = *         EnableCompatibilityHttpListener = false         EnableCompatibilityHttpsListener = false         CertificateThumbprint         AllowRemoteAccess = true     Winrs         AllowRemoteShellAccess = true         IdleTimeout = 7200000         MaxConcurrentUsers = 10         MaxShellRunTime = 2147483647         MaxProcessesPerShell = 25         MaxMemoryPerShellMB = 1024         MaxShellsPerUser = 30[0m
-[0;32m    openstack: 2019-05-10T06:59:29.3047775+00:00 Installing CloudFoundry Cell Windows 2012 Features[0m
-[0;32m    openstack: 2019-05-10T06:59:29.3047775+00:00 Installing Web-Webserver[0m
-[0;32m    openstack: Success       : True[0m
-[0;32m    openstack: RestartNeeded : No[0m
-[0;32m    openstack: FeatureResult : {Common HTTP Features, Default Document, Directory Browsing,[0m
-[0;32m    openstack:                 Request Filtering...}[0m
-[0;32m    openstack: ExitCode      : Success[0m
-[0;32m    openstack: WARNING: Windows automatic updating is not enabled. To ensure that your[0m
-[0;32m    openstack: newly-installed role or feature is automatically updated, turn on Windows[0m
-[0;32m    openstack: Update.[0m
-[0;32m    openstack: 2019-05-10T07:00:04.6797240+00:00 Installing Web-WebSockets[0m
-[0;32m    openstack: Success       : True[0m
-[0;32m    openstack: RestartNeeded : No[0m
-[0;32m    openstack: FeatureResult : {Application Development, WebSocket Protocol}[0m
-[0;32m    openstack: ExitCode      : Success[0m
-[0;32m    openstack: WARNING: Windows automatic updating is not enabled. To ensure that your[0m
-[0;32m    openstack: newly-installed role or feature is automatically updated, turn on Windows[0m
-[0;32m    openstack: Update.[0m
-[0;32m    openstack: 2019-05-10T07:00:17.1172654+00:00 Installing AS-Web-Support[0m
-[0;32m    openstack: Success       : True[0m
-[0;32m    openstack: RestartNeeded : No[0m
-[0;32m    openstack: FeatureResult : {Application Server, .NET Framework 4.5, Web Server (IIS)[0m
-[0;32m    openstack:                 Support, ASP.NET 4.5...}[0m
-[0;32m    openstack: ExitCode      : Success[0m
-[0;32m    openstack: WARNING: Windows automatic updating is not enabled. To ensure that your[0m
-[0;32m    openstack: newly-installed role or feature is automatically updated, turn on Windows[0m
-[0;32m    openstack: Update.[0m
-[0;32m    openstack: 2019-05-10T07:00:52.1953932+00:00 Installing AS-NET-Framework[0m
-[0;32m    openstack: 2019-05-10T07:00:52.4610311+00:00 Installing Web-WHC[0m
-[0;32m    openstack: Success       : True[0m
-[0;32m    openstack: RestartNeeded : No[0m
-[0;32m    openstack: FeatureResult : {IIS Hostable Web Core}[0m
-[0;32m    openstack: ExitCode      : Success[0m
-[0;32m    openstack: WARNING: Windows automatic updating is not enabled. To ensure that your[0m
-[0;32m    openstack: newly-installed role or feature is automatically updated, turn on Windows[0m
-[0;32m    openstack: Update.[0m
-[0;32m    openstack: 2019-05-10T07:01:05.8672668+00:00 Installing Web-ASP[0m
-[0;32m    openstack: Success       : True[0m
-[0;32m    openstack: RestartNeeded : No[0m
-[0;32m    openstack: FeatureResult : {ASP}[0m
-[0;32m    openstack: ExitCode      : Success[0m
-[0;32m    openstack: WARNING: Windows automatic updating is not enabled. To ensure that your[0m
-[0;32m    openstack: newly-installed role or feature is automatically updated, turn on Windows[0m
-[0;32m    openstack: Update.[0m
-[0;32m    openstack: 2019-05-10T07:01:18.3516418+00:00 Installed CloudFoundry Cell Windows 2012 Features[0m
-[0;32m    openstack: 2019-05-10T07:01:18.3672815+00:00 Getting WinRM config[0m
-[0;32m    openstack: 2019-05-10T07:01:18.4297657+00:00 Config     MaxEnvelopeSizekb = 500     MaxTimeoutms = 1800000     MaxBatchItems = 32000     MaxProviderRequests = 4294967295     Client         NetworkDelayms = 5000         URLPrefix = wsman         AllowUnencrypted = true         Auth             Basic = true             Digest = true             Kerberos = true             Negotiate = true             Certificate = true             CredSSP = false         DefaultPorts             HTTP = 5985             HTTPS = 5986         TrustedHosts     Service         RootSDDL = O:NSG:BAD:P(A;;GA;;;BA)(A;;GR;;;IU)S:P(AU;FA;GA;;;WD)(AU;SA;GXGW;;;WD)         MaxConcurrentOperations = 4294967295         MaxConcurrentOperationsPerUser = 1500         EnumerationTimeoutms = 240000         MaxConnections = 300         MaxPacketRetrievalTimeSeconds = 120         AllowUnencrypted = true         Auth             Basic = true             Kerberos = true             Negotiate = true             Certificate = false             CredSSP = true             CbtHardeningLevel = Relaxed         DefaultPorts             HTTP = 5985             HTTPS = 5986         IPv4Filter = *         IPv6Filter = *         EnableCompatibilityHttpListener = false         EnableCompatibilityHttpsListener = false         CertificateThumbprint         AllowRemoteAccess = true     Winrs         AllowRemoteShellAccess = true         IdleTimeout = 7200000         MaxConcurrentUsers = 10         MaxShellRunTime = 2147483647         MaxProcessesPerShell = 25         MaxMemoryPerShellMB = 1024         MaxShellsPerUser = 30[0m
-[0;32m    openstack: 2019-05-10T07:01:18.4453730+00:00 Getting WinRM config[0m
-[0;32m    openstack: 2019-05-10T07:01:18.5078765+00:00 Config     MaxEnvelopeSizekb = 500     MaxTimeoutms = 1800000     MaxBatchItems = 32000     MaxProviderRequests = 4294967295     Client         NetworkDelayms = 5000         URLPrefix = wsman         AllowUnencrypted = true         Auth             Basic = true             Digest = true             Kerberos = true             Negotiate = true             Certificate = true             CredSSP = false         DefaultPorts             HTTP = 5985             HTTPS = 5986         TrustedHosts     Service         RootSDDL = O:NSG:BAD:P(A;;GA;;;BA)(A;;GR;;;IU)S:P(AU;FA;GA;;;WD)(AU;SA;GXGW;;;WD)         MaxConcurrentOperations = 4294967295         MaxConcurrentOperationsPerUser = 1500         EnumerationTimeoutms = 240000         MaxConnections = 300         MaxPacketRetrievalTimeSeconds = 120         AllowUnencrypted = true         Auth             Basic = true             Kerberos = true             Negotiate = true             Certificate = false             CredSSP = true             CbtHardeningLevel = Relaxed         DefaultPorts             HTTP = 5985             HTTPS = 5986         IPv4Filter = *         IPv6Filter = *         EnableCompatibilityHttpListener = false         EnableCompatibilityHttpsListener = false         CertificateThumbprint         AllowRemoteAccess = true     Winrs         AllowRemoteShellAccess = true         IdleTimeout = 7200000         MaxConcurrentUsers = 10         MaxShellRunTime = 2147483647         MaxProcessesPerShell = 25         MaxMemoryPerShellMB = 1024         MaxShellsPerUser = 30[0m
-[0;32m    openstack: 2019-05-10T07:01:18.6172197+00:00 Starting to disable WinRM[0m
-[0;32m    openstack: 2019-05-10T07:01:18.7110361+00:00 Disabled WinRM[0m
-[0;32m    openstack: 2019-05-10T07:01:18.7110361+00:00 Starting to disable W3Svc[0m
-[0;32m    openstack: 2019-05-10T07:01:18.7266121+00:00 Disabled W3Svc[0m
-[0;32m    openstack: 2019-05-10T07:01:18.7422744+00:00 Starting to disable RDP[0m
-[1;31m==> openstack: WMIC.exe : Invalid GET Expression.[0m
-[0;32m    openstack: 2019-05-10T07:01:20.0859756+00:00 Starting to disable Termservice[0m
-[1;31m==> openstack: At C:\Program Files\WindowsPowerShell\Modules\BOSH.CFCell\BOSH.CFCell.psm1:210[0m
-[0;32m    openstack: 2019-05-10T07:01:20.1172659+00:00 Disabled Termservice[0m
-[1;31m==> openstack: char:7[0m
-[0;32m    openstack: 2019-05-10T07:01:20.1172659+00:00 Disabled RDP[0m
-[1;31m==> openstack: +       WMIC.exe NICCONFIG WHERE '(TcpipNetbiosOptions=0 OR[0m
-[0;32m    openstack: 2019-05-10T07:01:20.1172659+00:00 Starting to set firewall rules[0m
-[0;32m    openstack: 2019-05-10T07:01:20.3671644+00:00 public,Block,Allow[0m
-[1;31m==> openstack: TcpipNetbiosOptions=1) ...[0m
-[0;32m    openstack: 2019-05-10T07:01:20.3827888+00:00 private,Block,Allow[0m
-[1;31m==> openstack: + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-[0;32m    openstack: 2019-05-10T07:01:20.3984511+00:00 domain,Block,Allow[0m
-[1;31m==> openstack: ~~~[0m
-[0;32m    openstack: 2019-05-10T07:01:20.3984511+00:00 Finished setting firewall rules[0m
-[1;31m==> openstack:     + CategoryInfo          : NotSpecified: (Invalid GET Expression.:String) [[0m
-[1;31m==> openstack:    ], RemoteException[0m
-[0;32m    openstack: 2019-05-10T07:01:20.6953363+00:00 Getting WinRM config[0m
-[0;32m    openstack: 2019-05-10T07:01:20.7734083+00:00 Config     MaxEnvelopeSizekb = 500     MaxTimeoutms = 1800000     MaxBatchItems = 32000     MaxProviderRequests = 4294967295     Client         NetworkDelayms = 5000         URLPrefix = wsman         AllowUnencrypted = true         Auth             Basic = true             Digest = true             Kerberos = true             Negotiate = true             Certificate = true             CredSSP = false         DefaultPorts             HTTP = 5985             HTTPS = 5986         TrustedHosts     Service         RootSDDL = O:NSG:BAD:P(A;;GA;;;BA)(A;;GR;;;IU)S:P(AU;FA;GA;;;WD)(AU;SA;GXGW;;;WD)         MaxConcurrentOperations = 4294967295         MaxConcurrentOperationsPerUser = 1500         EnumerationTimeoutms = 240000         MaxConnections = 300         MaxPacketRetrievalTimeSeconds = 120         AllowUnencrypted = true         Auth             Basic = true             Kerberos = true             Negotiate = true             Certificate = false             CredSSP = true             CbtHardeningLevel = Relaxed         DefaultPorts             HTTP = 5985             HTTPS = 5986         IPv4Filter = *         IPv6Filter = *         EnableCompatibilityHttpListener = false         EnableCompatibilityHttpsListener = false         CertificateThumbprint         AllowRemoteAccess = true     Winrs         AllowRemoteShellAccess = true         IdleTimeout = 7200000         MaxConcurrentUsers = 10         MaxShellRunTime = 2147483647         MaxProcessesPerShell = 25         MaxMemoryPerShellMB = 1024         MaxShellsPerUser = 30[0m
-[1;31m==> openstack:     + FullyQualifiedErrorId : NativeCommandError[0m
-[1;31m==> openstack:[0m
-[0;32m    openstack: 2019-05-10T07:01:20.7734083+00:00 Disabling NetBIOS over TCP[0m
-[1;31m==> openstack: Invalid GET Expression.[0m
-[0;32m    openstack: 2019-05-10T07:01:21.0234993+00:00 NetBIOS over TCP will be disabled on the following network interfaces:[0m
-[0;32m    openstack: Executing (\\WINDOWS2012R2-S\ROOT\CIMV2:Win32_NetworkAdapterConfiguration.Index=10)->SetTcpipNetbios()[0m
-[0;32m    openstack: Method execution successful.[0m
-[0;32m    openstack: Out Parameters:[0m
-[0;32m    openstack: instance of __PARAMETERS[0m
-[0;32m    openstack: {[0m
-[0;32m    openstack: 	ReturnValue = 0;[0m
-[0;32m    openstack: };[0m
-[0;32m    openstack: 2019-05-10T07:01:21.1328235+00:00 Disabling firewall rule: NETDIS-NB_Name-In-UDP[0m
-[0;32m    openstack: 2019-05-10T07:01:21.2422483+00:00 Disabling firewall rule: NETDIS-NB_Name-Out-UDP[0m
-[0;32m    openstack: 2019-05-10T07:01:21.3047565+00:00 Disabling firewall rule: NETDIS-NB_Datagram-In-UDP[0m
-[0;32m    openstack: 2019-05-10T07:01:21.3828706+00:00 Disabling firewall rule: NETDIS-NB_Datagram-Out-UDP[0m
-[0;32m    openstack: 2019-05-10T07:01:21.4453858+00:00 Disabling firewall rule: FPS-NB_Session-In-TCP[0m
-[0;32m    openstack: 2019-05-10T07:01:21.5243640+00:00 Disabling firewall rule: FPS-NB_Session-Out-TCP[0m
-[0;32m    openstack: 2019-05-10T07:01:21.6016015+00:00 Disabling firewall rule: FPS-NB_Name-In-UDP[0m
-[0;32m    openstack: 2019-05-10T07:01:21.6641441+00:00 Disabling firewall rule: FPS-NB_Name-Out-UDP[0m
-[0;32m    openstack: 2019-05-10T07:01:21.7734851+00:00 Disabling firewall rule: FPS-NB_Datagram-In-UDP[0m
-[0;32m    openstack: 2019-05-10T07:01:21.8516411+00:00 Disabling firewall rule: FPS-NB_Datagram-Out-UDP[0m
-[0;32m    openstack: 2019-05-10T07:01:22.0235764+00:00 Creating firewall rule: NB_Name-Disable-In-UDP[0m
-[0;32m    openstack: Caption                 :[0m
-[0;32m    openstack: Description             :[0m
-[0;32m    openstack: ElementName             : Disable File and Printer Sharing (NB-Session-In)[0m
-[0;32m    openstack: InstanceID              : NB_Name-Disable-In-UDP[0m
-[0;32m    openstack: CommonName              :[0m
-[0;32m    openstack: PolicyKeywords          :[0m
-[0;32m    openstack: Enabled                 : True[0m
-[0;32m    openstack: PolicyDecisionStrategy  : 2[0m
-[0;32m    openstack: PolicyRoles             :[0m
-[0;32m    openstack: ConditionListType       : 3[0m
-[0;32m    openstack: CreationClassName       : MSFT|FW|FirewallRule|NB_Name-Disable-In-UDP[0m
-[0;32m    openstack: ExecutionStrategy       : 2[0m
-[0;32m    openstack: Mandatory               :[0m
-[0;32m    openstack: PolicyRuleName          :[0m
-[0;32m    openstack: Priority                :[0m
-[0;32m    openstack: RuleUsage               :[0m
-[0;32m    openstack: SequencedActions        : 3[0m
-[0;32m    openstack: SystemCreationClassName :[0m
-[0;32m    openstack: SystemName              :[0m
-[0;32m    openstack: Action                  : Block[0m
-[0;32m    openstack: Direction               : Inbound[0m
-[0;32m    openstack: DisplayGroup            :[0m
-[0;32m    openstack: DisplayName             : Disable File and Printer Sharing (NB-Session-In)[0m
-[0;32m    openstack: EdgeTraversalPolicy     : Block[0m
-[0;32m    openstack: EnforcementStatus       : NotApplicable[0m
-[0;32m    openstack: LocalOnlyMapping        : False[0m
-[0;32m    openstack: LooseSourceMapping      : False[0m
-[0;32m    openstack: Owner                   :[0m
-[0;32m    openstack: Platforms               : {}[0m
-[0;32m    openstack: PolicyStoreSource       : PersistentStore[0m
-[0;32m    openstack: PolicyStoreSourceType   : Local[0m
-[0;32m    openstack: PrimaryStatus           : OK[0m
-[0;32m    openstack: Profiles                : 0[0m
-[0;32m    openstack: RuleGroup               :[0m
-[0;32m    openstack: Status                  : The rule was parsed successfully from the store.[0m
-[0;32m    openstack:                           (65536)[0m
-[0;32m    openstack: StatusCode              : 65536[0m
-[0;32m    openstack: PSComputerName          :[0m
-[0;32m    openstack: Name                    : NB_Name-Disable-In-UDP[0m
-[0;32m    openstack: ID                      : NB_Name-Disable-In-UDP[0m
-[0;32m    openstack: Group                   :[0m
-[0;32m    openstack: Platform                : {}[0m
-[0;32m    openstack: LSM                     : False[0m
-[0;32m    openstack: Profile                 : Any[0m
-[0;32m    openstack: 2019-05-10T07:01:22.2735000+00:00 Creating firewall rule: NB_Name-Disable-Out-UDP[0m
-[0;32m    openstack: Caption                 :[0m
-[0;32m    openstack: Description             :[0m
-[0;32m    openstack: ElementName             : Disable File and Printer Sharing (NB-Session-Out)[0m
-[0;32m    openstack: InstanceID              : NB_Name-Disable-Out-UDP[0m
-[0;32m    openstack: CommonName              :[0m
-[0;32m    openstack: PolicyKeywords          :[0m
-[0;32m    openstack: Enabled                 : True[0m
-[0;32m    openstack: PolicyDecisionStrategy  : 2[0m
-[0;32m    openstack: PolicyRoles             :[0m
-[0;32m    openstack: ConditionListType       : 3[0m
-[0;32m    openstack: CreationClassName       : MSFT|FW|FirewallRule|NB_Name-Disable-Out-UDP[0m
-[0;32m    openstack: ExecutionStrategy       : 2[0m
-[0;32m    openstack: Mandatory               :[0m
-[0;32m    openstack: PolicyRuleName          :[0m
-[0;32m    openstack: Priority                :[0m
-[0;32m    openstack: RuleUsage               :[0m
-[0;32m    openstack: SequencedActions        : 3[0m
-[0;32m    openstack: SystemCreationClassName :[0m
-[0;32m    openstack: SystemName              :[0m
-[0;32m    openstack: Action                  : Block[0m
-[0;32m    openstack: Direction               : Outbound[0m
-[0;32m    openstack: DisplayGroup            :[0m
-[0;32m    openstack: DisplayName             : Disable File and Printer Sharing (NB-Session-Out)[0m
-[0;32m    openstack: EdgeTraversalPolicy     : Block[0m
-[0;32m    openstack: EnforcementStatus       : NotApplicable[0m
-[0;32m    openstack: LocalOnlyMapping        : False[0m
-[0;32m    openstack: LooseSourceMapping      : False[0m
-[0;32m    openstack: Owner                   :[0m
-[0;32m    openstack: Platforms               : {}[0m
-[0;32m    openstack: PolicyStoreSource       : PersistentStore[0m
-[0;32m    openstack: PolicyStoreSourceType   : Local[0m
-[0;32m    openstack: PrimaryStatus           : OK[0m
-[0;32m    openstack: Profiles                : 0[0m
-[0;32m    openstack: RuleGroup               :[0m
-[0;32m    openstack: Status                  : The rule was parsed successfully from the store.[0m
-[0;32m    openstack:                           (65536)[0m
-[0;32m    openstack: StatusCode              : 65536[0m
-[0;32m    openstack: PSComputerName          :[0m
-[0;32m    openstack: Name                    : NB_Name-Disable-Out-UDP[0m
-[0;32m    openstack: ID                      : NB_Name-Disable-Out-UDP[0m
-[0;32m    openstack: Group                   :[0m
-[0;32m    openstack: Platform                : {}[0m
-[0;32m    openstack: LSM                     : False[0m
-[0;32m    openstack: Profile                 : Any[0m
-[0;32m    openstack: 2019-05-10T07:01:22.3985542+00:00 Creating firewall rule: NB_Datagram-Disable-In-UDP[0m
-[0;32m    openstack: Caption                 :[0m
-[0;32m    openstack: Description             :[0m
-[0;32m    openstack: ElementName             : Disable File and Printer Sharing (NB-Session-In)[0m
-[0;32m    openstack: InstanceID              : NB_Datagram-Disable-In-UDP[0m
-[0;32m    openstack: CommonName              :[0m
-[0;32m    openstack: PolicyKeywords          :[0m
-[0;32m    openstack: Enabled                 : True[0m
-[0;32m    openstack: PolicyDecisionStrategy  : 2[0m
-[0;32m    openstack: PolicyRoles             :[0m
-[0;32m    openstack: ConditionListType       : 3[0m
-[0;32m    openstack: CreationClassName       : MSFT|FW|FirewallRule|NB_Datagram-Disable-In-UDP[0m
-[0;32m    openstack: ExecutionStrategy       : 2[0m
-[0;32m    openstack: Mandatory               :[0m
-[0;32m    openstack: PolicyRuleName          :[0m
-[0;32m    openstack: Priority                :[0m
-[0;32m    openstack: RuleUsage               :[0m
-[0;32m    openstack: SequencedActions        : 3[0m
-[0;32m    openstack: SystemCreationClassName :[0m
-[0;32m    openstack: SystemName              :[0m
-[0;32m    openstack: Action                  : Block[0m
-[0;32m    openstack: Direction               : Inbound[0m
-[0;32m    openstack: DisplayGroup            :[0m
-[0;32m    openstack: DisplayName             : Disable File and Printer Sharing (NB-Session-In)[0m
-[0;32m    openstack: EdgeTraversalPolicy     : Block[0m
-[0;32m    openstack: EnforcementStatus       : NotApplicable[0m
-[0;32m    openstack: LocalOnlyMapping        : False[0m
-[0;32m    openstack: LooseSourceMapping      : False[0m
-[0;32m    openstack: Owner                   :[0m
-[0;32m    openstack: Platforms               : {}[0m
-[0;32m    openstack: PolicyStoreSource       : PersistentStore[0m
-[0;32m    openstack: PolicyStoreSourceType   : Local[0m
-[0;32m    openstack: PrimaryStatus           : OK[0m
-[0;32m    openstack: Profiles                : 0[0m
-[0;32m    openstack: RuleGroup               :[0m
-[0;32m    openstack: Status                  : The rule was parsed successfully from the store.[0m
-[0;32m    openstack:                           (65536)[0m
-[0;32m    openstack: StatusCode              : 65536[0m
-[0;32m    openstack: PSComputerName          :[0m
-[0;32m    openstack: Name                    : NB_Datagram-Disable-In-UDP[0m
-[0;32m    openstack: ID                      : NB_Datagram-Disable-In-UDP[0m
-[0;32m    openstack: Group                   :[0m
-[0;32m    openstack: Platform                : {}[0m
-[0;32m    openstack: LSM                     : False[0m
-[0;32m    openstack: Profile                 : Any[0m
-[0;32m    openstack: 2019-05-10T07:01:22.5235821+00:00 Creating firewall rule: NB_Datagram-Disable-Out-UDP[0m
-[0;32m    openstack: Caption                 :[0m
-[0;32m    openstack: Description             :[0m
-[0;32m    openstack: ElementName             : Disable File and Printer Sharing (NB-Session-Out)[0m
-[0;32m    openstack: InstanceID              : NB_Datagram-Disable-Out-UDP[0m
-[0;32m    openstack: CommonName              :[0m
-[0;32m    openstack: PolicyKeywords          :[0m
-[0;32m    openstack: Enabled                 : True[0m
-[0;32m    openstack: PolicyDecisionStrategy  : 2[0m
-[0;32m    openstack: PolicyRoles             :[0m
-[0;32m    openstack: ConditionListType       : 3[0m
-[0;32m    openstack: CreationClassName       : MSFT|FW|FirewallRule|NB_Datagram-Disable-Out-UDP[0m
-[0;32m    openstack: ExecutionStrategy       : 2[0m
-[0;32m    openstack: Mandatory               :[0m
-[0;32m    openstack: PolicyRuleName          :[0m
-[0;32m    openstack: Priority                :[0m
-[0;32m    openstack: RuleUsage               :[0m
-[0;32m    openstack: SequencedActions        : 3[0m
-[0;32m    openstack: SystemCreationClassName :[0m
-[0;32m    openstack: SystemName              :[0m
-[0;32m    openstack: Action                  : Block[0m
-[0;32m    openstack: Direction               : Outbound[0m
-[0;32m    openstack: DisplayGroup            :[0m
-[0;32m    openstack: DisplayName             : Disable File and Printer Sharing (NB-Session-Out)[0m
-[0;32m    openstack: EdgeTraversalPolicy     : Block[0m
-[0;32m    openstack: EnforcementStatus       : NotApplicable[0m
-[0;32m    openstack: LocalOnlyMapping        : False[0m
-[0;32m    openstack: LooseSourceMapping      : False[0m
-[0;32m    openstack: Owner                   :[0m
-[0;32m    openstack: Platforms               : {}[0m
-[0;32m    openstack: PolicyStoreSource       : PersistentStore[0m
-[0;32m    openstack: PolicyStoreSourceType   : Local[0m
-[0;32m    openstack: PrimaryStatus           : OK[0m
-[0;32m    openstack: Profiles                : 0[0m
-[0;32m    openstack: RuleGroup               :[0m
-[0;32m    openstack: Status                  : The rule was parsed successfully from the store.[0m
-[0;32m    openstack:                           (65536)[0m
-[0;32m    openstack: StatusCode              : 65536[0m
-[0;32m    openstack: PSComputerName          :[0m
-[0;32m    openstack: Name                    : NB_Datagram-Disable-Out-UDP[0m
-[0;32m    openstack: ID                      : NB_Datagram-Disable-Out-UDP[0m
-[0;32m    openstack: Group                   :[0m
-[0;32m    openstack: Platform                : {}[0m
-[0;32m    openstack: LSM                     : False[0m
-[0;32m    openstack: Profile                 : Any[0m
-[0;32m    openstack: 2019-05-10T07:01:22.6329329+00:00 Creating firewall rule: NB_Session-Disable-In-TCP[0m
-[0;32m    openstack: Caption                 :[0m
-[0;32m    openstack: Description             :[0m
-[0;32m    openstack: ElementName             : Disable File and Printer Sharing (NB-Session-In)[0m
-[0;32m    openstack: InstanceID              : NB_Session-Disable-In-TCP[0m
-[0;32m    openstack: CommonName              :[0m
-[0;32m    openstack: PolicyKeywords          :[0m
-[0;32m    openstack: Enabled                 : True[0m
-[0;32m    openstack: PolicyDecisionStrategy  : 2[0m
-[0;32m    openstack: PolicyRoles             :[0m
-[0;32m    openstack: ConditionListType       : 3[0m
-[0;32m    openstack: CreationClassName       : MSFT|FW|FirewallRule|NB_Session-Disable-In-TCP[0m
-[0;32m    openstack: ExecutionStrategy       : 2[0m
-[0;32m    openstack: Mandatory               :[0m
-[0;32m    openstack: PolicyRuleName          :[0m
-[0;32m    openstack: Priority                :[0m
-[0;32m    openstack: RuleUsage               :[0m
-[0;32m    openstack: SequencedActions        : 3[0m
-[0;32m    openstack: SystemCreationClassName :[0m
-[0;32m    openstack: SystemName              :[0m
-[0;32m    openstack: Action                  : Block[0m
-[0;32m    openstack: Direction               : Inbound[0m
-[0;32m    openstack: DisplayGroup            :[0m
-[0;32m    openstack: DisplayName             : Disable File and Printer Sharing (NB-Session-In)[0m
-[0;32m    openstack: EdgeTraversalPolicy     : Block[0m
-[0;32m    openstack: EnforcementStatus       : NotApplicable[0m
-[0;32m    openstack: LocalOnlyMapping        : False[0m
-[0;32m    openstack: LooseSourceMapping      : False[0m
-[0;32m    openstack: Owner                   :[0m
-[0;32m    openstack: Platforms               : {}[0m
-[0;32m    openstack: PolicyStoreSource       : PersistentStore[0m
-[0;32m    openstack: PolicyStoreSourceType   : Local[0m
-[0;32m    openstack: PrimaryStatus           : OK[0m
-[0;32m    openstack: Profiles                : 0[0m
-[0;32m    openstack: RuleGroup               :[0m
-[0;32m    openstack: Status                  : The rule was parsed successfully from the store.[0m
-[0;32m    openstack:                           (65536)[0m
-[0;32m    openstack: StatusCode              : 65536[0m
-[0;32m    openstack: PSComputerName          :[0m
-[0;32m    openstack: Name                    : NB_Session-Disable-In-TCP[0m
-[0;32m    openstack: ID                      : NB_Session-Disable-In-TCP[0m
-[0;32m    openstack: Group                   :[0m
-[0;32m    openstack: Platform                : {}[0m
-[0;32m    openstack: LSM                     : False[0m
-[0;32m    openstack: Profile                 : Any[0m
-[0;32m    openstack: 2019-05-10T07:01:22.7422523+00:00 Creating firewall rule: NB_Session-Disable-Out-TCP[0m
-[0;32m    openstack: Caption                 :[0m
-[0;32m    openstack: Description             :[0m
-[0;32m    openstack: ElementName             : Disable File and Printer Sharing (NB-Session-Out)[0m
-[0;32m    openstack: InstanceID              : NB_Session-Disable-Out-TCP[0m
-[0;32m    openstack: CommonName              :[0m
-[0;32m    openstack: PolicyKeywords          :[0m
-[0;32m    openstack: Enabled                 : True[0m
-[0;32m    openstack: PolicyDecisionStrategy  : 2[0m
-[0;32m    openstack: PolicyRoles             :[0m
-[0;32m    openstack: ConditionListType       : 3[0m
-[0;32m    openstack: CreationClassName       : MSFT|FW|FirewallRule|NB_Session-Disable-Out-TCP[0m
-[0;32m    openstack: ExecutionStrategy       : 2[0m
-[0;32m    openstack: Mandatory               :[0m
-[0;32m    openstack: PolicyRuleName          :[0m
-[0;32m    openstack: Priority                :[0m
-[0;32m    openstack: RuleUsage               :[0m
-[0;32m    openstack: SequencedActions        : 3[0m
-[0;32m    openstack: SystemCreationClassName :[0m
-[0;32m    openstack: SystemName              :[0m
-[0;32m    openstack: Action                  : Block[0m
-[0;32m    openstack: Direction               : Outbound[0m
-[0;32m    openstack: DisplayGroup            :[0m
-[0;32m    openstack: DisplayName             : Disable File and Printer Sharing (NB-Session-Out)[0m
-[0;32m    openstack: EdgeTraversalPolicy     : Block[0m
-[0;32m    openstack: EnforcementStatus       : NotApplicable[0m
-[0;32m    openstack: LocalOnlyMapping        : False[0m
-[0;32m    openstack: LooseSourceMapping      : False[0m
-[0;32m    openstack: Owner                   :[0m
-[0;32m    openstack: Platforms               : {}[0m
-[0;32m    openstack: PolicyStoreSource       : PersistentStore[0m
-[0;32m    openstack: PolicyStoreSourceType   : Local[0m
-[0;32m    openstack: PrimaryStatus           : OK[0m
-[0;32m    openstack: Profiles                : 0[0m
-[0;32m    openstack: RuleGroup               :[0m
-[0;32m    openstack: Status                  : The rule was parsed successfully from the store.[0m
-[0;32m    openstack:                           (65536)[0m
-[0;32m    openstack: StatusCode              : 65536[0m
-[0;32m    openstack: PSComputerName          :[0m
-[0;32m    openstack: Name                    : NB_Session-Disable-Out-TCP[0m
-[0;32m    openstack: ID                      : NB_Session-Disable-Out-TCP[0m
-[0;32m    openstack: Group                   :[0m
-[0;32m    openstack: Platform                : {}[0m
-[0;32m    openstack: LSM                     : False[0m
-[0;32m    openstack: Profile                 : Any[0m
-[0;32m    openstack: 2019-05-10T07:01:22.7891265+00:00 Enabling firewall rule: NB_Name-Disable-In-UDP[0m
-[0;32m    openstack: 2019-05-10T07:01:22.8828954+00:00 Enabling firewall rule: NB_Name-Disable-Out-UDP[0m
-[0;32m    openstack: 2019-05-10T07:01:22.9298072+00:00 Enabling firewall rule: NB_Datagram-Disable-In-UDP[0m
-[0;32m    openstack: 2019-05-10T07:01:22.9766900+00:00 Enabling firewall rule: NB_Datagram-Disable-Out-UDP[0m
-[0;32m    openstack: 2019-05-10T07:01:23.0234942+00:00 Enabling firewall rule: NB_Session-Disable-In-TCP[0m
-[0;32m    openstack: 2019-05-10T07:01:23.0547571+00:00 Enabling firewall rule: NB_Session-Disable-Out-TCP[0m
-[0;32m    openstack: 2019-05-10T07:01:23.1016240+00:00 Disable-NetBIOS: Complete[0m
-[0;32m    openstack: 2019-05-10T07:01:23.3046998+00:00 Found OS version: Windows 2012R2[0m
-[0;32m    openstack: 2019-05-10T07:01:23.3203694+00:00 Install-Agent: Started[0m
-[0;32m    openstack: 2019-05-10T07:01:23.3203694+00:00 Copy-Agent InstallDir=C:\ Zip=C:\Temp\Downloads\agent.zip[0m
-[0;32m    openstack:     Directory: C:\[0m
+[0;32m    openstack: Downloading Windows Management Framework 5.1...[0m
+[1;32m==> openstack: Provisioning with windows-shell...[0m
+[1;32m==> openstack: Provisioning with shell script: /tmp/windows-shell-provisioner240127492[0m
+[0;32m    openstack: C:\Users\Administrator>PowerShell.exe -ExecutionPolicy Bypass C:\Stemcell-Build\Scripts\download-vs.ps1 https://s3.eu-central-1.amazonaws.com/mevansam-share/public/vs_community__378995140.1557481685.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe[0m
+[0;32m    openstack: Transcript started, output file is C:\Stemcell-Build\Logs\build.log[0m
+[0;32m    openstack: Waiting for internet connectivity...[0m
+[0;32m    openstack: Downloading Visual Studio installer...[0m
+[0;32m    openstack: Downloading NuGet executable...[0m
+[1;32m==> openstack: Provisioning with windows-shell...[0m
+[1;32m==> openstack: Provisioning with shell script: /tmp/windows-shell-provisioner873482419[0m
+[0;32m    openstack: C:\Users\Administrator>PowerShell.exe -ExecutionPolicy Bypass C:\Stemcell-Build\Scripts\download-bosh.ps1 https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/releases/download/1200.32/bosh-psmodules.zip https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/releases/download/1200.32/agent.zip https://github.com/PowerShell/Win32-OpenSSH/releases/download/v7.9.0.0p1-Beta/OpenSSH-Win64.zip[0m
+[0;32m    openstack: Transcript started, output file is C:\Stemcell-Build\Logs\build.log[0m
+[0;32m    openstack: Waiting for internet connectivity...[0m
+[0;32m    openstack: Downloading Bosh PowerShell modules...[0m
+[0;32m    openstack: Downloading Bosh agent...[0m
+[0;32m    openstack: Downloading OpenSSH for Windows...[0m
+[1;32m==> openstack: Provisioning with windows-shell...[0m
+[1;32m==> openstack: Provisioning with shell script: /tmp/windows-shell-provisioner533226697[0m
+[0;32m    openstack: C:\Users\Administrator>PowerShell.exe -ExecutionPolicy Bypass C:\Stemcell-Build\Scripts\install-wmf51.ps1[0m
+[0;32m    openstack: Transcript started, output file is C:\Stemcell-Build\Logs\build.log[0m
+[0;32m    openstack:     Directory: C:\Stemcell-Build\Temp[0m
 [0;32m    openstack: Mode                LastWriteTime     Length Name[0m
 [0;32m    openstack: ----                -------------     ------ ----[0m
-[0;32m    openstack: d----         5/10/2019   7:01 AM            bosh[0m
-[0;32m    openstack:     Directory: C:\var\vcap\bosh[0m
-[0;32m    openstack: Mode                LastWriteTime     Length Name[0m
-[0;32m    openstack: ----                -------------     ------ ----[0m
-[0;32m    openstack: d----         5/10/2019   7:01 AM            log[0m
-[0;32m    openstack: d----         5/10/2019   7:01 AM            bin[0m
-[0;32m    openstack: 2019-05-10T07:01:23.3828617+00:00 Unzipping: C:\Temp\Downloads\agent.zip to C:\bosh[0m
-[0;32m    openstack: 2019-05-10T07:01:23.8516291+00:00 Protect-Dir: Grant Administrator[0m
-[0;32m    openstack: processed dir: C:\bosh[0m
-[0;32m    openstack: processed file: C:\bosh\bosh-agent.exe[0m
-[0;32m    openstack: processed file: C:\bosh\service_wrapper.exe[0m
-[0;32m    openstack: processed file: C:\bosh\service_wrapper.xml[0m
-[0;32m    openstack: processed file: C:\bosh\sha[0m
-[0;32m    openstack: 2019-05-10T07:01:23.8828758+00:00 Protect-Dir: Remove BUILTIN\Users[0m
-[0;32m    openstack: processed dir: C:\bosh[0m
-[0;32m    openstack: processed file: C:\bosh\bosh-agent.exe[0m
-[0;32m    openstack: processed file: C:\bosh\service_wrapper.exe[0m
-[0;32m    openstack: processed file: C:\bosh\service_wrapper.xml[0m
-[0;32m    openstack: processed file: C:\bosh\sha[0m
-[0;32m    openstack: 2019-05-10T07:01:23.8984856+00:00 Protect-Dir: Remove BUILTIN\IIS_IUSRS[0m
-[0;32m    openstack: processed dir: C:\bosh[0m
-[0;32m    openstack: processed file: C:\bosh\bosh-agent.exe[0m
-[0;32m    openstack: processed file: C:\bosh\service_wrapper.exe[0m
-[0;32m    openstack: processed file: C:\bosh\service_wrapper.xml[0m
-[0;32m    openstack: processed file: C:\bosh\sha[0m
-[0;32m    openstack: 2019-05-10T07:01:23.9141295+00:00 Protect-Dir: Disable Inheritance[0m
-[0;32m    openstack: 2019-05-10T07:01:23.9922478+00:00 Protect-Dir: Grant Administrator[0m
-[0;32m    openstack: processed dir: C:\var[0m
-[0;32m    openstack: processed dir: C:\var\vcap[0m
-[0;32m    openstack: processed dir: C:\var\vcap\bosh[0m
-[0;32m    openstack: processed dir: C:\var\vcap\bosh\bin[0m
-[0;32m    openstack: processed dir: C:\var\vcap\bosh\log[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\bosh-blobstore-dav.exe[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\bosh-blobstore-s3.exe[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\job-service-wrapper.exe[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\pipe.exe[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\tar.exe[0m
-[0;32m    openstack: 2019-05-10T07:01:24.0078660+00:00 Protect-Dir: Remove BUILTIN\Users[0m
-[0;32m    openstack: processed dir: C:\var[0m
-[0;32m    openstack: processed dir: C:\var\vcap[0m
-[0;32m    openstack: processed dir: C:\var\vcap\bosh[0m
-[0;32m    openstack: processed dir: C:\var\vcap\bosh\bin[0m
-[0;32m    openstack: processed dir: C:\var\vcap\bosh\log[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\bosh-blobstore-dav.exe[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\bosh-blobstore-s3.exe[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\job-service-wrapper.exe[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\pipe.exe[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\tar.exe[0m
-[0;32m    openstack: 2019-05-10T07:01:24.0235532+00:00 Protect-Dir: Remove BUILTIN\IIS_IUSRS[0m
-[0;32m    openstack: processed dir: C:\var[0m
-[0;32m    openstack: processed dir: C:\var\vcap[0m
-[0;32m    openstack: processed dir: C:\var\vcap\bosh[0m
-[0;32m    openstack: processed dir: C:\var\vcap\bosh\bin[0m
-[0;32m    openstack: processed dir: C:\var\vcap\bosh\log[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\bosh-blobstore-dav.exe[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\bosh-blobstore-s3.exe[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\job-service-wrapper.exe[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\pipe.exe[0m
-[0;32m    openstack: processed file: C:\var\vcap\bosh\bin\tar.exe[0m
-[0;32m    openstack: 2019-05-10T07:01:24.0391303+00:00 Protect-Dir: Disable Inheritance[0m
-[0;32m    openstack: 2019-05-10T07:01:24.1016165+00:00 Agent Config: {[0m
-[0;32m    openstack:   "Platform": {[0m
-[0;32m    openstack:     "Linux": {[0m
-[0;32m    openstack:       "DevicePathResolutionType": "virtio"[0m
-[0;32m    openstack:     }[0m
-[0;32m    openstack:   },[0m
-[0;32m    openstack:   "Infrastructure": {[0m
-[0;32m    openstack:     "Settings": {[0m
-[0;32m    openstack:       "Sources": [[0m
-[0;32m    openstack:         {[0m
-[0;32m    openstack:           "Type": "HTTP",[0m
-[0;32m    openstack:           "URI": "http://169.254.169.254",[0m
-[0;32m    openstack:           "UserDataPath": "/latest/user-data/",[0m
-[0;32m    openstack:           "InstanceIDPath": "/latest/meta-data/instance-id/",[0m
-[0;32m    openstack:           "SSHKeysPath": "/latest/meta-data/public-keys/0/openssh-key/"[0m
-[0;32m    openstack:         }[0m
-[0;32m    openstack:       ],[0m
-[0;32m    openstack:       "UseRegistry": true,[0m
-[0;32m    openstack:       "UseServerName": true[0m
-[0;32m    openstack:     }[0m
-[0;32m    openstack:   }[0m
-[0;32m    openstack: }[0m
-[0;32m    openstack:     Directory: C:\bosh[0m
-[0;32m    openstack: Mode                LastWriteTime     Length Name[0m
-[0;32m    openstack: ----                -------------     ------ ----[0m
-[0;32m    openstack: -a---         5/10/2019   7:01 AM        492 agent.json[0m
-[0;32m    openstack: 2019-05-10T07:01:24.1172508+00:00 Set-Path: C:\var\vcap\bosh\bin to path[0m
-[0;32m    openstack: SUCCESS: Specified value was saved.[0m
-[0;32m    openstack: 2019-05-10T07:01:24.1484730+00:00 Updating services timeout from 30s to 60s[0m
-[0;32m    openstack: 2019-05-10T07:01:24.1641317+00:00 Install-AgentService: Installing BOSH Agent[0m
-[0;32m    openstack: 2019-05-10 07:01:24,507 INFO  - Installing the service with id 'bosh-agent'[0m
-[0;32m    openstack: 2019-05-10T07:01:25.1980938+00:00 Protect-Dir: Grant Administrator[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther\actionqueue[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\Contents0.dir[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\Contents1.dir[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\diagerr.xml[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\diagwrn.xml[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther\FastCleanup[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\MainQueueOnline0.que[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\MainQueueOnline1.que[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\setup.etl[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther\setup.exe[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\setupact.log[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\setuperr.log[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\setupinfo[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\unattend.xml[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther\UnattendGC[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\actionqueue\generalize.uaq[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\actionqueue\oobeSystem.uaq[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\actionqueue\specialize.uaq[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\FastCleanup\diagerr.xml[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\FastCleanup\diagwrn.xml[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\FastCleanup\setupact.log[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\FastCleanup\setuperr.log[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\UnattendGC\diagerr.xml[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\UnattendGC\diagwrn.xml[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\UnattendGC\setupact.log[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\UnattendGC\setuperr.log[0m
-[0;32m    openstack: 2019-05-10T07:01:25.2265904+00:00 Protect-Dir: Remove BUILTIN\Users[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther\actionqueue[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\Contents0.dir[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\Contents1.dir[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\diagerr.xml[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\diagwrn.xml[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther\FastCleanup[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\MainQueueOnline0.que[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\MainQueueOnline1.que[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\setup.etl[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther\setup.exe[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\setupact.log[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\setuperr.log[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\setupinfo[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\unattend.xml[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther\UnattendGC[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\actionqueue\generalize.uaq[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\actionqueue\oobeSystem.uaq[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\actionqueue\specialize.uaq[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\FastCleanup\diagerr.xml[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\FastCleanup\diagwrn.xml[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\FastCleanup\setupact.log[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\FastCleanup\setuperr.log[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\UnattendGC\diagerr.xml[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\UnattendGC\diagwrn.xml[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\UnattendGC\setupact.log[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\UnattendGC\setuperr.log[0m
-[0;32m    openstack: 2019-05-10T07:01:25.2422100+00:00 Protect-Dir: Remove BUILTIN\IIS_IUSRS[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther\actionqueue[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\Contents0.dir[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\Contents1.dir[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\diagerr.xml[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\diagwrn.xml[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther\FastCleanup[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\MainQueueOnline0.que[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\MainQueueOnline1.que[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\setup.etl[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther\setup.exe[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\setupact.log[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\setuperr.log[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\setupinfo[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\unattend.xml[0m
-[0;32m    openstack: processed dir: C:\Windows\Panther\UnattendGC[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\actionqueue\generalize.uaq[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\actionqueue\oobeSystem.uaq[0m
-[0;32m    openstack: processed file: C:\Windows\Panther\actionqueue\specialize.uaq[0m
-[1;32m==> openstack: Stopping server: 1a15d840-f4b0-41d1-a813-3d7f138e2068 ...[0m
-[0;32m    openstack: Waiting for server to stop: 1a15d840-f4b0-41d1-a813-3d7f138e2068 ...[0m
-[1;32m==> openstack: Detaching volume packer_5cd52069-c45b-56ef-52de-07051c6830a8 (volume id: d6c378ec-f2f6-407b-8dd6-c0c00a7738ad)[0m
-[1;32m==> openstack: Waiting for volume packer_5cd52069-c45b-56ef-52de-07051c6830a8 (volume id: d6c378ec-f2f6-407b-8dd6-c0c00a7738ad) to become available...[0m
+[0;32m    openstack: d----         5/11/2019   7:25 PM            KB3191564[0m
+[0;32m    openstack: Installing Windows Management Framework 5.1 - Windows update KB3191564...[0m
+[0;32m    openstack: Deployment Image Servicing and Management tool[0m
+[0;32m    openstack: Version: 6.3.9600.17031[0m
+[0;32m    openstack: Image Version: 6.3.9600.17031[0m
+[0;32m    openstack: Processing 1 of 1 - Adding package Microsoft-Windows-WinMan-WinIP-Package-TopLevel~31bf3856ad364e35~amd64~~7.2.9600.16384[0m
+[0;32m    openstack: The operation completed successfully.[0m
+[1;32m==> openstack: Restarting Machine[0m
+[1;32m==> openstack: Waiting for machine to restart...[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[0;32m    openstack: WINDOWS2012R2-S restarted.[0m
+[1;31m==> openstack: #< CLIXML[0m
+[1;32m==> openstack: Machine successfully restarted, moving on[0m
+[1;31m==> openstack: <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>[0m
+[1;32m==> openstack: Uploading the Windows update elevated script...[0m
+[1;32m==> openstack: Uploading the Windows update check for reboot required elevated script...[0m
+[1;32m==> openstack: Uploading the Windows update script...[0m
+[1;32m==> openstack: Running Windows update...[0m
+[0;32m    openstack: Searching for Windows updates...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 49 % cpu; 11 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 43 % cpu; 12 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 1 % cpu; 12 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 13 % cpu; 11 % memory)...[0m
+[0;32m    openstack: Found Windows update (2015-11-10; 3.91 MB): Security Update for Windows Server 2012 R2 (KB3081320)[0m
+[0;32m    openstack: Found Windows update (2015-11-10; 1.68 MB): Security Update for Windows Server 2012 R2 (KB3102939)[0m
+[0;32m    openstack: Found Windows update (2015-11-10; 0.31 MB): Security Update for Windows Server 2012 R2 (KB3092601)[0m
+[0;32m    openstack: Found Windows update (2015-12-08; 0.11 MB): Security Update for Windows Server 2012 R2 (KB3109103)[0m
+[0;32m    openstack: Found Windows update (2015-12-08; 0.08 MB): Update for Windows Server 2012 R2 (KB3099834)[0m
+[0;32m    openstack: Found Windows update (2015-12-08; 0.61 MB): Update for Windows Server 2012 R2 (KB3103696)[0m
+[0;32m    openstack: Found Windows update (2016-01-12; 16.4 MB): Security Update for Windows Server 2012 R2 (KB3110329)[0m
+[0;32m    openstack: Found Windows update (2016-02-09; 8.39 MB): Security Update for Windows Server 2012 R2 (KB3126593)[0m
+[0;32m    openstack: Found Windows update (2016-02-09; 0.23 MB): Security Update for Windows Server 2012 R2 (KB3133043)[0m
+[0;32m    openstack: Found Windows update (2016-02-09; 0.76 MB): Security Update for Windows Server 2012 R2 (KB3126041)[0m
+[0;32m    openstack: Found Windows update (2016-02-09; 0.47 MB): Security Update for Windows Server 2012 R2 (KB3126434)[0m
+[0;32m    openstack: Found Windows update (2016-02-09; 1.17 MB): Security Update for Windows Server 2012 R2 (KB3126587)[0m
+[0;32m    openstack: Found Windows update (2016-02-09; 4.26 MB): Update for Windows Server 2012 R2 (KB3132080)[0m
+[0;32m    openstack: Found Windows update (2016-03-08; 0.14 MB): Security Update for Windows Server 2012 R2 (KB3139398)[0m
+[0;32m    openstack: Found Windows update (2016-03-08; 0.04 MB): Security Update for Windows Server 2012 R2 (KB3139914)[0m
+[0;32m    openstack: Found Windows update (2016-03-08; 6.82 MB): Update for Windows Server 2012 R2 (KB3121261)[0m
+[0;32m    openstack: Found Windows update (2016-03-08; 0.19 MB): Update for Windows Server 2012 R2 (KB3134815)[0m
+[0;32m    openstack: Found Windows update (2016-03-08; 9.75 MB): Security Update for Microsoft .NET Framework 4.5.2 on Windows 8.1 and Windows Server 2012 R2 for x64 (KB3135994)[0m
+[0;32m    openstack: Found Windows update (2016-04-12; 12.12 MB): Security Update for Windows Server 2012 R2 (KB3146723)[0m
+[0;32m    openstack: Found Windows update (2016-04-12; 13.14 MB): Update for Windows Server 2012 R2 (KB3147071)[0m
+[0;32m    openstack: Found Windows update (2016-04-12; 30.1 MB): Update for Windows Server 2012 R2 (KB3138602)[0m
+[0;32m    openstack: Found Windows update (2016-04-12; 1.1 MB): Update for Windows Server 2012 R2 (KB3137728)[0m
+[0;32m    openstack: Found Windows update (2016-04-12; 0.1 MB): Update for Windows Server 2012 R2 (KB3139164)[0m
+[0;32m    openstack: Found Windows update (2016-04-12; 0.07 MB): Update for Windows Server 2012 R2 (KB3140219)[0m
+[0;32m    openstack: Found Windows update (2016-04-12; 2.41 MB): Update for Windows Server 2012 R2 (KB3109976)[0m
+[0;32m    openstack: Found Windows update (2016-04-12; 13.08 MB): Update for Windows Server 2012 R2 (KB3115224)[0m
+[0;32m    openstack: Found Windows update (2016-04-12; 0.09 MB): Update for Windows Server 2012 R2 (KB3133690)[0m
+[0;32m    openstack: Found Windows update (2016-04-12; 0.08 MB): Update for Windows Server 2012 R2 (KB3140234)[0m
+[0;32m    openstack: Found Windows update (2016-04-12; 1.81 MB): Update for Windows Server 2012 R2 (KB3100473)[0m
+[0;32m    openstack: Found Windows update (2016-04-12; 2.35 MB): Update for Windows Server 2012 R2 (KB3123245)[0m
+[0;32m    openstack: Found Windows update (2016-05-10; 0.77 MB): Update for Windows Server 2012 R2 (KB3146604)[0m
+[0;32m    openstack: Found Windows update (2016-05-10; 0.18 MB): Update for Windows Server 2012 R2 (KB3103616)[0m
+[0;32m    openstack: Found Windows update (2016-05-10; 0.16 MB): Update for Windows Server 2012 R2 (KB3146751)[0m
+[0;32m    openstack: Found Windows update (2016-05-10; 0.17 MB): Update for Windows Server 2012 R2 (KB3145384)[0m
+[0;32m    openstack: Found Windows update (2016-05-10; 2.48 MB): Update for Windows Server 2012 R2 (KB3149157)[0m
+[0;32m    openstack: Found Windows update (2016-05-10; 0.27 MB): Update for Windows Server 2012 R2 (KB3145432)[0m
+[0;32m    openstack: Found Windows update (2016-05-10; 1.47 MB): Update for Windows Server 2012 R2 (KB3103709)[0m
+[0;32m    openstack: Found Windows update (2016-05-10; 1.31 MB): Update for Windows Server 2012 R2 (KB3134179)[0m
+[0;32m    openstack: Found Windows update (2016-05-10; 0.28 MB): Security Update for Windows Server 2012 R2 (KB3156059)[0m
+[0;32m    openstack: Found Windows update (2016-05-10; 0.06 MB): Security Update for Windows Server 2012 R2 (KB3155784)[0m
+[0;32m    openstack: Found Windows update (2016-06-14; 1.41 MB): Security Update for Windows Server 2012 R2 (KB3159398)[0m
+[0;32m    openstack: Found Windows update (2016-06-14; 1.32 MB): Security Update for Windows Server 2012 R2 (KB3161949)[0m
+[0;32m    openstack: Found Windows update (2016-06-14; 0.2 MB): Security Update for Windows Server 2012 R2 (KB3162343)[0m
+[0;32m    openstack: Found Windows update (2016-08-09; 10.32 MB): Security Update for Windows Server 2012 R2 (KB3172729)[0m
+[0;32m    openstack: Found Windows update (2016-08-09; 102.4 MB): Update for Windows Server 2012 R2 (KB3172614)[0m
+[0;32m    openstack: Found Windows update (2016-09-13; 12.1 MB): Security Update for Windows Server 2012 R2 (KB3175024)[0m
+[0;32m    openstack: Found Windows update (2016-09-13; 0.35 MB): Security Update for Windows Server 2012 R2 (KB3178539)[0m
+[0;32m    openstack: Found Windows update (2016-09-13; 28.51 MB): Update for Windows Server 2012 R2 (KB3179574)[0m
+[0;32m    openstack: Found Windows update (2017-05-09; 10.32 MB): Update for Windows Server 2012 R2 (KB3173424)[0m
+[0;32m    openstack: Found Windows update (2017-08-08; 3.5 MB): Update for Windows Server 2012 R2 (KB4033428)[0m
+[0;32m    openstack: Found Windows update (2017-09-12; 74.56 MB): 2017-09 Security and Quality Rollup for .NET Framework 3.5, 4.5.2, 4.6, 4.6.1, 4.6.2, 4.7 on Windows 8.1 and Server 2012 R2 for x64 (KB4041085)[0m
+[0;32m    openstack: Found Windows update (2017-11-27; 74.56 MB): 2017-11 Security and Quality Rollup for .NET Framework 3.5, 4.5.2, 4.6, 4.6.1, 4.6.2, 4.7 on Windows 8.1 and Server 2012 R2 for x64 (KB4049017)[0m
+[0;32m    openstack: Found Windows update (2017-12-12; 296.02 MB): 2017-12 Security Monthly Quality Rollup for Windows Server 2012 R2 for x64-based Systems (KB4054519)[0m
+[0;32m    openstack: Found Windows update (2018-07-10; 68.53 MB): Microsoft .NET Framework 4.7.2 for Windows Server 2012 R2 for x64 (KB4054566)[0m
+[0;32m    openstack: Found Windows update (2019-02-12; 72.88 MB): 2019-02 Security and Quality Rollup for .NET Framework 3.5, 4.5.2, 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1, 4.7.2 for Windows 8.1 and Server 2012 R2 for x64 (KB4487080)[0m
+[0;32m    openstack: Found Windows update (2019-04-09; 42.38 MB): Windows Malicious Software Removal Tool x64 - April 2019 (KB890830)[0m
+[0;32m    openstack: Found Windows update (2019-04-11; 389.31 MB): 2019-04 Security Monthly Quality Rollup for Windows Server 2012 R2 for x64-based Systems (KB4493446)[0m
+[0;32m    openstack: Downloading Windows updates (57 updates; 1327.61 MB)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 13 % cpu; 13 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 23 % cpu; 14 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 23 % cpu; 14 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 23 % cpu; 17 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 1 % cpu; 15 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 1 % cpu; 15 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 1 % cpu; 13 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 1 % cpu; 13 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 25 % cpu; 17 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 1 % cpu; 16 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 1 % cpu; 16 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 15 % cpu; 19 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 33 % cpu; 18 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 45 % cpu; 19 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 23 % cpu; 23 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 23 % cpu; 20 % memory)...[0m
+[0;32m    openstack: Installing Windows updates...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 2 % cpu; 21 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 21 % cpu; 21 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 21 % cpu; 22 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 8 % cpu; 22 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 10 % cpu; 23 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 22 % cpu; 23 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 27 % cpu; 23 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 36 % cpu; 22 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 35 % cpu; 26 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 24 % cpu; 23 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 26 % cpu; 27 % memory)...[0m
+[0;32m    openstack: Waiting for the Windows Modules Installer to exit...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 0 % cpu; 20 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 1 % cpu; 20 % memory)...[0m
+[1;32m==> openstack: Restarting the machine...[0m
+[1;32m==> openstack: Waiting for machine to become available...[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[0;32m    openstack: Waiting for the Windows Modules Installer to exit...[0m
+[0;32m    openstack: WINDOWS2012R2-S restarted.[0m
+[1;32m==> openstack: Running Windows update...[0m
+[0;32m    openstack: Searching for Windows updates...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 37 % cpu; 12 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 48 % cpu; 12 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 59 % cpu; 13 % memory)...[0m
+[0;32m    openstack: Found Windows update (2016-08-09; 10.41 MB): Security Update for Windows Server 2012 R2 (KB3172729)[0m
+[0;32m    openstack: Found Windows update (2016-09-13; 53.84 MB): Cumulative Security Update for Internet Explorer 11 for Windows Server 2012 R2 (KB3185319)[0m
+[0;32m    openstack: Found Windows update (2019-02-12; 52.01 MB): 2019-02 Security and Quality Rollup for .NET Framework 3.5, 4.5.2, 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1, 4.7.2 for Windows 8.1 and Server 2012 R2 for x64 (KB4487080)[0m
+[0;32m    openstack: Downloading Windows updates (3 updates; 116.26 MB)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 18 % cpu; 15 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 29 % cpu; 15 % memory)...[0m
+[0;32m    openstack: Installing Windows updates...[0m
+[0;32m    openstack: Waiting for the Windows Modules Installer to exit...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 5 % cpu; 15 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 12 % cpu; 15 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 6 % cpu; 13 % memory)...[0m
+[1;32m==> openstack: Restarting the machine...[0m
+[1;32m==> openstack: Waiting for machine to become available...[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[1;31m==> openstack: A system shutdown is in progress.(1115)[0m
+[0;32m    openstack: WINDOWS2012R2-S restarted.[0m
+[1;32m==> openstack: Running Windows update...[0m
+[0;32m    openstack: Searching for Windows updates...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 51 % cpu; 11 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 54 % cpu; 12 % memory)...[0m
+[0;32m    openstack: Waiting for operation to complete (system performance: 26 % cpu; 12 % memory)...[0m
+[1;32m==> openstack: Restarting Machine[0m
+[1;32m==> openstack: Waiting for machine to restart...[0m
+[1;31m==> openstack: #< CLIXML[0m
+[0;32m    openstack: WINDOWS2012R2-S restarted.[0m
+[1;32m==> openstack: Machine successfully restarted, moving on[0m
+[1;31m==> openstack: <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>[0m
+[1;32m==> openstack: Stopping server: 7298f3a1-35f2-44aa-ad3a-254714c4b705 ...[0m
+[0;32m    openstack: Waiting for server to stop: 7298f3a1-35f2-44aa-ad3a-254714c4b705 ...[0m
+[1;32m==> openstack: Detaching volume packer_5cd7205a-25b3-bae5-600d-862b8e78e21c (volume id: aa946dfa-98ce-48e1-9f93-33c8cd0cc4b7)[0m
+[1;32m==> openstack: Waiting for volume packer_5cd7205a-25b3-bae5-600d-862b8e78e21c (volume id: aa946dfa-98ce-48e1-9f93-33c8cd0cc4b7) to become available...[0m
 [1;32m==> openstack: Creating the image: windows2012r2-stemcell[0m
-[0;32m    openstack: Image: 8cd88b15-14f7-4412-ad90-bbfacfdc9eb4[0m
-[1;32m==> openstack: Waiting for image windows2012r2-stemcell (image id: 8cd88b15-14f7-4412-ad90-bbfacfdc9eb4) to become ready...[0m
-[1;32m==> openstack: Terminating the source server: 1a15d840-f4b0-41d1-a813-3d7f138e2068 ...[0m
-[1;32m==> openstack: Deleting volume: d6c378ec-f2f6-407b-8dd6-c0c00a7738ad ...[0m
+[0;32m    openstack: Image: e00bf0f0-b4e1-48f1-a1ce-8ba657629651[0m
+[1;32m==> openstack: Waiting for image windows2012r2-stemcell (image id: e00bf0f0-b4e1-48f1-a1ce-8ba657629651) to become ready...[0m
+[1;32m==> openstack: Terminating the source server: 7298f3a1-35f2-44aa-ad3a-254714c4b705 ...[0m
+[1;32m==> openstack: Deleting volume: aa946dfa-98ce-48e1-9f93-33c8cd0cc4b7 ...[0m
 [1;32mBuild 'openstack' finished.[0m
 
 ==> Builds finished. The artifacts of successful builds are:
---> openstack: An image was created: 8cd88b15-14f7-4412-ad90-bbfacfdc9eb4
+--> openstack: An image was created: e00bf0f0-b4e1-48f1-a1ce-8ba657629651

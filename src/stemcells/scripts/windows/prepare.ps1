@@ -6,6 +6,7 @@ Stop-Transcript | out-null
 New-Item "C:\Stemcell-Build\Logs" -ItemType Directory
 New-Item "C:\Stemcell-Build\Downloads" -ItemType Directory
 New-Item "C:\Stemcell-Build\Scripts" -ItemType Directory
+New-Item "C:\Stemcell-Build\Temp" -ItemType Directory
 
 Write-Output "Running User Data Script"
 Set-ExecutionPolicy Unrestricted -Scope LocalMachine -Force -ErrorAction Ignore
@@ -40,4 +41,4 @@ cmd.exe /c sc config winrm start= auto
 cmd.exe /c net start winrm
 cmd.exe /c wmic useraccount where "name='Administrator'" set PasswordExpires=FALSE
 
-Stop-Transcript
+Enable-PSRemoting -Force
