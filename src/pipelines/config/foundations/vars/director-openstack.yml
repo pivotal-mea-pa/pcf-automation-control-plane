@@ -1,0 +1,32 @@
+---
+# Openstack IaaS Configuration
+name: default
+keystone_version: v3.0
+identity_endpoint: ((auth_url))
+connection_options: '{"ssl_verify_peer":false}'
+domain: ((openstack_domain))
+tenant: ((openstack_project))
+username: ((openstack_username))
+password: ((openstack_password))
+region:
+networking_model: neutron
+security_group:
+key_pair_name:
+
+boot_from_volume: true
+additional_cloud_properties: {}
+ignore_server_availability_zone: true
+disable_dhcp: false
+
+ssh_private_key: ((openstack_ssh_private_key))
+
+ntp_servers:
+
+management_network_iaas_identifier:
+management_network_cidr:
+management_network_dns:
+management_network_gateway:
+management_network_reserved_ip_ranges:
+management_network_availability_zone_names: []
+
+singleton_availability_zone:
