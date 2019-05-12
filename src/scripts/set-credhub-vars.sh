@@ -43,12 +43,6 @@ if [[ $? -eq 0 ]]; then
     credhub set -n "/cp/concourse_client_secret" -t password \
       -w "$(bosh interpolate --no-color $creds_path --path /concourse_client_secret)"
 
-    credhub set -n "/pcf/config_git_repo_url" -t value \
-      -v "$automation_git_repo_path"
-    credhub set -n "/pcf/config_git_repo_key" -t ssh \
-      -p "$HOME/.ssh/git.pem" \
-      -u "$HOME/.ssh/git.pem.pub"
-
     (grep "^creds_sha1=" .state/checksums 2>&1 >/dev/null \
         && sed -i "s|^creds_sha1=.*|creds_sha1=${updated_creds_sha1}|" .state/checksums) \
     || echo -e "creds_sha1=${updated_creds_sha1}" >> .state/checksums
