@@ -40,7 +40,7 @@ if [[ ! -e ${root_dir}/.config/templates ]]; then
       ${root_dir}/.config/foundations/${name}/vars/auth.yml
 
     cp -r ${root_dir}/src/pipelines/config/foundations/env \
-      ${root_dir}/.config/foundations/${name}
+      ${root_dir}/.config/foundations/${name}/env
   done
 
   pushd ${root_dir}/.config
