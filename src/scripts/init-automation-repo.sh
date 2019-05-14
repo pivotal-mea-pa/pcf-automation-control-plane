@@ -26,21 +26,27 @@ rm -fr ${root_dir}/.config
 git clone $automation_git_repo_path ${root_dir}/.config
 
 if [[ ! -e ${root_dir}/.config/templates ]]; then
+  mkdir -p ${root_dir}/.config/templates
 
-  cp -r ${root_dir}/src/pipelines/config/templates .config
+  find ${root_dir}/src/pipelines/config/templates/ -maxdepth 1 -name '*' \
+    -exec cp {} ${root_dir}/.config/templates \;
+  find ${root_dir}/src/pipelines/config/templates/${iaas}/ -maxdepth 1 -name '*' \
+    -exec cp {} ${root_dir}/.config/templates \;
 
   for i in $(seq 0 $((num_foundations-1))); do
     name=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/name)
 
+    mkdir -p ${root_dir}/.config/foundations/${name}/env
     mkdir -p ${root_dir}/.config/foundations/${name}/vars
+    mkdir -p ${root_dir}/.config/foundations/${name}/state
+    touch ${root_dir}/.config/foundations/${name}/state/.keep
 
-    cp ${root_dir}/src/pipelines/config/foundations/vars/opsman-${iaas}.yml \
-      ${root_dir}/.config/foundations/${name}/vars/opsman.yml
-    cp ${root_dir}/src/pipelines/config/foundations/vars/auth.yml \
-      ${root_dir}/.config/foundations/${name}/vars/auth.yml
-
-    cp -r ${root_dir}/src/pipelines/config/foundations/env \
-      ${root_dir}/.config/foundations/${name}
+    find ${root_dir}/src/pipelines/config/foundations/env/ -maxdepth 1 -name '*' \
+      -exec cp {} ${root_dir}/.config/foundations/${name}/env \;
+    find ${root_dir}/src/pipelines/config/foundations/vars/ -maxdepth 1 -name '*' \
+      -exec cp {} ${root_dir}/.config/foundations/${name}/vars \;
+    find ${root_dir}/src/pipelines/config/foundations/vars/${iaas}/ -maxdepth 1 -name '*' \
+      -exec cp {} ${root_dir}/.config/foundations/${name}/vars \;
   done
 
   pushd ${root_dir}/.config
