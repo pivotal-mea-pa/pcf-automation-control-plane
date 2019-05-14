@@ -22,6 +22,8 @@ ssh_private_key: ((openstack_ssh_private_key))
 
 ntp_servers:
 
+az_configuration: []
+
 management_network_iaas_identifier:
 management_network_cidr:
 management_network_dns:

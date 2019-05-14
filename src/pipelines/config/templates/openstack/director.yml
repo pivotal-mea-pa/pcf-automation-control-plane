@@ -1,5 +1,4 @@
-# az-configuration:
-# - name: AZ0
+az-configuration: ((az_configuration))
 network-assignment:
   network:
     name: pcf-management

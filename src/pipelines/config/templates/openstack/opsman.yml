@@ -1,0 +1,19 @@
+---
+opsman-configuration:
+  openstack:
+    insecure: true
+    identity_api_version: 3
+    auth_url: ((auth_url))
+    project_domain_name: ((openstack_domain))
+    project_name: ((openstack_project))
+    user_domain_name: ((openstack_domain))
+    username: ((openstack_username))
+    password: ((openstack_password))
+    vm_name: ((opsman_instance_name))
+    flavor: ((opsman_instance_type))
+    availability_zone: ((opsman_az))
+    key_pair_name: ((opsma_keypair))
+    security_group_name: ((opsman_security_group))
+    net_id: ((opsman_network_id))
+    public_ip: ((opsman_public_ip))
+    private_ip: ((opsman_private_ip))
