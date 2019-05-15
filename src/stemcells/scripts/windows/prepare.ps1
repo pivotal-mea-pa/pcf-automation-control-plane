@@ -42,3 +42,4 @@ cmd.exe /c net start winrm
 cmd.exe /c wmic useraccount where "name='Administrator'" set PasswordExpires=FALSE
 
 Enable-PSRemoting -Force
+Restart-Service WinRM

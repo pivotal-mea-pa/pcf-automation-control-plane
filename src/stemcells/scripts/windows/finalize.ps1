@@ -7,3 +7,5 @@ Write-Output "Optimizing disk..."
 Optimize-Disk
 Write-Output "Compressing disk..."
 Compress-Disk
+Write-Output "Protecting CFCell..."
+Protect-CFCell

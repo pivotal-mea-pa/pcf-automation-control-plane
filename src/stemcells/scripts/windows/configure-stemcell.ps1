@@ -26,8 +26,6 @@ $ErrorActionPreference = "SilentlyContinue"
 # Prepare windows for Bosh
 Write-Output "Installing CFFeatures..."
 Install-CFFeatures
-Write-Output "Protecting CFCell..."
-Protect-CFCell
 
 # Install Bosh agent and SSHD service
 Write-Output "Installing Bosh agent..."
