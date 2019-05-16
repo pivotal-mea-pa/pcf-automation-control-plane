@@ -3,7 +3,6 @@
 name: default
 keystone_version: v3.0
 identity_endpoint: ((auth_url))
-connection_options: '{"ssl_verify_peer":false}'
 domain: ((openstack_domain))
 tenant: ((openstack_project))
 username: ((openstack_username))
@@ -18,7 +17,7 @@ additional_cloud_properties: {}
 ignore_server_availability_zone: true
 disable_dhcp: false
 
-ssh_private_key: ((openstack_ssh_private_key))
+ssh_private_key: ((openstack_ssh_private_key.private_key))
 
 ntp_servers:
 

@@ -44,10 +44,12 @@ properties-configuration:
     excluded_recursors: []
     handlers: []
   advanced_infrastructure_config:
-    connection_options: ((connection_options))
+    connection_options: '{"ssl_verify_peer":false}'
   iaas_configuration:
     name: ((name))
     keystone_version: ((keystone_version))
+    connection_options:
+      ssl_verify_peer: false
     identity_endpoint: ((identity_endpoint))
     domain: ((domain))
     tenant: ((tenant))
@@ -79,4 +81,3 @@ resource-configuration:
     instance_type:
       id: automatic
 vmextensions-configuration: []
-
