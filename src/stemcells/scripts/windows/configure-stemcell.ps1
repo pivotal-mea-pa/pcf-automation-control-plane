@@ -27,16 +27,4 @@ $ErrorActionPreference = "SilentlyContinue"
 Write-Output "Installing CFFeatures..."
 Install-CFFeatures
 
-# Install Bosh agent and SSHD service
-Write-Output "Installing Bosh agent..."
-Install-Agent -IaaS openstack -agentZipPath "$DownloadPath\Bosh-Agent.zip"
-Write-Output "Installing SSH service..."
-Install-SSHD -SSHZipFile "$DownloadPath\OpenSSH-Win64.zip"
-
 $ErrorActionPreference = "Stop"
-
-# Re-enable RDP
-Set-ItemProperty `
-  -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" `
-  -Name "fDenyTSConnections" -Value 0 -Verbose
-Enable-NetFirewallRule -DisplayGroup "Remote Desktop" -Verbose

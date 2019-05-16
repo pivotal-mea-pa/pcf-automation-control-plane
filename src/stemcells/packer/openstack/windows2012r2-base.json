@@ -85,37 +85,11 @@
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-vs.ps1"
-      ]
-    },
-    {
-      "type": "windows-restart"
-    },
-    {
-      "type": "windows-shell",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-psmodules.ps1"
-      ]
-    },
-    {
-      "type": "windows-shell",
-      "inline": [
         "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\configure-stemcell.ps1"
       ]
     },
     {
       "type": "windows-update"
-    },
-    {
-      "type": "windows-restart",
-      "restart_command": "powershell -command \"& {Write-Output 'restart no-op'}\""
-    },
-    {
-      "type": "windows-shell",
-      "pause_before": "600s",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\optimize.ps1"
-      ]
     }
   ]
 }

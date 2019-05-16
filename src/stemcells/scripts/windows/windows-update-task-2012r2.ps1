@@ -5,7 +5,9 @@ $ErrorActionPreference = "Stop"
 
 $ScriptPath = "C:\Stemcell-Build\Scripts"
 
-# Enable windows update service to be manually triggered
+# Enable windows update service to be 
+# manually triggered as it gets disabled 
+# by Bosh agent install script
 SC.exe config wuauserv start=demand
 
 # Configure task to run windows update
