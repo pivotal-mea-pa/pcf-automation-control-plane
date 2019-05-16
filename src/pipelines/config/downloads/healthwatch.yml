@@ -1,0 +1,6 @@
+---
+pivnet-api-token: ((pivnet-token))
+pivnet-file-glob: "*pivotal"
+pivnet-product-slug: p-healthwatch
+product-version-regex: '1\.4\..*'
+stemcell-iaas: ((iaas))
