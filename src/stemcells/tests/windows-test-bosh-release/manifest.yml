@@ -1,0 +1,28 @@
+name: windows-stemcell-test
+
+releases:
+- name: windows-test-bosh-release
+  version: latest
+
+stemcells:
+- alias: windows
+  os: ((stemcell_os_name))
+  version: latest
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  canary_watch_time: 30000-300000
+  update_watch_time: 30000-300000
+
+instance_groups:
+- name: hello
+  azs: [AZ0]
+  instances: 1
+  jobs:
+  - name: say-hello
+    release: windows-test-bosh-release
+  vm_type: medium
+  stemcell: windows
+  networks:
+  - name: pcf-releng

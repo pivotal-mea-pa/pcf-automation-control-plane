@@ -1,8 +1,9 @@
 ---
 name: say-hello
 
-templates: {}
+description: "This is a simple job"
+
+templates:
+  start.ps1: bin/start.ps1
 
 packages: []
-
-properties: {}

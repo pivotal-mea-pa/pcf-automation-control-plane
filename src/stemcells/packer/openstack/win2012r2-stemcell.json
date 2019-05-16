@@ -45,11 +45,6 @@
   ],
   "provisioners": [
     {
-      "type": "file",
-      "source": "{{user `root_dir`}}/src/stemcells/scripts/windows/",
-      "destination": "C:\\Stemcell-Build\\Scripts"
-    },
-    {
       "type": "windows-update"
     },
     {

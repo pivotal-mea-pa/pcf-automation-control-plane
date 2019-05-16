@@ -18,7 +18,73 @@ if [[ $set_foundation_creds == yes ]]; then
     name=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/name)
 
     #
-    # OpsManager deployment pipeline credentials
+    # Common deployment automation credentials 
+    # interpolated by pcf automation tasks.
+    #
+
+    source ${root_dir}/src/scripts/set-foundation-${iaas}-creds.sh
+
+    opsman_host=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_host)
+    opsman_user=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_user)
+    opsman_password=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_password)
+    opsman_decryption_phrase=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_decryption_phrase)
+    opsman_ssh_password=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_ssh_password)
+
+    credhub set -n "/pcf/${name}/opsman_host" \
+      -t value -v "$opsman_host"
+    credhub set -n "/pcf/${name}/opsman_user" \
+      -t value -v "$opsman_user"
+
+    if [[ "$opsman_password" == "*" ]]; then
+      set +e
+      credhub get -q -n /pcf/${name}/opsman_password 2>&1 >/dev/null
+      if [[ $? -ne 0 ]]; then
+        set -e
+        credhub generate -n "/pcf/${name}/opsman_password" -t password
+      else
+        set -e
+        echo "OpsMan password has already been generated.."
+      fi
+      opsman_password=$(credhub get -q -n /pcf/${name}/opsman_password)
+    else
+      credhub set -n "/pcf/${name}/opsman_password" \
+        -t password -w "$opsman_password"
+    fi
+
+    if [[ "$opsman_decryption_phrase" == "*" ]]; then
+      set +e
+      credhub get -q -n /pcf/${name}/opsman_decryption_phrase 2>&1 >/dev/null
+      if [[ $? -ne 0 ]]; then
+        set -e
+        credhub generate -n "/pcf/${name}/opsman_decryption_phrase" -t password
+      else
+        set -e
+        echo "OpsMan decryption phrase has already been generated.."
+      fi
+      opsman_decryption_phrase=$(credhub get -q -n /pcf/${name}/opsman_decryption_phrase)
+    else
+      credhub set -n "/pcf/${name}/opsman_decryption_phrase" \
+        -t password -w "$opsman_decryption_phrase"
+    fi
+
+    if [[ "$opsman_ssh_password" == "*" ]]; then
+      set +e
+      credhub get -q -n /pcf/${name}/opsman_ssh_password 2>&1 >/dev/null
+      if [[ $? -ne 0 ]]; then
+        set -e
+        credhub generate -n "/pcf/${name}/opsman_ssh_password" -t password
+      else
+        set -e
+        echo "OpsMan SSH password has already been generated.."
+      fi
+      opsman_ssh_password=$(credhub get -q -n /pcf/${name}/opsman_ssh_password)
+    else
+      credhub set -n "/pcf/${name}/opsman_ssh_password" \
+        -t password -w "$opsman_ssh_password"
+    fi
+
+    #
+    # Pipeline specific variables
     #
 
     credhub set -n "/concourse/main/deploy-${name}-opsman/foundation_name" \
@@ -46,59 +112,14 @@ if [[ $set_foundation_creds == yes ]]; then
     credhub set -n "/concourse/main/deploy-${name}-opsman/credhub_client_secret" \
       -t value -v "$credhub_client_secret"
 
-    opsman_host=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_host)
-    opsman_user=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_user)
-    opsman_password=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_password)
-    opsman_decryption_phrase=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_decryption_phrase)
-    opsman_ssh_password=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_ssh_password)
-
-    credhub set -n "/concourse/main/deploy-${name}-opsman/opsman_host" \
-      -t value -v "$opsman_host"
-    credhub set -n "/concourse/main/deploy-${name}-opsman/opsman_user" \
-      -t value -v "$opsman_user"
-
-    if [[ "$opsman_password" == "*" ]]; then
-      credhub generate -n "/concourse/main/deploy-${name}-opsman/opsman_password" -t password
-      opsman_password=$(credhub get -q -n /concourse/main/deploy-${name}-opsman/opsman_password)
-    else
-      credhub set -n "/concourse/main/deploy-${name}-opsman/opsman_password" \
-        -t password -w "$opsman_password"
-    fi
-    if [[ "$opsman_decryption_phrase" == "*" ]]; then
-      credhub generate -n "/concourse/main/deploy-${name}-opsman/opsman_decryption_phrase" -t password
-      opsman_decryption_phrase=$(credhub get -q -n /concourse/main/deploy-${name}-opsman/opsman_decryption_phrase)
-    else
-      credhub set -n "/concourse/main/deploy-${name}-opsman/opsman_decryption_phrase" \
-        -t password -w "$opsman_decryption_phrase"
-    fi
-    if [[ "$opsman_ssh_password" == "*" ]]; then
-      credhub generate -n "/concourse/main/deploy-${name}-opsman/opsman_ssh_password" -t password
-      opsman_ssh_password=$(credhub get -q -n /concourse/main/deploy-${name}-opsman/opsman_ssh_password)
-    else
-      credhub set -n "/concourse/main/deploy-${name}-opsman/opsman_ssh_password" \
-        -t password -w "$opsman_ssh_password"
-    fi
-
     #
     # Set opsman creds for each product pipeline
     #
 
     num_products=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/num_products)
-    for j in $(seq 0 $((num_foundations-1))); do
+    for j in $(seq 0 $((num_products-1))); do
       prod_name=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/products/$j/name)
 
-      credhub set -n "/concourse/main/deploy-${name}-${prod_name}/opsman_host" \
-        -t value -v "$opsman_host"
-      credhub set -n "/concourse/main/deploy-${name}-${prod_name}/opsman_user" \
-        -t value -v "$opsman_user"
-      credhub set -n "/concourse/main/deploy-${name}-${prod_name}/opsman_password" \
-        -t password -w "$opsman_password"
-      credhub set -n "/concourse/main/deploy-${name}-${prod_name}/opsman_decryption_phrase" \
-        -t password -w "$opsman_decryption_phrase"
-      credhub set -n "/concourse/main/deploy-${name}-${prod_name}/opsman_ssh_password" \
-        -t password -w "$opsman_ssh_password"
     done
-
-    source ${root_dir}/src/scripts/set-foundation-${iaas}-creds.sh
   done
 fi

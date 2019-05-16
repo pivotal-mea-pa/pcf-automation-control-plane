@@ -4,10 +4,6 @@
   path: /name?
   value: ((director_name))
 
-# - type: replace
-#   path: /resource_pools/name=vms/env/bosh/password?
-#   value: '*' # generate using: mkpasswd -m sha-512 -s
-
 - type: replace
   path: /resource_pools/name=vms/cloud_properties/root_disk?
   value:
@@ -20,4 +16,20 @@
 - type: replace
   path: /variables/name=director_ssl/options/alternative_names/-
   value: ((dns_name))
-  
+
+#
+# Debugging options
+#
+
+# Applies to VMs with Linux stemcells only
+# - type: replace
+#   path: /resource_pools/name=vms/env/bosh/password?
+#   value: '*' # generate using: mkpasswd -m sha-512 -s
+
+- type: replace
+  path: /instance_groups/name=bosh/properties/director/debug?/keep_unreachable_vms?
+  value: true
+
+- type: replace
+  path: /instance_groups/name=bosh/properties/director/max_vm_create_tries?
+  value: 0

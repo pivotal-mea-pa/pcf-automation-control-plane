@@ -5,6 +5,10 @@ $ErrorActionPreference = "Stop"
 
 $DownloadPath = "C:\Stemcell-Build\Downloads"
 
+Write-Output "Protecting CFCell..."
+Protect-CFCell
+
+New-Item "C:\Users\vcap" -ItemType Directory
 Write-Output "Installing Bosh agent..."
 Install-Agent -IaaS openstack -agentZipPath "$DownloadPath\Bosh-Agent.zip"
 Write-Output "Installing SSH service..."
@@ -14,8 +18,6 @@ Write-Output "Optimizing disk..."
 Optimize-Disk
 Write-Output "Compressing disk..."
 Compress-Disk
-Write-Output "Protecting CFCell..."
-Protect-CFCell
 
 # Re-enable RDP
 Set-ItemProperty `
