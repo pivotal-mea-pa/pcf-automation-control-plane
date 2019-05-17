@@ -2,6 +2,41 @@
 
 set -eux
 
+function set_pipeline_defaults() {
+
+  local name=$1
+  local product=$1
+
+  #
+  # Pipeline specific variables
+  #
+
+  credhub set -n "/concourse/main/deploy-${name}-${product}/foundation_name" \
+    -t value -v "$name"
+
+  credhub set -n "/concourse/main/deploy-${name}-${product}/default_ca" \
+    -t certificate -r "$default_ca"
+
+  credhub set -n "/concourse/main/deploy-${name}-${product}/config_git_repo_url" -t value \
+    -v "$automation_git_repo_path"
+  credhub set -n "/concourse/main/deploy-${name}-${product}/config_git_repo_key" -t ssh \
+    -p "$automation_git_private_key"
+
+  credhub set -n "/concourse/main/deploy-${name}-${product}/s3_url" \
+    -t value -v "http://${s3_host}:9000"
+  credhub set -n "/concourse/main/deploy-${name}-${product}/s3_accesskey" \
+    -t password -w "$s3_accesskey"
+  credhub set -n "/concourse/main/deploy-${name}-${product}/s3_secretkey" \
+    -t password -w "$s3_secretkey"
+
+  credhub set -n "/concourse/main/deploy-${name}-${product}/credhub_url" \
+    -t value -v "$credhub_url"
+  credhub set -n "/concourse/main/deploy-${name}-${product}/credhub_client_id" \
+    -t value -v "$credhub_client_id"
+  credhub set -n "/concourse/main/deploy-${name}-${product}/credhub_client_secret" \
+    -t value -v "$credhub_client_secret"
+}
+
 if [[ $set_foundation_creds == yes ]]; then
 
   default_ca=$(bosh interpolate --no-color $creds_path --path /default_ca/ca)
@@ -45,34 +80,7 @@ if [[ $set_foundation_creds == yes ]]; then
     set_credhub_password \
       "/pcf/${name}/opsman_ssh_password" "$opsman_ssh_password" no
 
-    #
-    # Pipeline specific variables
-    #
-
-    credhub set -n "/concourse/main/deploy-${name}-opsman/foundation_name" \
-      -t value -v "$name"
-
-    credhub set -n "/concourse/main/deploy-${name}-opsman/default_ca" \
-      -t certificate -r "$default_ca"
-
-    credhub set -n "/concourse/main/deploy-${name}-opsman/config_git_repo_url" -t value \
-      -v "$automation_git_repo_path"
-    credhub set -n "/concourse/main/deploy-${name}-opsman/config_git_repo_key" -t ssh \
-      -p "$automation_git_private_key"
-
-    credhub set -n "/concourse/main/deploy-${name}-opsman/s3_url" \
-      -t value -v "http://${s3_host}:9000"
-    credhub set -n "/concourse/main/deploy-${name}-opsman/s3_accesskey" \
-      -t password -w "$s3_accesskey"
-    credhub set -n "/concourse/main/deploy-${name}-opsman/s3_secretkey" \
-      -t password -w "$s3_secretkey"
-
-    credhub set -n "/concourse/main/deploy-${name}-opsman/credhub_url" \
-      -t value -v "$credhub_url"
-    credhub set -n "/concourse/main/deploy-${name}-opsman/credhub_client_id" \
-      -t value -v "$credhub_client_id"
-    credhub set -n "/concourse/main/deploy-${name}-opsman/credhub_client_secret" \
-      -t value -v "$credhub_client_secret"
+    set_pipeline_defaults "${name}" "opsman"
 
     #
     # Set opsman creds for each product pipeline
@@ -83,12 +91,11 @@ if [[ $set_foundation_creds == yes ]]; then
       | grep -e "^-" | wc -l)
 
     for j in $(seq 0 $((num_products-1))); do
-      prod_name=$(bosh interpolate ${root_dir}/vars.yml \
+      product=$(bosh interpolate ${root_dir}/vars.yml \
         --path /foundations/$i/products/$j/name)
 
-      credhub set -n "/concourse/main/deploy-${name}-${prod_name}/default_ca" \
-        -t certificate -r "$default_ca"
-
+      set_pipeline_defaults "${name}" "${product}"
+      
       num_creds=$(bosh interpolate ${root_dir}/vars.yml \
         --path /foundations/$i/products/$j/creds \
         | grep -e "^-" | wc -l)
@@ -99,15 +106,34 @@ if [[ $set_foundation_creds == yes ]]; then
           --path /foundations/$i/products/$j/creds/$k/name)
         cred_type=$(bosh interpolate ${root_dir}/vars.yml \
           --path /foundations/$i/products/$j/creds/$k/type)
+        cred_scope=$(bosh interpolate ${root_dir}/vars.yml \
+          --path /foundations/$i/products/$j/creds/$k/scope?)
         regenerate=$(bosh interpolate ${root_dir}/vars.yml \
-          --path /foundations/$i/products/$j/creds/$k/regenerate)
+          --path /foundations/$i/products/$j/creds/$k/regenerate?)
+        overwrite=$(bosh interpolate ${root_dir}/vars.yml \
+          --path /foundations/$i/products/$j/creds/$k/overwrite?)
+
+        if [[ $cred_scope == pipeline ]]; then
+          cred_path_prefix="/concourse/main/deploy-${name}-${product}"
+        else
+          cred_path_prefix="/pcf/${name}/${product}"
+        fi
 
         case $cred_type in
+          value)
+            cred_value=$(bosh interpolate ${root_dir}/vars.yml \
+              --path /foundations/$i/products/$j/creds/$k/value)
+            set_credhub_value \
+              "${cred_path_prefix}/$cred_name" \
+              "$cred_value" \
+              "$overwrite"
+            ;;
+
           password)
             cred_value=$(bosh interpolate ${root_dir}/vars.yml \
               --path /foundations/$i/products/$j/creds/$k/value)
             set_credhub_password \
-              "/pcf/${name}/${prod_name}/$cred_name" \
+              "${cred_path_prefix}/$cred_name" \
               "$cred_value" \
               "$regenerate"
             ;;
@@ -120,7 +146,7 @@ if [[ $set_foundation_creds == yes ]]; then
             organization=$(bosh interpolate ${root_dir}/vars.yml \
               --path /foundations/$i/products/$j/creds/$k/organization)
             generate_credhub_certificate \
-              "/pcf/${name}/${prod_name}/$cred_name" \
+              "${cred_path_prefix}/$cred_name" \
               "$regenerate" \
               "/cp/default_ca" \
               "$common_name" \
