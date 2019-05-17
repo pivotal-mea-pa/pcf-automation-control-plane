@@ -17,23 +17,23 @@ resources:
     bucket: pivnet-products
     regexp: .*image-(.*).tgz
 
-- name: opsman-image
+- name: pas-stemcell
   type: s3
   source:
     access_key_id: ((s3_accesskey))
     secret_access_key: ((s3_secretkey))
     endpoint: ((s3_url))
     bucket: pivnet-products
-    regexp: ((opsman_image_s3_versioned_regexp)) # vsphere ex: pcf-vsphere-(.*).ova
+    regexp: pas/((bosh_stemcell_s3_versioned_regexp))
 
-- name: installation
+- name: pas-product
   type: s3
   source:
     access_key_id: ((s3_accesskey))
     secret_access_key: ((s3_secretkey))
     endpoint: ((s3_url))
-    bucket: pcf-exports
-    regexp: ((foundation_name))/installation-(.*).zip
+    bucket: pivnet-products
+    regexp: pas/((pas_tile_s3_versioned_regexp))
 
 # configurations
 
@@ -57,21 +57,18 @@ resources:
     interval: 24h
 
 jobs:
-- name: install-opsman
+- name: upload-and-stage-pas
   serial: true
-  serial_groups: [ install ]
   plan:
   - aggregate:
-    - get: one-time-trigger
-      trigger: true
     - get: pcf-automation-image
       params:
         unpack: true
     - get: pcf-automation-tasks
       params:
         unpack: true
-    - get: opsman-image
     - get: configuration
+    - get: pas-product
 
   - task: credhub-interpolate
     image: pcf-automation-image
@@ -81,60 +78,65 @@ jobs:
       CREDHUB_CLIENT: ((credhub_client_id))
       CREDHUB_SECRET: ((credhub_client_secret))
       CREDHUB_CA_CERT: ((default_ca.ca))
-      PREFIX: '/concourse/main/deploy-((foundation_name))-opsman'
+      PREFIX: '/pcf/((foundation_name))'
       INTERPOLATION_PATH: "foundations/((foundation_name))"
     input_mapping:
       files: configuration
     output_mapping:
       interpolated-files: interpolated-configs
 
-  - task: create-vm
+  - task: upload-product
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/create-vm.yml
+    file: pcf-automation-tasks/tasks/upload-product.yml
     input_mapping:
-      image: opsman-image
-      state: configuration
-      config: configuration
-      vars: interpolated-configs
-    params:
-      VARS_FILES: vars/foundations/((foundation_name))/vars/opsman.yml
-      STATE_FILE: foundations/((foundation_name))/state/state.yml
-      OPSMAN_CONFIG_FILE: templates/opsman.yml
-    ensure: &make-state-commit
-      do:
-        - task: make-commit
-          image: pcf-automation-image
-          file: pcf-automation-tasks/tasks/make-git-commit.yml
-          input_mapping:
-            repository: configuration
-            file-source: generated-state
-          output_mapping:
-            repository-commit: configuration-commit
-          params:
-            FILE_SOURCE_PATH: state.yml
-            FILE_DESTINATION_PATH: foundations/((foundation_name))/state/state.yml
-            GIT_AUTHOR_EMAIL: "pcf-pipeline-bot@example.com"
-            GIT_AUTHOR_NAME: "PCF Automation Bot"
-            COMMIT_MESSAGE: 'Update state file'
-        - put: configuration
-          params:
-            repository: configuration-commit
-            merge: true
-
-  - task: configure-authentication
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/configure-authentication.yml
-    attempts: 10
-    input_mapping:
-      config: interpolated-configs
       env: interpolated-configs
+      product: pas-product
     params:
       ENV_FILE: foundations/((foundation_name))/env/env.yml
-      AUTH_CONFIG_FILE: foundations/((foundation_name))/vars/auth.yml
-
-  - task: configure-director
+      
+  - task: stage-product
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/configure-director.yml
+    file: pcf-automation-tasks/tasks/stage-product.yml
+    input_mapping:
+      env: interpolated-configs
+      product: pas-product
+    params:
+      ENV_FILE: foundations/((foundation_name))/env/env.yml
+
+- name: configure-pas
+  serial: true
+  plan:
+  - aggregate:
+    - get: pcf-automation-image
+      params:
+        unpack: true
+    - get: pcf-automation-tasks
+      params:
+        unpack: true
+    - get: configuration
+    - get: pas-product
+      trigger: true
+      passed:
+      - upload-and-stage-pas
+
+  - task: credhub-interpolate
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_SERVER: ((credhub_url))
+      CREDHUB_CLIENT: ((credhub_client_id))
+      CREDHUB_SECRET: ((credhub_client_secret))
+      CREDHUB_CA_CERT: ((default_ca.ca))
+      PREFIX: '/pcf/((foundation_name))'
+      INTERPOLATION_PATH: "foundations/((foundation_name))"
+    input_mapping:
+      files: configuration
+    output_mapping:
+      interpolated-files: interpolated-configs
+
+  - task: configure-pas
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/configure-product.yml
     input_mapping:
       config: configuration
       vars: interpolated-configs
@@ -142,22 +144,12 @@ jobs:
     params:
       ENV_FILE: foundations/((foundation_name))/env/env.yml
       VARS_FILES: vars/foundations/((foundation_name))/vars/director.yml
-      DIRECTOR_CONFIG_FILE: templates/director.yml
-
-  - task: apply-director-changes
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/apply-director-changes.yml
-    input_mapping:
-      env: interpolated-configs
-    params:
-      ENV_FILE: foundations/((foundation_name))/env/env.yml
-
-- name: export-installation
+      CONFIG_FILE: ((foundation-name))/pas.yml
+      
+- name: upload-stemcell
   serial: true
   plan:
   - aggregate:
-    - get: daily-trigger
-      trigger: true
     - get: pcf-automation-image
       params:
         unpack: true
@@ -165,6 +157,7 @@ jobs:
       params:
         unpack: true
     - get: configuration
+    - get: pas-stemcell
 
   - task: credhub-interpolate
     image: pcf-automation-image
@@ -174,41 +167,47 @@ jobs:
       CREDHUB_CLIENT: ((credhub_client_id))
       CREDHUB_SECRET: ((credhub_client_secret))
       CREDHUB_CA_CERT: ((default_ca.ca))
-      PREFIX: '/concourse/main/deploy-((foundation_name))-opsman'
+      PREFIX: '/pcf/((foundation_name))'
       INTERPOLATION_PATH: "foundations/((foundation_name))"
     input_mapping:
       files: configuration
     output_mapping:
       interpolated-files: interpolated-configs
 
-  - task: export-installation
+  - task: upload-pas-stemcell
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/export-installation.yml
+    file: pcf-automation-tasks/tasks/upload-stemcell.yml
     input_mapping:
       env: interpolated-configs
+      stemcell: pas-stemcell
     params:
       ENV_FILE: foundations/((foundation_name))/env/env.yml
-  - put: installation
-    params:
-      file: installation/installation-*.zip
 
-- name: upgrade-opsman
+  - task: upload-healthwatch-stemcell
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/upload-stemcell.yml
+    input_mapping:
+      env: interpolated-configs
+      stemcell: healthwatch-stemcell
+    params:
+      ENV_FILE: foundations/((foundation_name))/env/env.yml
+
+- name: apply-changes
   serial: true
-  serial_groups: [ install ]
   plan:
   - aggregate:
-    - get: one-time-trigger
-      passed: [ install-opsman ]
     - get: pcf-automation-image
       params:
         unpack: true
     - get: pcf-automation-tasks
       params:
         unpack: true
-    - get: opsman-image
-    - get: installation
-      passed: [ export-installation ]
-    - get: configuration
+    - get: pas-product
+      passed:
+      - configure-pas
+    - get: pas-stemcell
+      passed:
+      - upload-stemcell
 
   - task: credhub-interpolate
     image: pcf-automation-image
@@ -218,28 +217,13 @@ jobs:
       CREDHUB_CLIENT: ((credhub_client_id))
       CREDHUB_SECRET: ((credhub_client_secret))
       CREDHUB_CA_CERT: ((default_ca.ca))
-      PREFIX: '/concourse/main/deploy-((foundation_name))-opsman'
+      PREFIX: '/pcf/((foundation_name))'
       INTERPOLATION_PATH: "foundations/((foundation_name))"
     input_mapping:
       files: configuration
     output_mapping:
       interpolated-files: interpolated-configs
 
-  - task: upgrade-opsman
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/upgrade-opsman.yml
-    input_mapping:
-      image: opsman-image
-      state: configuration
-      config: interpolated-configs
-      env: interpolated-configs
-    params:
-      ENV_FILE: foundations/((foundation_name))/env/env.yml
-      STATE_FILE: foundations/((foundation_name))/state/state.yml
-      VARS_FILES: vars/foundations/((foundation_name))/vars/opsman.yml
-      OPSMAN_CONFIG_FILE: templates/opsman.yml
-    ensure: *make-state-commit
-    
   - task: apply-director-changes
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/apply-director-changes.yml

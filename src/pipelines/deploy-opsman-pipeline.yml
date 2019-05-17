@@ -81,7 +81,7 @@ jobs:
       CREDHUB_CLIENT: ((credhub_client_id))
       CREDHUB_SECRET: ((credhub_client_secret))
       CREDHUB_CA_CERT: ((default_ca.ca))
-      PREFIX: '/concourse/main/deploy-((foundation_name))-opsman'
+      PREFIX: '/pcf/((foundation_name))'
       INTERPOLATION_PATH: "foundations/((foundation_name))"
     input_mapping:
       files: configuration
@@ -174,7 +174,7 @@ jobs:
       CREDHUB_CLIENT: ((credhub_client_id))
       CREDHUB_SECRET: ((credhub_client_secret))
       CREDHUB_CA_CERT: ((default_ca.ca))
-      PREFIX: '/concourse/main/deploy-((foundation_name))-opsman'
+      PREFIX: '/pcf/((foundation_name))'
       INTERPOLATION_PATH: "foundations/((foundation_name))"
     input_mapping:
       files: configuration
@@ -218,7 +218,7 @@ jobs:
       CREDHUB_CLIENT: ((credhub_client_id))
       CREDHUB_SECRET: ((credhub_client_secret))
       CREDHUB_CA_CERT: ((default_ca.ca))
-      PREFIX: '/concourse/main/deploy-((foundation_name))-opsman'
+      PREFIX: '/pcf/((foundation_name))'
       INTERPOLATION_PATH: "foundations/((foundation_name))"
     input_mapping:
       files: configuration
