@@ -8,9 +8,9 @@ apps_domain:
 system_domain:
 
 ha_proxy_static_ips:
-diego_brain_static_ips:
 router_static_ips:
 tcp_router_static_ips:
+diego_brain_static_ips:
 
 mysql_monitor_recipient_email:
 
