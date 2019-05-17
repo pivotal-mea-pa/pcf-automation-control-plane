@@ -2,7 +2,8 @@
 
 set -eux
 
-num_foundations=$(bosh interpolate ${root_dir}/vars.yml --path /number_foundations)
+num_foundations=$(bosh interpolate ${root_dir}/vars.yml \
+  --path /foundations | grep -e "^-" | wc -l)
 
 if [[ $local_git_server == yes \
   && ! -e /home/git/pcf-configuration.git ]]; then

@@ -25,3 +25,20 @@ bosh -n -d windows-stemcell-test deploy \
   manifest.yml --var=stemcell_os_name=$os_name
 
 popd
+
+rm -f ${root_dir}/.stembuild/windows-stemcell-test-*.tgz
+bosh -d windows-stemcell-test logs --dir ${root_dir}/.stembuild/
+
+pushd ${root_dir}/.stembuild/
+tar xvzf windows-stemcell-test-*.tgz
+
+cat ./say-hello/say-hello/job-service-wrapper.out.log \
+  | grep "I am executing a BOSH job. FOO=BAR" 2>&1 >/dev/null
+
+rm -fr ./say-hello
+popd
+
+rm -f ${root_dir}/.stembuild/windows-stemcell-test-*.tgz
+bosh -n -d windows-stemcell-test delete-deployment
+
+echo "No errors detected..."

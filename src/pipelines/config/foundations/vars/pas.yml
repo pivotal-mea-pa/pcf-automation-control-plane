@@ -1,0 +1,33 @@
+---
+network_name:
+availability_zones:
+- name:
+singleton_availability_zone:
+
+apps_domain:
+system_domain:
+
+ha_proxy_static_ips:
+diego_brain_static_ips:
+router_static_ips:
+tcp_router_static_ips:
+
+mysql_monitor_recipient_email:
+
+#
+# Certificates and passwords from credhub
+#
+
+haproxy_forward_tls_backend_ca: |
+  ((default_ca.ca))
+
+routing_custom_ca_certificates: |
+  ((default_ca.ca))
+
+default_networking_poe_tls_cert: ((default_networking_poe_ssl.certificate))
+default_networking_poe_tls_key: ((default_networking_poe_ssl.private_key))
+
+uaa_service_provider_cert: ((uaa_service_provider.certificate))
+uaa_service_provider_key: ((uaa_service_provider.private_key))
+
+default_credhub_encryption_key: ((default_credhub_encryption_key))

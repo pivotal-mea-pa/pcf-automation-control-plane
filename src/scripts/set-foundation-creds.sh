@@ -22,6 +22,9 @@ if [[ $set_foundation_creds == yes ]]; then
     # interpolated by pcf automation tasks.
     #
 
+    credhub set -n "/pcf/${name}/default_ca" \
+      -t certificate -r "$default_ca"
+      
     source ${root_dir}/src/scripts/set-foundation-${iaas}-creds.sh
 
     opsman_host=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_host)
@@ -35,53 +38,12 @@ if [[ $set_foundation_creds == yes ]]; then
     credhub set -n "/pcf/${name}/opsman_user" \
       -t value -v "$opsman_user"
 
-    if [[ "$opsman_password" == "*" ]]; then
-      set +e
-      credhub get -q -n /pcf/${name}/opsman_password 2>&1 >/dev/null
-      if [[ $? -ne 0 ]]; then
-        set -e
-        credhub generate -n "/pcf/${name}/opsman_password" -t password
-      else
-        set -e
-        echo "OpsMan password has already been generated.."
-      fi
-      opsman_password=$(credhub get -q -n /pcf/${name}/opsman_password)
-    else
-      credhub set -n "/pcf/${name}/opsman_password" \
-        -t password -w "$opsman_password"
-    fi
-
-    if [[ "$opsman_decryption_phrase" == "*" ]]; then
-      set +e
-      credhub get -q -n /pcf/${name}/opsman_decryption_phrase 2>&1 >/dev/null
-      if [[ $? -ne 0 ]]; then
-        set -e
-        credhub generate -n "/pcf/${name}/opsman_decryption_phrase" -t password
-      else
-        set -e
-        echo "OpsMan decryption phrase has already been generated.."
-      fi
-      opsman_decryption_phrase=$(credhub get -q -n /pcf/${name}/opsman_decryption_phrase)
-    else
-      credhub set -n "/pcf/${name}/opsman_decryption_phrase" \
-        -t password -w "$opsman_decryption_phrase"
-    fi
-
-    if [[ "$opsman_ssh_password" == "*" ]]; then
-      set +e
-      credhub get -q -n /pcf/${name}/opsman_ssh_password 2>&1 >/dev/null
-      if [[ $? -ne 0 ]]; then
-        set -e
-        credhub generate -n "/pcf/${name}/opsman_ssh_password" -t password
-      else
-        set -e
-        echo "OpsMan SSH password has already been generated.."
-      fi
-      opsman_ssh_password=$(credhub get -q -n /pcf/${name}/opsman_ssh_password)
-    else
-      credhub set -n "/pcf/${name}/opsman_ssh_password" \
-        -t password -w "$opsman_ssh_password"
-    fi
+    set_credhub_password \
+      "/pcf/${name}/opsman_password" "$opsman_password" no
+    set_credhub_password \
+      "/pcf/${name}/opsman_decryption_phrase" "$opsman_decryption_phrase" no
+    set_credhub_password \
+      "/pcf/${name}/opsman_ssh_password" "$opsman_ssh_password" no
 
     #
     # Pipeline specific variables
@@ -116,10 +78,57 @@ if [[ $set_foundation_creds == yes ]]; then
     # Set opsman creds for each product pipeline
     #
 
-    num_products=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/num_products)
-    for j in $(seq 0 $((num_products-1))); do
-      prod_name=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/products/$j/name)
+    num_products=$(bosh interpolate ${root_dir}/vars.yml \
+      --path /foundations/$i \
+      | grep -e "^-" | wc -l)
 
+    for j in $(seq 0 $((num_products-1))); do
+      prod_name=$(bosh interpolate ${root_dir}/vars.yml \
+        --path /foundations/$i/products/$j/name)
+
+      credhub set -n "/concourse/main/deploy-${name}-${prod_name}/default_ca" \
+        -t certificate -r "$default_ca"
+
+      num_creds=$(bosh interpolate ${root_dir}/vars.yml \
+        --path /foundations/$i/products/$j/creds \
+        | grep -e "^-" | wc -l)
+
+      for k in $(seq 0 $((num_creds-1))); do
+
+        cred_name=$(bosh interpolate ${root_dir}/vars.yml \
+          --path /foundations/$i/products/$j/creds/$k/name)
+        cred_type=$(bosh interpolate ${root_dir}/vars.yml \
+          --path /foundations/$i/products/$j/creds/$k/type)
+        regenerate=$(bosh interpolate ${root_dir}/vars.yml \
+          --path /foundations/$i/products/$j/creds/$k/regenerate)
+
+        case $cred_type in
+          password)
+            cred_value=$(bosh interpolate ${root_dir}/vars.yml \
+              --path /foundations/$i/products/$j/creds/$k/value)
+            set_credhub_password \
+              "/pcf/${name}/${prod_name}/$cred_name" \
+              "$cred_value" \
+              "$regenerate"
+            ;;
+
+          certificate)
+            common_name=$(bosh interpolate ${root_dir}/vars.yml \
+              --path /foundations/$i/products/$j/creds/$k/common_name)
+            alternate_names=$(bosh interpolate ${root_dir}/vars.yml \
+              --path /foundations/$i/products/$j/creds/$k/alternate_names)
+            organization=$(bosh interpolate ${root_dir}/vars.yml \
+              --path /foundations/$i/products/$j/creds/$k/organization)
+            generate_credhub_certificate \
+              "/pcf/${name}/${prod_name}/$cred_name" \
+              "$regenerate" \
+              "/cp/default_ca" \
+              "$common_name" \
+              "$alternate_names" \
+              "$organization"
+            ;;
+        esac
+      done
     done
   done
 fi

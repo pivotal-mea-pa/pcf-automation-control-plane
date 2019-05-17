@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ${root_dir}/src/scripts/funcs.sh
+
 set -eux
 
 if [[ -z $iaas \
