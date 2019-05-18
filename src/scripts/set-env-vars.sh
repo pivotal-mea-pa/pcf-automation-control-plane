@@ -2,6 +2,8 @@
 
 set -eux
 
+default_foundation=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/0/name)
+
 cat << ---EOF > ${root_dir}/.envrc
 export root_dir=$root_dir
 export iaas=$iaas
@@ -22,10 +24,10 @@ export UAA_TARGET=https://$(bosh interpolate ${root_dir}/vars.yml --path /dns_na
 export UAA_ADMIN_CLIENT=\$BOSH_CLIENT
 export UAA_ADMIN_CLIENT_SECRET=\$BOSH_CLIENT_SECRET
 
-export OM_TARGET="$(bosh interpolate ${root_dir}/vars.yml --path /ops_manager_host)"
-export OM_USERNAME="$(bosh interpolate ${root_dir}/vars.yml --path /ops_manager_user)"
-export OM_PASSWORD="$(bosh interpolate ${root_dir}/vars.yml --path /ops_manager_password)"
-export OM_DECRYPTION_PASSPHRASE="$(bosh interpolate ${root_dir}/vars.yml --path /ops_manager_decryption_phrase)"
+export OM_TARGET="$(credhub get -q -n /pcf/${default_foundation}/opsman_host)"
+export OM_USERNAME="$(credhub get -q -n /pcf/${default_foundation}/opsman_user)"
+export OM_PASSWORD="$(credhub get -q -n /pcf/${default_foundation}/opsman_password)"
+export OM_DECRYPTION_PASSPHRASE="$(credhub get -q -n /pcf/${default_foundation}/opsman_decryption_phrase)"
 export OM_SKIP_SSL_VALIDATION=true
 ---EOF
 
