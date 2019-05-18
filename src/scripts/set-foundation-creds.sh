@@ -116,7 +116,7 @@ if [[ $set_foundation_creds == yes ]]; then
         if [[ $cred_scope == pipeline ]]; then
           cred_path_prefix="/concourse/main/deploy-${name}-${product}"
         else
-          cred_path_prefix="/pcf/${name}/${product}"
+          cred_path_prefix="/pcf/${name}"
         fi
 
         case $cred_type in
