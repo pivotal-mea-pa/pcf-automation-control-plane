@@ -24,10 +24,10 @@ haproxy_forward_tls_backend_ca: |
 routing_custom_ca_certificates: |
   ((default_ca.ca))
 
-default_networking_poe_tls_cert: ((default_networking_poe_ssl.certificate))
-default_networking_poe_tls_key: ((default_networking_poe_ssl.private_key))
+default_networking_poe_tls_cert: ((pas_default_networking_poe_tls.certificate))
+default_networking_poe_tls_key: ((pas_default_networking_poe_tls.private_key))
 
-uaa_service_provider_cert: ((uaa_service_provider.certificate))
-uaa_service_provider_key: ((uaa_service_provider.private_key))
+uaa_service_provider_cert: ((pas_uaa_service_provider.certificate))
+uaa_service_provider_key: ((pas_uaa_service_provider.private_key))
 
-default_credhub_encryption_key: ((default_credhub_encryption_key))
+default_credhub_encryption_key: ((pas_default_credhub_encryption_key))

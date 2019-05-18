@@ -185,6 +185,14 @@ product-properties:
     value: enable
   .properties.nfs_volume_driver.enable.ldap_service_account_password:
     value: {}
+  .properties.push_apps_manager_company_name:
+    value: ((branding_company_name))
+  .properties.push_apps_manager_logo:
+    value: ((branding_product_logo))
+  .properties.push_apps_manager_square_logo:
+    value: ((branding_square_logo))
+  .properties.push_apps_manager_footer_text:
+    value: ((branding_footer_legal_text))
   .properties.push_apps_manager_app_poll_interval:
     value: 10
   .properties.push_apps_manager_currency_lookup:
