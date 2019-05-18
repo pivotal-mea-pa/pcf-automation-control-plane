@@ -5,7 +5,7 @@ set -eux
 function set_pipeline_defaults() {
 
   local name=$1
-  local product=$1
+  local product=$2
 
   #
   # Pipeline specific variables
