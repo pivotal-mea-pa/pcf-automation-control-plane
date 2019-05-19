@@ -14,7 +14,7 @@
 
 - type: replace
   path: /instance_groups/name=db/vm_type?
-  value: large
+  value: small
 
 - type: replace
   path: /instance_groups/name=db/azs?
@@ -22,11 +22,11 @@
 
 - type: replace
   path: /instance_groups/name=db/persistent_disk_type?
-  value: "51200"
+  value: "20480"
 
 - type: replace
   path: /instance_groups/name=worker/vm_type?
-  value: xlarge
+  value: medium
 
 - type: replace
   path: /instance_groups/name=worker/azs?
