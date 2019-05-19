@@ -20,7 +20,9 @@ if [[ $action != create-manifests-only \
   && ($action == deploy || $? -ne 0) ]]; then
 
   set -e
-  bosh -n -d $minio_name deploy $minio_manifest
+  bosh -n -d $minio_name deploy \
+    -v "minio_default_bucket=default" \
+    $minio_manifest
 
   s3_host=$(bosh interpolate ${root_dir}/vars.yml --path /minio_host)
   s3_accesskey=$(credhub get -q -n '/cp/s3_accesskey')
