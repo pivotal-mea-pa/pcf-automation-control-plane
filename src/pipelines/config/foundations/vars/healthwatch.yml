@@ -1,0 +1,8 @@
+---
+network_name:
+service_network_name:
+availability_zones:
+- name:
+singleton_availability_zone:
+
+opsman_host: ((opsman_host))
