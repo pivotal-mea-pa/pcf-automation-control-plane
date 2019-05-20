@@ -1,8 +1,9 @@
 #!/bin/bash
 
-stemcell_version=$1
-if [[ -z $stemcell_version ]]; then
-  echo "USAGE: ./test-windows-stemcell.sh [STEMCELL_VERSION]"
+os_name=$1
+stemcell_version=$2
+if [[ -z $os_name || -z $stemcell_version ]]; then
+  echo "USAGE: ./test-windows-stemcell.sh [OS_NAME] [STEMCELL_VERSION]"
   exit 1
 fi
 
@@ -12,7 +13,7 @@ root_dir=$(cd $(dirname "$(ls -l $0 | awk '{ print $NF }')")/.. && pwd)
 os_name=$(bosh stemcells | awk "/\t$stemcell_version\\*?/{ print \$3 }")
 if [[ -z $os_name ]]; then
   bosh upload-stemcell \
-    ${root_dir}/.stembuild/bosh-stemcell-${stemcell_version}-openstack-kvm-windows-go_agent.tgz
+    ${root_dir}/.stembuild/bosh-stemcell-${stemcell_version}-openstack-kvm-${os_name}-go_agent-raw.tgz
 
   os_name=$(bosh stemcells | awk "/$stemcell_version/{ print \$3 }")
 fi

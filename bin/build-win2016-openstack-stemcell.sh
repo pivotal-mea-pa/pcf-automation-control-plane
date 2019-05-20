@@ -1,12 +1,6 @@
 #!/bin/bash
 
-iaas=$1
-if [[ -z $iaas ]]; then
-  echo "USAGE: ./build-win2012r2-stemcell.sh [IAAS]"
-  exit 1
-fi
-
-action=$2
+action=$1
 
 set -eux
 root_dir=$(cd $(dirname "$(ls -l $0 | awk '{ print $NF }')")/.. && pwd)
@@ -51,8 +45,8 @@ if [[ -z $stemcell_image_id ]]; then
     -var "ssh_keypair_name=$ssh_keypair_name" \
     -var "image_build_name=win2012r2-stemcell-base" \
     -var "root_dir=${root_dir}" \
-    src/stemcells/packer/$iaas/win2012r2-base.json 2>&1 \
-    | tee ${root_dir}/build-$iaas-win2012r2-base.log
+    src/stemcells/packer/openstack/win2012r2-base.json 2>&1 \
+    | tee ${root_dir}/build-openstack-win2012r2-base.log
 
   # Exit with error if build did no complete successfuly
   cat build-openstack-win2012r2-base.log | grep "Build 'openstack' finished." 2>&1 >/dev/null
@@ -66,8 +60,8 @@ packer build \
   -var "ssh_keypair_name=$ssh_keypair_name" \
   -var "image_build_name=$stemcell_image_name" \
   -var "root_dir=${root_dir}" \
-  src/stemcells/packer/$iaas/win2012r2-stemcell.json 2>&1 \
-  | tee ${root_dir}/build-$iaas-win2012r2-stemcell.log
+  src/stemcells/packer/openstack/win2012r2-stemcell.json 2>&1 \
+  | tee ${root_dir}/build-openstack-win2012r2-stemcell.log
 
 # Exit with error if build did no complete successfuly
 cat build-openstack-win2012r2-stemcell.log | grep "Build 'openstack' finished." 2>&1 >/dev/null
@@ -87,16 +81,16 @@ rm -f *.img
 image_sha=$(sha1sum image | awk '{ print $1 }')
 version=${bosh_version}.${build_number}
 echo "---
-name: bosh-openstack-kvm-windows-go_agent
+name: bosh-openstack-kvm-windows2016-go_agent
 version: '$version'
 bosh_protocol: 1
 api_version: 2
 sha1: '$image_sha'
-operating_system: windows2012R2
+operating_system: windows2016
 stemcell_formats:
 - openstack-qcow2
 cloud_properties:
-  name: bosh-openstack-kvm-windows-go_agent
+  name: bosh-openstack-kvm-windows2016-go_agent
   version: '$version'
   infrastructure: openstack
   hypervisor: kvm
@@ -107,7 +101,9 @@ cloud_properties:
   architecture: x86_64
   auto_disk_config: true" > stemcell.MF
 
-tar -czf bosh-stemcell-${version}-openstack-kvm-windows-go_agent.tgz stemcell.MF image
+# Although image is QCOW2 we need to name the stemcell file with
+# post fix "-raw.tgz" as otherwise Ops Manager rejects the file.
+tar -czf bosh-stemcell-${version}-openstack-kvm-windows2016-go_agent-raw.tgz stemcell.MF image
 rm -f stemcell.MF image 
 
 popd
