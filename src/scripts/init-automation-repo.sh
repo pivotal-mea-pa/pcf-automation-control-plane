@@ -2,9 +2,6 @@
 
 set -eux
 
-num_foundations=$(bosh interpolate ${root_dir}/vars.yml \
-  --path /foundations | grep -e "^-" | wc -l)
-
 if [[ $local_git_server == yes \
   && ! -e /home/git/pcf-configuration.git ]]; then
 
@@ -58,6 +55,3 @@ if [[ ! -e ${root_dir}/.config/templates ]]; then
   git commit -m "initial"
   git push
 fi
-
-[[ $set_foundation_creds != yes ]] || \
-  source ${root_dir}/src/scripts/set-foundation-creds.sh

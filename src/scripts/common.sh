@@ -51,6 +51,8 @@ if [[ $? -ne 0 ]]; then
 fi
 set -e
 
+num_foundations=$(bosh interpolate ${root_dir}/vars.yml --path /foundations | grep -e "^-" | wc -l)
+
 init_automation_repo=$(bosh interpolate ${root_dir}/vars.yml --path /init_automation_repo)
 automation_git_repo_path=$(bosh interpolate ${root_dir}/vars.yml --path /automation_git_repo_path)
 automation_git_private_key=$(bosh interpolate ${root_dir}/vars.yml --path /automation_git_private_key)
