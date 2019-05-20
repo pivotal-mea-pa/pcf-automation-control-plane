@@ -2,7 +2,7 @@
 
 iaas=$1
 if [[ -z $iaas ]]; then
-  echo "USAGE: ./build-win2012-stemcell.sh [IAAS]"
+  echo "USAGE: ./build-win2012r2-stemcell.sh [IAAS]"
   exit 1
 fi
 

@@ -1,5 +1,9 @@
 #ps1_sysnative
 
+Param(
+  [string][Parameter(Mandatory=$True)]$IaaS
+)
+
 Start-Transcript -path "C:\Stemcell-Build\Logs\build.log" -append
 $ErrorActionPreference = "Stop"
 
@@ -10,7 +14,7 @@ Protect-CFCell
 
 New-Item "C:\Users\vcap" -ItemType Directory
 Write-Output "Installing Bosh agent..."
-Install-Agent -IaaS openstack -agentZipPath "$DownloadPath\Bosh-Agent.zip"
+Install-Agent -IaaS $IaaS -agentZipPath "$DownloadPath\Bosh-Agent.zip"
 Write-Output "Installing SSH service..."
 Install-SSHD -SSHZipFile "$DownloadPath\OpenSSH-Win64.zip"
 
