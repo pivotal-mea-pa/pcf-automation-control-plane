@@ -19,7 +19,9 @@ function set_pipeline_defaults() {
 
   credhub set -n "/concourse/main/deploy-${name}-${product}/config_git_repo_url" -t value \
     -v "$automation_config_repo_path"
-  credhub set -n "/concourse/main/deploy-${name}-${product}/config_git_repo_key" -t ssh \
+  credhub set -n "/concourse/main/deploy-${name}-${product}/state_git_repo_url" -t value \
+    -v "$automation_state_repo_path"
+  credhub set -n "/concourse/main/deploy-${name}-${product}/git_private_key" -t ssh \
     -p "$automation_git_private_key"
 
   credhub set -n "/concourse/main/deploy-${name}-${product}/s3_url" \
@@ -35,6 +37,22 @@ function set_pipeline_defaults() {
     -t value -v "$credhub_client_id"
   credhub set -n "/concourse/main/deploy-${name}-${product}/credhub_client_secret" \
     -t value -v "$credhub_client_secret"
+
+  product_file_pattern=$(bosh interpolate ${root_dir}/vars.yml \
+    --path /pivnet_products/name=${product}/product_file_pattern?)
+  [[ $product_file_pattern == null ]] || \
+    set_credhub_value \
+      "/concourse/main/deploy-${name}-${product}/product_file_versioned_regexp" \
+      "$product_file_pattern" \
+      "yes"
+
+  stemcell_file_pattern=$(bosh interpolate ${root_dir}/vars.yml \
+    --path /pivnet_products/name=${product}/stemcell_file_pattern?)
+  [[ $stemcell_file_pattern == null ]] || \
+    set_credhub_value \
+      "/concourse/main/deploy-${name}-${product}/stemcell_file_versioned_regexp" \
+      "$product_file_pattern" \
+      "yes"
 }
 
 default_ca=$(bosh interpolate --no-color $creds_path --path /default_ca/ca)
@@ -103,7 +121,7 @@ for i in $(seq 0 $((num_foundations-1))); do
       cred_name=$(bosh interpolate ${root_dir}/vars.yml \
         --path /foundations/$i/products/$j/creds/$k/name)
       cred_type=$(bosh interpolate ${root_dir}/vars.yml \
-        --path /foundations/$i/products/$j/creds/$k/type)
+        --path /foundations/$i/products/$j/creds/$k/type?)
       cred_scope=$(bosh interpolate ${root_dir}/vars.yml \
         --path /foundations/$i/products/$j/creds/$k/scope?)
       regenerate=$(bosh interpolate ${root_dir}/vars.yml \
@@ -118,15 +136,6 @@ for i in $(seq 0 $((num_foundations-1))); do
       fi
 
       case $cred_type in
-        value)
-          cred_value=$(bosh interpolate ${root_dir}/vars.yml \
-            --path /foundations/$i/products/$j/creds/$k/value)
-          set_credhub_value \
-            "${cred_path_prefix}/$cred_name" \
-            "$cred_value" \
-            "$overwrite"
-          ;;
-
         password)
           cred_value=$(bosh interpolate ${root_dir}/vars.yml \
             --path /foundations/$i/products/$j/creds/$k/value)
@@ -150,6 +159,16 @@ for i in $(seq 0 $((num_foundations-1))); do
             "$common_name" \
             "$alternate_names" \
             "$organization"
+          ;;
+
+        # Treat all other types as values
+        *)
+          cred_value=$(bosh interpolate ${root_dir}/vars.yml \
+            --path /foundations/$i/products/$j/creds/$k/value)
+          set_credhub_value \
+            "${cred_path_prefix}/$cred_name" \
+            "$cred_value" \
+            "$overwrite"
           ;;
       esac
     done
