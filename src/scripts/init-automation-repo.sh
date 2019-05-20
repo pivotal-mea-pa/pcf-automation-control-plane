@@ -17,37 +17,40 @@ if [[ $local_git_server == yes \
   sudo mkdir -p /home/git/.ssh
   sudo cp $HOME/.ssh/git.pem.pub /home/git/.ssh/authorized_keys
   sudo git init --bare /home/git/pcf-configuration.git
+  sudo git init --bare /home/git/pcf-state.git
   sudo chown -R git:git /home/git
 fi
 
-rm -fr ${root_dir}/.config
-git clone $automation_git_repo_path ${root_dir}/.config
+rm -fr ${pcf_config_repo_path}
+git clone $automation_config_repo_path ${pcf_config_repo_path}
+rm -fr ${pcf_state_repo_path}
+git clone $automation_state_repo_path ${pcf_state_repo_path}
 
-if [[ ! -e ${root_dir}/.config/templates ]]; then
-  mkdir -p ${root_dir}/.config/templates
+if [[ ! -e ${pcf_config_repo_path}/templates ]]; then
+  mkdir -p ${pcf_config_repo_path}/templates
 
   find ${root_dir}/src/pipelines/config/templates/ -maxdepth 1 -name '*' \
-    -exec cp {} ${root_dir}/.config/templates \;
+    -exec cp {} ${pcf_config_repo_path}/templates \;
   find ${root_dir}/src/pipelines/config/templates/${iaas}/ -maxdepth 1 -name '*' \
-    -exec cp {} ${root_dir}/.config/templates \;
+    -exec cp {} ${pcf_config_repo_path}/templates \;
 
   for i in $(seq 0 $((num_foundations-1))); do
     name=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/name)
 
-    mkdir -p ${root_dir}/.config/foundations/${name}/env
-    mkdir -p ${root_dir}/.config/foundations/${name}/vars
-    mkdir -p ${root_dir}/.config/foundations/${name}/state
-    touch ${root_dir}/.config/foundations/${name}/state/.keep
+    mkdir -p ${pcf_config_repo_path}/foundations/${name}/env
+    mkdir -p ${pcf_config_repo_path}/foundations/${name}/vars
+    mkdir -p ${pcf_state_repo_path}/foundations/${name}/state
+    touch ${pcf_state_repo_path}/foundations/${name}/state/.keep
 
     find ${root_dir}/src/pipelines/config/foundations/env/ -maxdepth 1 -name '*' \
-      -exec cp {} ${root_dir}/.config/foundations/${name}/env \;
+      -exec cp {} ${pcf_config_repo_path}/foundations/${name}/env \;
     find ${root_dir}/src/pipelines/config/foundations/vars/ -maxdepth 1 -name '*' \
-      -exec cp {} ${root_dir}/.config/foundations/${name}/vars \;
+      -exec cp {} ${pcf_config_repo_path}/foundations/${name}/vars \;
     find ${root_dir}/src/pipelines/config/foundations/vars/${iaas}/ -maxdepth 1 -name '*' \
-      -exec cp {} ${root_dir}/.config/foundations/${name}/vars \;
+      -exec cp {} ${pcf_config_repo_path}/foundations/${name}/vars \;
   done
 
-  pushd ${root_dir}/.config
+  pushd ${pcf_config_repo_path}
 
   git config user.name "automation"
   git config push.default simple

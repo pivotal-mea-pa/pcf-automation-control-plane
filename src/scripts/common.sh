@@ -22,6 +22,8 @@ scripts_file_path=${root_dir}/src/scripts
 manifests_file_path=${root_dir}/src/manifests
 ops_file_path=${root_dir}/src/ops-files
 keys_path=${root_dir}/keys
+pcf_config_repo_path=${root_dir}/.repos/config
+pcf_state_repo_path=${root_dir}/.repos/state
 
 mkdir -p ${root_dir}/.state
 state_path=${root_dir}/.state/cp-state.json 
@@ -54,12 +56,13 @@ set -e
 num_foundations=$(bosh interpolate ${root_dir}/vars.yml --path /foundations | grep -e "^-" | wc -l)
 
 init_automation_repo=$(bosh interpolate ${root_dir}/vars.yml --path /init_automation_repo)
-automation_git_repo_path=$(bosh interpolate ${root_dir}/vars.yml --path /automation_git_repo_path)
+automation_config_repo_path=$(bosh interpolate ${root_dir}/vars.yml --path /automation_config_repo_path)
+automation_state_repo_path=$(bosh interpolate ${root_dir}/vars.yml --path /automation_state_repo_path)
 automation_git_private_key=$(bosh interpolate ${root_dir}/vars.yml --path /automation_git_private_key)
 
 if [[ $init_automation_repo == true ]]; then
 
-  if [[ -z $automation_git_repo_path || $automation_git_repo_path == null ]]; then
+  if [[ -z $automation_config_repo_path || $automation_config_repo_path == null ]]; then
 
     local_itf=$(ip a | awk '/^[0-9]+: (eth|ens?)[0-9]+:/{ print substr($2,1,length($2)-1) }' | head -1)
     local_ip=$(ifconfig $local_itf | awk '/inet addr:/{ print substr($2,6) }')
@@ -89,7 +92,8 @@ Host $local_ip
     fi
     set -e
     
-    automation_git_repo_path=git@${local_ip}:pcf-configuration.git
+    automation_config_repo_path=git@${local_ip}:pcf-configuration.git
+    automation_state_repo_path=git@${local_ip}:pcf-state.git
     automation_git_private_key=$(cat $HOME/.ssh/git.pem)
     local_git_server=yes
   else
