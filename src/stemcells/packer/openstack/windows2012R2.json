@@ -58,7 +58,7 @@
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-wmf51.ps1 {{user `wmf51_download_url`}}"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-wmf51.ps1"
       ]
     },
     {
