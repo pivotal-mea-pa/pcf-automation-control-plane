@@ -51,7 +51,7 @@ function set_pipeline_defaults() {
   [[ $stemcell_file_pattern == null ]] || \
     set_credhub_value \
       "/concourse/main/deploy-${name}-${product}/stemcell_file_versioned_regexp" \
-      "$product_file_pattern" \
+      "$stemcell_file_pattern" \
       "yes"
 }
 
@@ -75,8 +75,9 @@ for i in $(seq 0 $((num_foundations-1))); do
 
   credhub set -n "/pcf/${name}/default_ca" \
     -t certificate -r "$default_ca"
-    
-  source ${root_dir}/src/scripts/set-foundation-${iaas}-creds.sh
+  
+  [[ ! -e ${root_dir}/src/scripts/init/set-credhub-vars/set-foundation-${iaas}-creds.sh ]] || \
+    source ${root_dir}/src/scripts/init/set-credhub-vars/set-foundation-${iaas}-creds.sh
 
   opsman_host=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_host)
   opsman_user=$(bosh interpolate ${root_dir}/vars.yml --path /foundations/$i/opsman_user)

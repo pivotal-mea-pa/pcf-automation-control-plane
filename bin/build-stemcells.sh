@@ -1,12 +1,12 @@
 #!/bin/bash
 
-action=$1
+build_number=${1:-0}
+action=$2
 
 set -eux
 root_dir=$(cd $(dirname "$(ls -l $0 | awk '{ print $NF }')")/.. && pwd)
 
 # Inputs - need to be externalized
-build_number=0
 source_image_name="WindowsServer2012R2-STD"
 network_uuid=cb8b849f-dfd2-4b18-a1c6-f1b11edca4f4
 security_group=pcf
@@ -17,6 +17,9 @@ ssh_keypair_name=pcf
 bosh_version="1200.32"
 openssh_version="v7.9.0.0p1-Beta"
 
+exit 1
+
+
 if [[ $action == clean ]]; then
 
   # Delete images
@@ -26,14 +29,13 @@ if [[ $action == clean ]]; then
     xargs openstack --insecure volume delete
 
   openstack --insecure image list | \
-    awk '/ win2012r2-stemcell/{ print $2 }' | \
+    awk '/ win2016-stemcell/{ print $2 }' | \
     xargs openstack --insecure image delete
 fi
 
-stemcell_image_id=$(openstack --insecure image list | awk '/ win2012r2-stemcell-base /{ print $2 }')
+stemcell_image_id=$(openstack --insecure image list | awk '/ win2016-stemcell-base /{ print $2 }')
 if [[ -z $stemcell_image_id ]]; then
   packer build \
-    -var "wmf51_download_url=https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win8.1AndW2K12R2-KB3191564-x64.msu" \
     -var "vs_download_url=https://s3.eu-central-1.amazonaws.com/mevansam-share/public/vs_community__378995140.1557481685.exe" \
     -var "nuget_download_url=https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" \
     -var "bosh_ps_modules_download_url=https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/releases/download/${bosh_version}/bosh-psmodules.zip" \
@@ -43,28 +45,28 @@ if [[ -z $stemcell_image_id ]]; then
     -var "network_uuid=$network_uuid" \
     -var "security_group=$security_group" \
     -var "ssh_keypair_name=$ssh_keypair_name" \
-    -var "image_build_name=win2012r2-stemcell-base" \
+    -var "image_build_name=win2016-stemcell-base" \
     -var "root_dir=${root_dir}" \
-    src/stemcells/packer/openstack/win2012r2-base.json 2>&1 \
-    | tee ${root_dir}/build-openstack-win2012r2-base.log
+    src/stemcells/packer/openstack/win2016-base.json 2>&1 \
+    | tee ${root_dir}/build-openstack-win2016-base.log
 
   # Exit with error if build did no complete successfuly
-  cat build-openstack-win2012r2-base.log | grep "Build 'openstack' finished." 2>&1 >/dev/null
+  cat build-openstack-win2016-base.log | grep "Build 'openstack' finished." 2>&1 >/dev/null
 fi
 
-stemcell_image_name="win2012r2-stemcell_$(date "+%Y%m%d-%H%M%S")"
+stemcell_image_name="win2016-stemcell_$(date "+%Y%m%d-%H%M%S")"
 packer build \
-  -var "source_image_name=win2012r2-stemcell-base" \
+  -var "source_image_name=win2016-stemcell-base" \
   -var "network_uuid=$network_uuid" \
   -var "security_group=$security_group" \
   -var "ssh_keypair_name=$ssh_keypair_name" \
   -var "image_build_name=$stemcell_image_name" \
   -var "root_dir=${root_dir}" \
-  src/stemcells/packer/openstack/win2012r2-stemcell.json 2>&1 \
-  | tee ${root_dir}/build-openstack-win2012r2-stemcell.log
+  src/stemcells/packer/openstack/win2016-stemcell.json 2>&1 \
+  | tee ${root_dir}/build-openstack-win2016-stemcell.log
 
 # Exit with error if build did no complete successfuly
-cat build-openstack-win2012r2-stemcell.log | grep "Build 'openstack' finished." 2>&1 >/dev/null
+cat build-openstack-win2016-stemcell.log | grep "Build 'openstack' finished." 2>&1 >/dev/null
 
 rm -fr ${root_dir}/.stembuild
 mkdir -p ${root_dir}/.stembuild
@@ -86,7 +88,7 @@ version: '$version'
 bosh_protocol: 1
 api_version: 2
 sha1: '$image_sha'
-operating_system: windows2016
+operating_system: windows2019
 stemcell_formats:
 - openstack-qcow2
 cloud_properties:

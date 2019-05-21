@@ -49,11 +49,11 @@ bosh interpolate \
 
 # Source IAAS environment variables to 
 # added to the .envrc environment file
-[[ ! -e ${root_dir}/src/scripts/set-${iaas}-env.sh ]] || \
-  source ${root_dir}/src/scripts/set-${iaas}-env.sh
+[[ ! -e ${root_dir}/src/scripts/init/set-env-vars/set-${iaas}-env.sh ]] || \
+  source ${root_dir}/src/scripts/init/set-env-vars/set-${iaas}-env.sh
 
-source ${root_dir}/src/scripts/set-env-vars.sh
-source ${root_dir}/src/scripts/set-credhub-vars.sh
+source ${root_dir}/src/scripts/init/set-env-vars/set-env-vars.sh
+source ${root_dir}/src/scripts/init/set-credhub-vars/set-credhub-vars.sh
 
 upload_ubuntu_stemcell_sha1=$(bosh interpolate ${root_dir}/vars.yml --path /ubuntu_sha1)
 if [[ "$upload_ubuntu_stemcell_sha1" != "$ubuntu_stemcell_sha1" ]]; then

@@ -359,11 +359,11 @@ resource-config:
     instance_type:
       id: automatic
   compute:
-    instances: 2
+    instances: ((num_compute_instances))
     instance_type:
       id: automatic
   control:
-    instances: automatic
+    instances: ((num_control_instances))
     instance_type:
       id: automatic
   database:
@@ -373,7 +373,7 @@ resource-config:
     instance_type:
       id: automatic
   ha_proxy:
-    instances: 1
+    instances: ((num_ha_proxy_instances))
     instance_type:
       id: automatic
   istio_control:
@@ -385,7 +385,7 @@ resource-config:
     instance_type:
       id: automatic
   mysql_monitor:
-    instances: automatic
+    instances: ((num_mysql_monitor_instances))
     instance_type:
       id: automatic
   route_syncer:
@@ -393,7 +393,7 @@ resource-config:
     instance_type:
       id: automatic
   router:
-    instances: automatic
+    instances: ((num_router_instances))
     instance_type:
       id: automatic
   tcp_router:

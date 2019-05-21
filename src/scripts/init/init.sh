@@ -1,8 +1,13 @@
 #!/bin/bash
 
-source ${root_dir}/src/scripts/funcs.sh
+source ${root_dir}/src/scripts/init/funcs.sh
 
 set -eux
+
+#
+# Load and setup environment for control 
+# plane initialization scripts
+#
 
 if [[ -z $iaas \
   || ( $action != create-manifests-only \
@@ -55,6 +60,11 @@ set -e
 
 num_foundations=$(bosh interpolate ${root_dir}/vars.yml --path /foundations | grep -e "^-" | wc -l)
 
+#
+# Determine if automation configuration and 
+# state repositories will be hosted locally
+#
+
 init_automation_repo=$(bosh interpolate ${root_dir}/vars.yml --path /init_automation_repo)
 automation_config_repo_path=$(bosh interpolate ${root_dir}/vars.yml --path /automation_config_repo_path)
 automation_state_repo_path=$(bosh interpolate ${root_dir}/vars.yml --path /automation_state_repo_path)
@@ -101,9 +111,28 @@ Host $local_ip
   fi
 fi
 
+#
+# Checksums to not repeat certain tasks if 
+# there is no change to configuration
+#
+
 ubuntu_stemcell_sha1=""
 creds_sha1=""
 
 checksums_path=${root_dir}/.state/checksums
 touch $checksums_path
 source $checksums_path
+
+#
+# Run control plan initialization scripts
+#
+
+source ${root_dir}/src/scripts/init/deploy-bosh.sh
+source ${root_dir}/src/scripts/init/deploy-concourse.sh
+source ${root_dir}/src/scripts/init/deploy-minio.sh
+
+[[ update_credentials == no ]] || \
+  source ${root_dir}/src/scripts/init/set-credhub-vars/set-foundation-creds.sh
+
+[[ $init_automation_repo != true ]] || \
+  source ${root_dir}/src/scripts/init/setup-automation/init-automation-repo.sh

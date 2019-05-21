@@ -25,7 +25,3 @@ credhub set -n "/pcf/${name}/openstack_ssh_private_key" \
 
 credhub set -n "/pcf/${name}/opsman_instance_name" \
   -t password -w "pcf-opsman-${name}"
-
-# Pipeline specific variables
-credhub set -n "/concourse/main/deploy-${name}-opsman/opsman_image_s3_versioned_regexp" \
-  -t value -v "ops-manager-openstack-(.*).raw"

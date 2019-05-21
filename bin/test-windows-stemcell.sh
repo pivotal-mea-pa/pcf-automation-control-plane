@@ -10,12 +10,16 @@ fi
 set -eux
 root_dir=$(cd $(dirname "$(ls -l $0 | awk '{ print $NF }')")/.. && pwd)
 
-os_name=$(bosh stemcells | awk "/\t$stemcell_version\\*?/{ print \$3 }")
-if [[ -z $os_name ]]; then
+uploaded=$(bosh stemcells | awk "/\t$stemcell_version\\*?/{ print \$3 }")
+if [[ -z $uploaded ]]; then
   bosh upload-stemcell \
     ${root_dir}/.stembuild/bosh-stemcell-${stemcell_version}-openstack-kvm-${os_name}-go_agent-raw.tgz
 
-  os_name=$(bosh stemcells | awk "/$stemcell_version/{ print \$3 }")
+  uploaded=$(bosh stemcells | awk "/$stemcell_version/{ print \$3 }")
+  if [[ $uploaded != $os_name ]]; then
+    echo "Stemcell OS name mismatch. The uploaded name is '$uploaded', but the stemcell file name was labeled '$os_name'."
+    exit 1
+  fi
 fi
 
 pushd ${root_dir}/src/stemcells/tests/windows-test-bosh-release

@@ -16,7 +16,3 @@ credhub set -n "/pcf/${name}/vcenter_password" \
 
 credhub set -n "/pcf/${name}/vcenter_vm_folder" \
   -t value -v "pcf-vms-${name}"
-
-# Pipeline specific variables
-credhub set -n "/concourse/main/deploy-${name}-opsman/opsman_image_s3_versioned_regexp" \
-  -t value -v "pcf-vsphere-(.*).ova"
