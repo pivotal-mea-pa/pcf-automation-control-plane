@@ -1,9 +1,0 @@
----
-network_name:
-availability_zones:
-- name:
-singleton_availability_zone:
-
-windows_admin_password: ((windows_admin_password))
-
-num_compute_instances: 1
