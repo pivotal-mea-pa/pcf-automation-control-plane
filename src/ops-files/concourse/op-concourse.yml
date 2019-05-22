@@ -26,7 +26,11 @@
 
 - type: replace
   path: /instance_groups/name=worker/vm_type?
-  value: medium
+  value: ((concourse_worker_vm_type))
+
+- type: replace
+  path: /instance_groups/name=worker/instances?
+  value: ((num_concourse_workers))
 
 - type: replace
   path: /instance_groups/name=worker/azs?
