@@ -18,17 +18,16 @@ stemcell_archive_name="bosh-stemcell-${version}-openstack-kvm-${operating_system
 
 if [[ $action == clean ]]; then
 
-  # Delete images
+  # Delete packer volumes
+  for i in $(openstack --insecure volume list | awk '/ packer_/{ print $2 }'); do
+    openstack --insecure volume delete $i
+  done
+  # Delete base build images
+  for i in $(openstack --insecure image list | awk "/ ${operating_system}-stemcell/{ print \$2 }"); do
+    openstack --insecure image delete $i
+  done
 
-  openstack --insecure volume list | \
-    awk '/ packer_/{ print $2 }' | \
-    xargs openstack --insecure volume delete
-
-  openstack --insecure image list | \
-    awk "/ ${operating_system}-stemcell/{ print \$2 }" | \
-    xargs openstack --insecure image delete
-
-  rm ${stemcell_build_path}/${stemcell_archive_name}
+  rm -f ${stemcell_build_path}/${stemcell_archive_name}
 fi
 
 if [[ ! -e ${stemcell_build_path}/${stemcell_archive_name} ]]; then
@@ -48,9 +47,13 @@ if [[ ! -e ${stemcell_build_path}/${stemcell_archive_name} ]]; then
       -var "security_group=$security_group" \
       -var "ssh_keypair_name=$ssh_keypair_name" \
       -var "image_build_name=${operating_system}-stemcell-base" \
+      -var "custom_file_upload=${custom_file_upload}" \
+      -var "custom_ps1_script=${custom_ps1_script}" \
       -var "root_dir=${root_dir}" \
       src/stemcells/packer/openstack/${operating_system}-base.json 2>&1 \
       | tee ${root_dir}/build-openstack-${operating_system}-base.log
+
+    exit 1
 
     # Exit with error if build did no complete successfuly
     cat build-openstack-${operating_system}-base.log | grep "Build 'openstack' finished." 2>&1 >/dev/null

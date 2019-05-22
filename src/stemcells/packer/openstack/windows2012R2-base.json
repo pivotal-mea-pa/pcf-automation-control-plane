@@ -11,13 +11,14 @@
     "security_group": "",
     "ssh_keypair_name": "",
     "image_build_name": "",
-    "root_dir": "",
-    "wmf51_download_url": "",
     "vs_download_url": "",
     "nuget_download_url": "",
     "bosh_ps_modules_download_url": "",
     "bosh_agent_download_url": "",
-    "openssh_win64_download_url": ""
+    "openssh_win64_download_url": "",
+    "custom_file_upload": "",
+    "custom_ps1_script": "",
+    "root_dir": ""
   },
   "builders": [
     {
@@ -56,6 +57,16 @@
       "destination": "C:\\Stemcell-Build\\Scripts"
     },
     {
+      "type": "file",
+      "source": "{{user `custom_file_upload`}}",
+      "destination": "C:\\Stemcell-Build\\Downloads\\"
+    },
+    {
+      "type": "file",
+      "source": "{{user `custom_ps1_script`}}",
+      "destination": "C:\\Stemcell-Build\\Scripts\\install-custom.ps1"
+    },
+    {
       "type": "windows-shell",
       "inline": [
         "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-wmf51.ps1"
@@ -77,6 +88,24 @@
       "type": "windows-shell",
       "inline": [
         "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-wmf51.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-vs.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-custom.ps1"
       ]
     },
     {

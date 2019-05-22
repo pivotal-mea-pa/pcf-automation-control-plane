@@ -1,7 +1,6 @@
 #!/bin/bash
 
-build_number=${1:-0}
-action=$2
+action=$1
 
 set -eux
 root_dir=$(cd $(dirname "$(ls -l $0 | awk '{ print $NF }')")/.. && pwd)
