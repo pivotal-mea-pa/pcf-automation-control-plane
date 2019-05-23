@@ -6,7 +6,7 @@ resources:
     secret_access_key: ((s3_secretkey))
     endpoint: ((s3_url))
     bucket: pivnet-products
-    regexp: .*tasks-(.*).zip
+    regexp: automation/.*tasks-(.*).zip
 
 - name: pcf-automation-image
   type: s3
@@ -15,49 +15,39 @@ resources:
     secret_access_key: ((s3_secretkey))
     endpoint: ((s3_url))
     bucket: pivnet-products
-    regexp: .*image-(.*).tgz
+    regexp: automation/.*image-(.*).tgz
 
-- name: pas-stemcell
+- name: ((pivnet_product))-product
   type: s3
   source:
     access_key_id: ((s3_accesskey))
     secret_access_key: ((s3_secretkey))
     endpoint: ((s3_url))
     bucket: pivnet-products
-    regexp: pas/((bosh_stemcell_s3_versioned_regexp))
+    regexp: ((pivnet_product))/((product_file_versioned_regexp))
 
-- name: pas-product
+- name: ((pivnet_product))-stemcell
   type: s3
   source:
     access_key_id: ((s3_accesskey))
     secret_access_key: ((s3_secretkey))
     endpoint: ((s3_url))
     bucket: pivnet-products
-    regexp: pas/((pas_tile_s3_versioned_regexp))
+    regexp: ((pivnet_product))/((stemcell_file_versioned_regexp))
 
 # configurations
 
 - name: configuration
   type: git
   source:
-    private_key: ((config_git_repo_key.private_key))
+    private_key: ((git_private_key.private_key))
     uri: ((config_git_repo_url))
     branch: master
 
 # triggers used to have jobs do something in a timely manner
 
-- name: one-time-trigger
-  type: time
-  source:
-    interval: 999999h
-
-- name: daily-trigger
-  type: time
-  source:
-    interval: 24h
-
 jobs:
-- name: upload-and-stage-pas
+- name: upload-and-stage-((pivnet_product))
   serial: true
   plan:
   - aggregate:
@@ -68,7 +58,8 @@ jobs:
       params:
         unpack: true
     - get: configuration
-    - get: pas-product
+    - get: ((pivnet_product))-product
+      trigger: true
 
   - task: credhub-interpolate
     image: pcf-automation-image
@@ -90,7 +81,7 @@ jobs:
     file: pcf-automation-tasks/tasks/upload-product.yml
     input_mapping:
       env: interpolated-configs
-      product: pas-product
+      product: ((pivnet_product))-product
     params:
       ENV_FILE: foundations/((foundation_name))/env/env.yml
       
@@ -99,11 +90,11 @@ jobs:
     file: pcf-automation-tasks/tasks/stage-product.yml
     input_mapping:
       env: interpolated-configs
-      product: pas-product
+      product: ((pivnet_product))-product
     params:
       ENV_FILE: foundations/((foundation_name))/env/env.yml
 
-- name: configure-pas
+- name: configure-((pivnet_product))
   serial: true
   plan:
   - aggregate:
@@ -114,10 +105,10 @@ jobs:
       params:
         unpack: true
     - get: configuration
-    - get: pas-product
+    - get: ((pivnet_product))-product
       trigger: true
       passed:
-      - upload-and-stage-pas
+      - upload-and-stage-((pivnet_product))
 
   - task: credhub-interpolate
     image: pcf-automation-image
@@ -134,7 +125,7 @@ jobs:
     output_mapping:
       interpolated-files: interpolated-configs
 
-  - task: configure-pas
+  - task: configure-((pivnet_product))
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/configure-product.yml
     input_mapping:
@@ -143,8 +134,8 @@ jobs:
       env: interpolated-configs
     params:
       ENV_FILE: foundations/((foundation_name))/env/env.yml
-      VARS_FILES: vars/foundations/((foundation_name))/vars/director.yml
-      CONFIG_FILE: ((foundation-name))/pas.yml
+      VARS_FILES: vars/foundations/((foundation_name))/vars/((pivnet_product)).yml
+      CONFIG_FILE: templates/((pivnet_product)).yml
       
 - name: upload-stemcell
   serial: true
@@ -157,7 +148,8 @@ jobs:
       params:
         unpack: true
     - get: configuration
-    - get: pas-stemcell
+    - get: ((pivnet_product))-stemcell
+      trigger: true
 
   - task: credhub-interpolate
     image: pcf-automation-image
@@ -174,21 +166,12 @@ jobs:
     output_mapping:
       interpolated-files: interpolated-configs
 
-  - task: upload-pas-stemcell
+  - task: upload-((pivnet_product))-stemcell
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/upload-stemcell.yml
     input_mapping:
       env: interpolated-configs
-      stemcell: pas-stemcell
-    params:
-      ENV_FILE: foundations/((foundation_name))/env/env.yml
-
-  - task: upload-healthwatch-stemcell
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/upload-stemcell.yml
-    input_mapping:
-      env: interpolated-configs
-      stemcell: healthwatch-stemcell
+      stemcell: ((pivnet_product))-stemcell
     params:
       ENV_FILE: foundations/((foundation_name))/env/env.yml
 
@@ -202,10 +185,11 @@ jobs:
     - get: pcf-automation-tasks
       params:
         unpack: true
-    - get: pas-product
+    - get: configuration
+    - get: ((pivnet_product))-product
       passed:
-      - configure-pas
-    - get: pas-stemcell
+      - configure-((pivnet_product))
+    - get: ((pivnet_product))-stemcell
       passed:
       - upload-stemcell
 
@@ -226,8 +210,8 @@ jobs:
 
   - task: apply-director-changes
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/apply-director-changes.yml
+    file: pcf-automation-tasks/tasks/apply-changes.yml
     input_mapping:
       env: interpolated-configs
     params:
-      ENV_FILE: ((foundation_name))/config/env.yml
+      ENV_FILE: foundations/((foundation_name))/env/env.yml
