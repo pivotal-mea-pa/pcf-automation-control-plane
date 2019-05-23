@@ -18,6 +18,9 @@ Install-Agent -IaaS $IaaS -agentZipPath "$DownloadPath\Bosh-Agent.zip"
 Write-Output "Installing SSH service..."
 Install-SSHD -SSHZipFile "$DownloadPath\OpenSSH-Win64.zip"
 
+Remove-Item –path "C:\Stemcell-Build\Downloads\*"
+Remove-Item –path "C:\Stemcell-Build\Temp\*"
+
 Write-Output "Optimizing disk..."
 Optimize-Disk
 Write-Output "Compressing disk..."

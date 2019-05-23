@@ -1,9 +1,5 @@
 #ps1_sysnative
 
-Param(
-  [string][Parameter(Mandatory=$True)]$WindowsManagmentFrameworkURL
-)
-
 $DownloadPath = "C:\Stemcell-Build\Downloads"
 
 Start-Transcript -path "C:\Stemcell-Build\Logs\build.log" -append
@@ -28,6 +24,6 @@ Do {
 # Download Windows Management Framework 5.1
 Write-Output "Downloading Windows Management Framework 5.1..."
 Invoke-WebRequest `
-  -uri "$WindowsManagmentFrameworkURL" `
+  -uri "https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win8.1AndW2K12R2-KB3191564-x64.msu" `
   -outfile "$DownloadPath\WindowsManagmentFramework.msu"
 Unblock-File "$DownloadPath\WindowsManagmentFramework.msu"
