@@ -24,7 +24,7 @@
       "password": "{{user `password`}}",
       "region": "{{user `region`}}",
       "source_image_name": "{{user `source_image_name`}}",
-      "volume_size": 35,
+      "volume_size": 40,
       "use_blockstorage_volume": true,
       "flavor": "m1.large",
       "networks": [

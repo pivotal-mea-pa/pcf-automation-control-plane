@@ -53,8 +53,6 @@ if [[ ! -e ${stemcell_build_path}/${stemcell_archive_name} ]]; then
       src/stemcells/packer/openstack/${operating_system}-base.json 2>&1 \
       | tee ${root_dir}/build-openstack-${operating_system}-base.log
 
-    exit 1
-
     # Exit with error if build did no complete successfuly
     cat build-openstack-${operating_system}-base.log | grep "Build 'openstack' finished." 2>&1 >/dev/null
   fi
