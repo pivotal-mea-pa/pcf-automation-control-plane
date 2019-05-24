@@ -20,6 +20,7 @@ Install-SSHD -SSHZipFile "$DownloadPath\OpenSSH-Win64.zip"
 
 Remove-Item –path "C:\Stemcell-Build\Downloads\*"
 Remove-Item –path "C:\Stemcell-Build\Temp\*"
+Remove-Item –path "$env:SystemRoot\Temp\*"
 
 Write-Output "Optimizing disk..."
 Optimize-Disk
