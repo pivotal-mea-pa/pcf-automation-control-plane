@@ -43,3 +43,46 @@ cmd.exe /c wmic useraccount where "name='Administrator'" set PasswordExpires=FAL
 
 Enable-PSRemoting -Force
 Restart-Service WinRM
+
+# Disable Windows auto updates via registry
+# https://support.microsoft.com/en-us/help/328010
+function New-Directory($path) {
+  $p, $components = $path -split '[\\/]'
+  $components | ForEach-Object {
+      $p = "$p\$_"
+      if (!(Test-Path $p)) {
+          New-Item -ItemType Directory $p | Out-Null
+      }
+  }
+  $null
+}
+$auPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"
+New-Directory $auPath 
+
+# Set NoAutoUpdate.
+#
+# 0: Automatic Updates is enabled (default).
+# 1: Automatic Updates is disabled.
+New-ItemProperty `
+    -Path $auPath `
+    -Name NoAutoUpdate `
+    -Value 1 `
+    -PropertyType DWORD `
+    -Force `
+    | Out-Null
+
+# Set AUOptions.
+# 1: Keep my computer up to date has been disabled in Automatic Updates.
+# 2: Notify of download and installation.
+# 3: Automatically download and notify of installation.
+# 4: Automatically download and scheduled installation.
+New-ItemProperty `
+    -Path $auPath `
+    -Name AUOptions `
+    -Value 2 `
+    -PropertyType DWORD `
+    -Force `
+    | Out-Null
+
+# Ensure Windows Defender is uninstalled
+Uninstall-WindowsFeature Windows-Defender
