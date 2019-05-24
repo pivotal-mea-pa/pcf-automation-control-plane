@@ -15,8 +15,11 @@ Set-ExecutionPolicy Unrestricted -Scope LocalMachine -Force -ErrorAction Ignore
 Start-Transcript -path "C:\Stemcell-Build\Logs\build.log" -append
 $ErrorActionPreference = "stop"
 
-Write-Output "Setting Administrator password"
+# Set Administrator password
 Net User "Administrator" "P@ssw0rd" /logonpasswordchg:no
+
+# Enable TLS12
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # Remove HTTP listener
 Remove-Item -Path WSMan:\Localhost\listener\listener* -Recurse
@@ -34,8 +37,8 @@ cmd.exe /c winrm set "winrm/config/service/auth" '@{Basic="true"}'
 cmd.exe /c winrm set "winrm/config/client/auth" '@{Basic="true"}'
 cmd.exe /c winrm set "winrm/config/service/auth" '@{CredSSP="true"}'
 cmd.exe /c winrm set "winrm/config/listener?Address=*+Transport=HTTP" '@{Port="5985"}'
-cmd.exe /c netsh advfirewall firewall set rule group="remote administration" new enable=yes
-cmd.exe /c netsh firewall add portopening TCP 5985 "Port 5985"
+# cmd.exe /c netsh advfirewall firewall set rule group="remote administration" new enable=yes
+# cmd.exe /c netsh firewall add portopening TCP 5985 "Port 5985"
 cmd.exe /c net stop winrm
 cmd.exe /c sc config winrm start= auto
 cmd.exe /c net start winrm
@@ -43,6 +46,16 @@ cmd.exe /c wmic useraccount where "name='Administrator'" set PasswordExpires=FAL
 
 Enable-PSRemoting -Force
 Restart-Service WinRM
+
+# make sure winrm can be accessed from any network profile.
+$winRmFirewallRuleNames = @(
+  'WINRM-HTTP-In-TCP',        # Windows Remote Management (HTTP-In)
+  'WINRM-HTTP-In-TCP-PUBLIC'  # Windows Remote Management (HTTP-In)   # Windows Server
+  'WINRM-HTTP-In-TCP-NoScope' # Windows Remote Management (HTTP-In)   # Windows 10
+)
+Get-NetFirewallRule -Direction Inbound -Enabled False `
+  | Where-Object {$winRmFirewallRuleNames -contains $_.Name} `
+  | Set-NetFirewallRule -Enable True
 
 # Disable Windows auto updates via registry
 # https://support.microsoft.com/en-us/help/328010
