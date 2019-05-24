@@ -1,16 +1,10 @@
 {
   "variables": {
-    "identity_endpoint": "{{env `OS_AUTH_URL`}}",
-    "domain_name": "{{env `OS_PROJECT_DOMAIN_NAME`}}",
-    "tenant_name": "{{env `OS_PROJECT_NAME`}}",
-    "username": "{{env `OS_USERNAME`}}",
-    "password": "{{env `OS_PASSWORD`}}",
-    "region": "{{env `OS_REGION`}}",
-    "source_image_name": "",
-    "network_uuid": "",
-    "security_group": "",
-    "ssh_keypair_name": "",
-    "image_build_name": "",
+    "disk_size": "40",
+    "iso_url": "file:///home/ubuntu/downloads/en_windows_server_2019_updated_march_2019_x64_dvd_2ae967ab.iso",
+    "iso_checksum": "55ac0f541bcc9ce2f70af4227239fc4a6a1e2b6e",
+    "iso_checksum_type": "sha1",
+    "image_build_name": "windows2019-stemcell-base",
     "vs_download_url": "",
     "nuget_download_url": "",
     "bosh_ps_modules_download_url": "",
@@ -18,83 +12,107 @@
     "openssh_win64_download_url": "",
     "custom_file_upload": "",
     "custom_ps1_script": "",
-    "root_dir": ""
+    "root_dir": "/home/ubuntu/pivotal/pcf-automation-control-plane"
   },
   "builders": [
     {
-      "type": "openstack",
-      "insecure": "true",
-      "identity_endpoint": "{{user `identity_endpoint`}}",
-      "domain_name": "{{user `domain_name`}}",
-      "tenant_name": "{{user `tenant_name`}}",
-      "username": "{{user `username`}}",
-      "password": "{{user `password`}}",
-      "region": "{{user `region`}}",
-      "source_image_name": "{{user `source_image_name`}}",
-      "volume_size": 35,
-      "use_blockstorage_volume": true,
-      "flavor": "m1.large",
-      "networks": [
-        "{{user `network_uuid`}}"
+      "vm_name": "{{user `image_build_name`}}",
+      "type": "qemu",
+      "accelerator": "kvm",
+      "qemuargs": [
+        [
+          "-m",
+          "2048"
+        ],
+        [
+          "-cpu",
+          "host"
+        ],
+        [
+          "-smp",
+          "2"
+        ],
+        [
+          "-soundhw",
+          "hda"
+        ],
+        [
+          "-usbdevice",
+          "tablet"
+        ],
+        [
+          "-device",
+          "virtio-net,netdev=user.0"
+        ],
+        [
+          "-vga",
+          "qxl"
+        ],
+        [
+          "-device",
+          "virtio-serial-pci"
+        ],
+        [
+          "-chardev",
+          "socket,path=/tmp/{{.Name}}-qga.sock,server,nowait,id=qga0"
+        ],
+        [
+          "-device",
+          "virtserialport,chardev=qga0,name=org.qemu.guest_agent.0"
+        ],
+        [
+          "-chardev",
+          "spicevmc,id=spicechannel0,name=vdagent"
+        ],
+        [
+          "-device",
+          "virtserialport,chardev=spicechannel0,name=com.redhat.spice.0"
+        ],
+        [
+          "-spice",
+          "unix,addr=/tmp/{{.Name}}-spice.socket,disable-ticketing"
+        ]
       ],
-      "security_groups": [
-        "{{user `security_group`}}"
+      "headless": true,
+      "format": "qcow2",
+      "disk_size": "{{user `disk_size`}}",
+      "disk_interface": "virtio",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "floppy_files": [
+        "{{ user `root_dir` }}/src/stemcells/packer/openstack/windows2019/autounattend.xml",
+        "{{ user `root_dir` }}/src/stemcells/scripts/windows/prepare.ps1",
+        "drivers/vioserial/2k19/amd64/*.cat",
+        "drivers/vioserial/2k19/amd64/*.inf",
+        "drivers/vioserial/2k19/amd64/*.sys",
+        "drivers/viostor/2k19/amd64/*.cat",
+        "drivers/viostor/2k19/amd64/*.inf",
+        "drivers/viostor/2k19/amd64/*.sys",
+        "drivers/NetKVM/2k19/amd64/*.cat",
+        "drivers/NetKVM/2k19/amd64/*.inf",
+        "drivers/NetKVM/2k19/amd64/*.sys",
+        "drivers/qxldod/2k19/amd64/*.cat",
+        "drivers/qxldod/2k19/amd64/*.inf",
+        "drivers/qxldod/2k19/amd64/*.sys"
       ],
-      "ssh_keypair_name": "{{user `ssh_keypair_name`}}",
-      "ssh_private_key_file": "{{user `root_dir`}}/keys/pcf.pem",
-      "user_data_file": "{{user `root_dir`}}/src/stemcells/scripts/windows/prepare.ps1",
-      "image_name": "{{user `image_build_name`}}",
+      "http_directory": ".",
+      "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "vnc_bind_address": "0.0.0.0",
       "communicator": "winrm",
       "winrm_username": "Administrator",
       "winrm_password": "P@ssw0rd",
-      "winrm_timeout": "3600s"
+      "winrm_timeout": "4h",
+      "output_directory": "{{ user `root_dir` }}/.stembuild/windows2019"
     }
   ],
   "provisioners": [
     {
-      "type": "file",
-      "source": "{{user `root_dir`}}/src/stemcells/scripts/windows/",
-      "destination": "C:\\Stemcell-Build\\Scripts"
-    },
-    {
-      "type": "file",
-      "source": "{{user `custom_file_upload`}}",
-      "destination": "C:\\Stemcell-Build\\Downloads\\"
-    },
-    {
-      "type": "file",
-      "source": "{{user `custom_ps1_script`}}",
-      "destination": "C:\\Stemcell-Build\\Scripts\\"
-    },
-    {
-      "type": "windows-shell",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-vs.ps1 {{user `vs_download_url`}} {{user `nuget_download_url`}}"
-      ]
-    },
-    {
-      "type": "windows-shell",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-bosh.ps1 {{user `bosh_ps_modules_download_url`}} {{user `bosh_agent_download_url`}} {{user `openssh_win64_download_url`}}"
-      ]
-    },
-    {
-      "type": "windows-shell",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-vs.ps1"
-      ]
+      "type": "powershell",
+      "script": "{{ user `root_dir` }}/src/stemcells/scripts/windows/prepare.ps1"
     },
     {
       "type": "windows-restart"
-    },
-    {
-      "type": "windows-shell",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\configure-stemcell.ps1"
-      ]
-    },
-    {
-      "type": "windows-update"
     }
   ]
 }

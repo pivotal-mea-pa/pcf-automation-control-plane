@@ -3,4 +3,5 @@
 *.pem
 *vars.yml
 
+packer_cache/
 tmp/
