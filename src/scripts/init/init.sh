@@ -65,12 +65,12 @@ num_foundations=$(bosh interpolate ${root_dir}/vars.yml --path /foundations | gr
 # state repositories will be hosted locally
 #
 
-init_automation_repo=$(bosh interpolate ${root_dir}/vars.yml --path /init_automation_repo)
+init_automation=$(bosh interpolate ${root_dir}/vars.yml --path /init_automation)
 automation_config_repo_path=$(bosh interpolate ${root_dir}/vars.yml --path /automation_config_repo_path)
 automation_state_repo_path=$(bosh interpolate ${root_dir}/vars.yml --path /automation_state_repo_path)
 automation_git_private_key=$(bosh interpolate ${root_dir}/vars.yml --path /automation_git_private_key)
 
-if [[ $init_automation_repo == true ]]; then
+if [[ $init_automation == true ]]; then
 
   if [[ -z $automation_config_repo_path || $automation_config_repo_path == null ]]; then
 
@@ -134,5 +134,5 @@ source ${root_dir}/src/scripts/init/deploy-minio.sh
 [[ update_credentials == no ]] || \
   source ${root_dir}/src/scripts/init/set-credhub-vars/set-foundation-creds.sh
 
-[[ $init_automation_repo != true ]] || \
+[[ $init_automation != true ]] || \
   source ${root_dir}/src/scripts/init/setup-automation/init-automation-repo.sh
