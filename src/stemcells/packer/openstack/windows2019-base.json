@@ -1,10 +1,10 @@
 {
   "variables": {
-    "disk_size": "40",
-    "iso_url": "file:///home/ubuntu/downloads/en_windows_server_2019_updated_march_2019_x64_dvd_2ae967ab.iso",
-    "iso_checksum": "55ac0f541bcc9ce2f70af4227239fc4a6a1e2b6e",
-    "iso_checksum_type": "sha1",
-    "image_build_name": "windows2019-stemcell-base",
+    "iso_url": "",
+    "iso_checksum": "",
+    "iso_checksum_type": "",
+    "image_build_name": "",
+    "disk_size": "",
     "vs_download_url": "",
     "nuget_download_url": "",
     "bosh_ps_modules_download_url": "",
@@ -12,107 +12,142 @@
     "openssh_win64_download_url": "",
     "custom_file_upload": "",
     "custom_ps1_script": "",
-    "root_dir": "/home/ubuntu/pivotal/pcf-automation-control-plane"
+    "root_dir": "",
+    "debug": "false"
   },
   "builders": [
     {
       "vm_name": "{{user `image_build_name`}}",
-      "type": "qemu",
-      "accelerator": "kvm",
-      "qemuargs": [
+      "type": "virtualbox-iso",
+      "guest_os_type": "Windows2016_64",
+      "guest_additions_mode": "disable",
+      "headless": true,
+      "vboxmanage": [
         [
-          "-m",
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
           "2048"
         ],
         [
-          "-cpu",
-          "host"
-        ],
-        [
-          "-smp",
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
           "2"
         ],
         [
-          "-soundhw",
-          "hda"
+          "modifyvm",
+          "{{.Name}}",
+          "--vram",
+          "64"
         ],
         [
-          "-usbdevice",
-          "tablet"
+          "modifyvm",
+          "{{.Name}}",
+          "--audio",
+          "none"
         ],
         [
-          "-device",
-          "virtio-net,netdev=user.0"
+          "modifyvm",
+          "{{.Name}}",
+          "--nictype1",
+          "82540EM"
         ],
         [
-          "-vga",
-          "qxl"
+          "modifyvm",
+          "{{.Name}}",
+          "--nictype2",
+          "82540EM"
         ],
         [
-          "-device",
-          "virtio-serial-pci"
+          "modifyvm",
+          "{{.Name}}",
+          "--nictype3",
+          "82540EM"
         ],
         [
-          "-chardev",
-          "socket,path=/tmp/{{.Name}}-qga.sock,server,nowait,id=qga0"
-        ],
-        [
-          "-device",
-          "virtserialport,chardev=qga0,name=org.qemu.guest_agent.0"
-        ],
-        [
-          "-chardev",
-          "spicevmc,id=spicechannel0,name=vdagent"
-        ],
-        [
-          "-device",
-          "virtserialport,chardev=spicechannel0,name=com.redhat.spice.0"
-        ],
-        [
-          "-spice",
-          "unix,addr=/tmp/{{.Name}}-spice.socket,disable-ticketing"
+          "modifyvm",
+          "{{.Name}}",
+          "--nictype4",
+          "82540EM"
         ]
       ],
-      "headless": true,
-      "format": "qcow2",
       "disk_size": "{{user `disk_size`}}",
-      "disk_interface": "virtio",
+      "hard_drive_interface": "sata",
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
       "floppy_files": [
         "{{ user `root_dir` }}/src/stemcells/packer/openstack/windows2019/autounattend.xml",
-        "{{ user `root_dir` }}/src/stemcells/scripts/windows/prepare.ps1",
-        "drivers/vioserial/2k19/amd64/*.cat",
-        "drivers/vioserial/2k19/amd64/*.inf",
-        "drivers/vioserial/2k19/amd64/*.sys",
-        "drivers/viostor/2k19/amd64/*.cat",
-        "drivers/viostor/2k19/amd64/*.inf",
-        "drivers/viostor/2k19/amd64/*.sys",
-        "drivers/NetKVM/2k19/amd64/*.cat",
-        "drivers/NetKVM/2k19/amd64/*.inf",
-        "drivers/NetKVM/2k19/amd64/*.sys",
-        "drivers/qxldod/2k19/amd64/*.cat",
-        "drivers/qxldod/2k19/amd64/*.inf",
-        "drivers/qxldod/2k19/amd64/*.sys"
+        "{{ user `root_dir` }}/src/stemcells/scripts/windows/prepare.ps1"
       ],
-      "http_directory": ".",
-      "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
-      "vnc_bind_address": "0.0.0.0",
+      "http_directory": "{{user `root_dir`}}",
       "communicator": "winrm",
       "winrm_username": "Administrator",
       "winrm_password": "P@ssw0rd",
       "winrm_timeout": "4h",
-      "output_directory": "{{ user `root_dir` }}/.stembuild/windows2019"
+      "keep_registered": "{{user `debug`}}",
+      "output_directory": "{{user `root_dir`}}/.stembuild/windows2019",
+      "virtualbox_version_file": ""
     }
   ],
   "provisioners": [
     {
-      "type": "powershell",
-      "script": "{{ user `root_dir` }}/src/stemcells/scripts/windows/prepare.ps1"
+      "type": "file",
+      "source": "{{user `root_dir`}}/src/stemcells/scripts/windows/",
+      "destination": "C:\\Stemcell-Build\\Scripts",
+      "pause_before": "1m"
+    },
+    {
+      "type": "file",
+      "source": "{{user `root_dir`}}/{{user `custom_ps1_script`}}",
+      "destination": "C:\\Stemcell-Build\\Scripts\\custom-install.ps1"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading custom install archive...' http://$env:PACKER_HTTP_ADDR/{{user `custom_file_upload`}} custom-install-archive.zip"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-vs.ps1 {{user `vs_download_url`}} {{user `nuget_download_url`}}"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-bosh.ps1 {{user `bosh_ps_modules_download_url`}} {{user `bosh_agent_download_url`}} {{user `openssh_win64_download_url`}}"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-vs.ps1"
+      ]
     },
     {
       "type": "windows-restart"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\custom-install.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\configure-stemcell.ps1"
+      ]
+    },
+    {
+      "type": "windows-update"
     }
   ]
 }

@@ -1,5 +1,3 @@
-#ps1_sysnative
-
 Param(
   [string][Parameter(Mandatory=$True)]$BoshPsModulesURL,
   [string][Parameter(Mandatory=$True)]$BoshAgentURL,
@@ -23,9 +21,6 @@ Do {
     $HTTP_Status = 500
   }
 } Until ($HTTP_Status -eq 200)
-
-# Enable TLS12
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # Download Bosh PowerShell modules
 Write-Output "Downloading Bosh PowerShell modules..."

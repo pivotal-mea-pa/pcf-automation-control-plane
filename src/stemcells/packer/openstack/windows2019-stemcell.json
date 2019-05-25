@@ -1,57 +1,175 @@
 {
   "variables": {
-    "identity_endpoint": "{{env `OS_AUTH_URL`}}",
-    "domain_name": "{{env `OS_PROJECT_DOMAIN_NAME`}}",
-    "tenant_name": "{{env `OS_PROJECT_NAME`}}",
-    "username": "{{env `OS_USERNAME`}}",
-    "password": "{{env `OS_PASSWORD`}}",
-    "region": "{{env `OS_REGION`}}",
-    "source_image_name": "",
-    "network_uuid": "",
-    "security_group": "",
-    "ssh_keypair_name": "",
+    "iso_url": "",
+    "iso_checksum": "",
+    "iso_checksum_type": "",
     "image_build_name": "",
+    "disk_size": "",
+    "vs_download_url": "",
+    "nuget_download_url": "",
+    "bosh_ps_modules_download_url": "",
+    "bosh_agent_download_url": "",
+    "openssh_win64_download_url": "",
+    "custom_file_upload": "",
+    "custom_ps1_script": "",
     "root_dir": ""
   },
   "builders": [
     {
-      "type": "openstack",
-      "insecure": "true",
-      "identity_endpoint": "{{user `identity_endpoint`}}",
-      "domain_name": "{{user `domain_name`}}",
-      "tenant_name": "{{user `tenant_name`}}",
-      "username": "{{user `username`}}",
-      "password": "{{user `password`}}",
-      "region": "{{user `region`}}",
-      "source_image_name": "{{user `source_image_name`}}",
-      "volume_size": 35,
-      "use_blockstorage_volume": true,
-      "flavor": "m1.large",
-      "networks": [
-        "{{user `network_uuid`}}"
+      "vm_name": "{{user `image_build_name`}}",
+      "type": "virtualbox-iso",
+      "guest_os_type": "Windows2016_64",
+      "guest_additions_mode": "disable",
+      "headless": true,
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "2048"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "2"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--vram",
+          "64"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--audio",
+          "none"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--nictype1",
+          "82540EM"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--nictype2",
+          "82540EM"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--nictype3",
+          "82540EM"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--nictype4",
+          "82540EM"
+        ]
       ],
-      "security_groups": [
-        "{{user `security_group`}}"
+      "disk_size": "{{user `disk_size`}}",
+      "hard_drive_interface": "sata",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "floppy_files": [
+        "{{ user `root_dir` }}/src/stemcells/packer/openstack/windows2019/autounattend.xml",
+        "{{ user `root_dir` }}/src/stemcells/scripts/windows/prepare.ps1"
       ],
-      "ssh_keypair_name": "{{user `ssh_keypair_name`}}",
-      "ssh_private_key_file": "{{user `root_dir`}}/keys/pcf.pem",
-      "user_data_file": "{{user `root_dir`}}/src/stemcells/scripts/windows/prepare.ps1",
-      "image_name": "{{user `image_build_name`}}",
+      "vboxmanage_post": [
+        [
+          "storageattach",
+          "{{.Name}}",
+          "--storagectl",
+          "Floppy Controller",
+          "--port",
+          "0",
+          "--device",
+          "0",
+          "--medium",
+          "none"
+        ],
+        [
+          "storageattach",
+          "{{.Name}}",
+          "--storagectl",
+          "IDE Controller",
+          "--port",
+          "0",
+          "--device",
+          "1",
+          "--medium",
+          "none"
+        ]
+      ],
+      "http_directory": "{{user `root_dir`}}",
       "communicator": "winrm",
       "winrm_username": "Administrator",
       "winrm_password": "P@ssw0rd",
-      "winrm_timeout": "3600s"
+      "winrm_timeout": "4h",
+      "output_directory": "{{ user `root_dir` }}/.stembuild/windows2019"
     }
   ],
   "provisioners": [
     {
-      "type": "windows-update"
+      "type": "powershell",
+      "inline": [
+        "Invoke-WebRequest \"http://$env:PACKER_HTTP_ADDR/{{user `custom_file_upload`}}\" -OutFile \"C:\\Stemcell-Build\\Downloads\\\""
+      ]
+    },
+    {
+      "type": "file",
+      "source": "{{user `root_dir`}}/{{user `custom_ps1_script`}}",
+      "destination": "C:\\Stemcell-Build\\Scripts\\install-custom.ps1"
+    },
+    {
+      "type": "file",
+      "source": "{{user `root_dir`}}/src/stemcells/scripts/windows/",
+      "destination": "C:\\Stemcell-Build\\Scripts"
     },
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize.ps1 openstack"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-vs.ps1 {{user `vs_download_url`}} {{user `nuget_download_url`}}"
       ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-bosh.ps1 {{user `bosh_ps_modules_download_url`}} {{user `bosh_agent_download_url`}} {{user `openssh_win64_download_url`}}"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-vs.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-custom.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\configure-stemcell.ps1"
+      ]
+    },
+    {
+      "type": "windows-update"
     }
   ]
 }

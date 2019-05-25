@@ -1,5 +1,3 @@
-#ps1_sysnative
-
 Param(
   [string][Parameter(Mandatory=$True)]$IaaS,
   [string][Parameter(Mandatory=$True)]$NewPassword,

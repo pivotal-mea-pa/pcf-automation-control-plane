@@ -1,5 +1,3 @@
-#ps1_sysnative
-
 $ErrorActionPreference = "SilentlyContinue"
 Stop-Transcript | out-null
 

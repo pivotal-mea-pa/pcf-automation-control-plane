@@ -1,5 +1,3 @@
-#ps1_sysnative
-
 Param(
   [string][Parameter(Mandatory=$True)]$VisualStudioURL,
   [string][Parameter(Mandatory=$True)]$NuGetURL
@@ -22,9 +20,6 @@ Do {
     $HTTP_Status = 500
   }
 } Until ($HTTP_Status -eq 200)
-
-# Enable TLS12
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # Download Visual Studio installer
 Write-Output "Downloading Visual Studio installer..."
