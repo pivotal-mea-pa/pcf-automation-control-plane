@@ -11,6 +11,11 @@
     "security_group": "",
     "ssh_keypair_name": "",
     "image_build_name": "",
+    "admin_password": "",
+    "time_zone": "",
+    "organization": "",
+    "owner": "",
+    "product_key": "",
     "root_dir": ""
   },
   "builders": [
@@ -50,7 +55,7 @@
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize.ps1 openstack"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize.ps1 openstack {{user `admin_password`}} {{user `time_zone`}} {{user `organization`}} {{user `owner`}} {{user `product_key`}}"
       ]
     }
   ]

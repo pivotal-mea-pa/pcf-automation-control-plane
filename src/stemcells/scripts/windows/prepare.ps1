@@ -37,8 +37,6 @@ cmd.exe /c winrm set "winrm/config/service/auth" '@{Basic="true"}'
 cmd.exe /c winrm set "winrm/config/client/auth" '@{Basic="true"}'
 cmd.exe /c winrm set "winrm/config/service/auth" '@{CredSSP="true"}'
 cmd.exe /c winrm set "winrm/config/listener?Address=*+Transport=HTTP" '@{Port="5985"}'
-# cmd.exe /c netsh advfirewall firewall set rule group="remote administration" new enable=yes
-# cmd.exe /c netsh firewall add portopening TCP 5985 "Port 5985"
 cmd.exe /c net stop winrm
 cmd.exe /c sc config winrm start= auto
 cmd.exe /c net start winrm
@@ -47,7 +45,7 @@ cmd.exe /c wmic useraccount where "name='Administrator'" set PasswordExpires=FAL
 Enable-PSRemoting -Force
 Restart-Service WinRM
 
-# make sure winrm can be accessed from any network profile.
+# Make sure winrm can be accessed from any network profile.
 $winRmFirewallRuleNames = @(
   'WINRM-HTTP-In-TCP',        # Windows Remote Management (HTTP-In)
   'WINRM-HTTP-In-TCP-PUBLIC'  # Windows Remote Management (HTTP-In)   # Windows Server
@@ -57,32 +55,34 @@ Get-NetFirewallRule -Direction Inbound -Enabled False `
   | Where-Object {$winRmFirewallRuleNames -contains $_.Name} `
   | Set-NetFirewallRule -Enable True
 
+# Enable HTTP access to WinRM
+New-NetFirewallRule `
+  -DisplayName "WinRM HTTP" -Profile Public `
+  -Protocol TCP -LocalPort 5985 `
+  -Direction Inbound -Action Allow
+
 # Disable Windows auto updates via registry
 # https://support.microsoft.com/en-us/help/328010
 function New-Directory($path) {
   $p, $components = $path -split '[\\/]'
   $components | ForEach-Object {
-      $p = "$p\$_"
-      if (!(Test-Path $p)) {
-          New-Item -ItemType Directory $p | Out-Null
-      }
+    $p = "$p\$_"
+    if (!(Test-Path $p)) {
+        New-Item -ItemType Directory $p | Out-Null
+    }
   }
-  $null
+  $path
 }
-$auPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"
-New-Directory $auPath 
+$auPath = New-Directory("HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU")
 
 # Set NoAutoUpdate.
 #
 # 0: Automatic Updates is enabled (default).
 # 1: Automatic Updates is disabled.
 New-ItemProperty `
-    -Path $auPath `
-    -Name NoAutoUpdate `
-    -Value 1 `
-    -PropertyType DWORD `
-    -Force `
-    | Out-Null
+  -Path $auPath `
+  -Name NoAutoUpdate -Value 1 -PropertyType DWORD `
+  -Force -Verbose
 
 # Set AUOptions.
 # 1: Keep my computer up to date has been disabled in Automatic Updates.
@@ -90,12 +90,9 @@ New-ItemProperty `
 # 3: Automatically download and notify of installation.
 # 4: Automatically download and scheduled installation.
 New-ItemProperty `
-    -Path $auPath `
-    -Name AUOptions `
-    -Value 2 `
-    -PropertyType DWORD `
-    -Force `
-    | Out-Null
+  -Path $auPath `
+  -Name AUOptions -Value 2 -PropertyType DWORD `
+  -Force -Verbose
 
 # Ensure Windows Defender is uninstalled
 Uninstall-WindowsFeature Windows-Defender

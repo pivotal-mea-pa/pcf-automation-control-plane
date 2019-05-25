@@ -64,6 +64,10 @@ if [[ ! -e ${stemcell_build_path}/${stemcell_archive_name} ]]; then
     -var "security_group=$security_group" \
     -var "ssh_keypair_name=$ssh_keypair_name" \
     -var "image_build_name=$stemcell_image_name" \
+    -var "admin_password=$admin_password" \
+    -var "organization=$organization" \
+    -var "owner=$owner" \
+    -var "product_key=$product_key" \
     -var "root_dir=${root_dir}" \
     src/stemcells/packer/openstack/${operating_system}-stemcell.json 2>&1 \
     | tee ${root_dir}/build-openstack-${operating_system}-stemcell.log
