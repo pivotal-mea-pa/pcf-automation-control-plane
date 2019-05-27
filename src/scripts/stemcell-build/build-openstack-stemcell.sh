@@ -65,6 +65,7 @@ if [[ ! -e ${stemcell_build_path}/${stemcell_archive_name} ]]; then
     -var "ssh_keypair_name=$ssh_keypair_name" \
     -var "image_build_name=$stemcell_image_name" \
     -var "admin_password=$admin_password" \
+    -var "time_zone=$time_zone" \
     -var "organization=$organization" \
     -var "owner=$owner" \
     -var "product_key=$product_key" \

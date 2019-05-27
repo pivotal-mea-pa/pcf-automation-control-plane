@@ -29,6 +29,8 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
       --path /stemcell_build/$i/custom_ps1_script?)
     admin_password=$(bosh interpolate ${root_dir}/vars.yml \
       --path /stemcell_build/$i/admin_password?)
+    time_zone=$(bosh interpolate ${root_dir}/vars.yml \
+      --path /stemcell_build/$i/time_zone?)
     organization=$(bosh interpolate ${root_dir}/vars.yml \
       --path /stemcell_build/$i/organization?)
     owner=$(bosh interpolate ${root_dir}/vars.yml \

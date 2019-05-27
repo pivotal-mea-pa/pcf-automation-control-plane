@@ -24,12 +24,3 @@ wusa.exe $DownloadPath\WindowsManagmentFramework.msu `
   /extract:$UpdateFilePath
 dism.exe /NoRestart /Online `
   /Add-Package /PackagePath:$UpdateFilePath\WindowsBlue-KB3191564-x64.cab
-
-# Copy LGPO.exe to C:\Windows
-Write-Output "Installing LGPO.exe to C:\Windows..."
-Unzip `
-  "$DownloadPath\LGPO.zip" `
-  "$TempPath"
-Copy-Item `
-  -Path "$TempPath\LGPO.exe" `
-  -Destination "C:\Windows"

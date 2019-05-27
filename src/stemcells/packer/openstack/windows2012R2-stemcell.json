@@ -40,7 +40,6 @@
       ],
       "ssh_keypair_name": "{{user `ssh_keypair_name`}}",
       "ssh_private_key_file": "{{user `root_dir`}}/keys/pcf.pem",
-      "user_data_file": "{{user `root_dir`}}/src/stemcells/scripts/windows/prepare.ps1",
       "image_name": "{{user `image_build_name`}}",
       "communicator": "winrm",
       "winrm_username": "Administrator",
@@ -55,7 +54,7 @@
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize.ps1 openstack {{user `admin_password`}} {{user `time_zone`}} {{user `organization`}} {{user `owner`}} {{user `product_key`}}"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize.ps1 openstack '{{user `admin_password`}}' '{{user `time_zone`}}' '{{user `organization`}}' '{{user `owner`}}' '{{user `product_key`}}'"
       ]
     }
   ]

@@ -25,23 +25,11 @@ function New-Directory($path) {
   $path
 }
 
-Write-Output "Protecting CFCell..."
-Protect-CFCell
-
 New-Item "C:\Users\vcap" -ItemType Directory
 Write-Output "Installing Bosh agent..."
 Install-Agent -IaaS $IaaS -agentZipPath "$DownloadPath\Bosh-Agent.zip"
 Write-Output "Installing SSH service..."
 Install-SSHD -SSHZipFile "$DownloadPath\OpenSSH-Win64.zip"
-
-# Re-enable RDP
-Set-ItemProperty `
-  -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" `
-  -Name "fDenyTSConnections" -Value 0 -Type DWord `
-  -Force -Verbose
-Enable-NetFirewallRule `
-  -DisplayGroup "Remote Desktop" ``
-  -Force -Verbose
 
 # Allow NTP Sync
 Set-ItemProperty `
@@ -74,23 +62,32 @@ New-ItemProperty `
 # Set Administrator password
 Net User "Administrator" "$NewPassword" /logonpasswordchg:no
 
-# Perform sysprep
-Write-Log "Invoking Sysprep for IaaS: ${IaaS}"
+# Clean up
+Remove-Item -path "C:\Stemcell-Build\Downloads\*"
+Remove-Item -path "C:\Stemcell-Build\Temp\*"
+Remove-Item -path "$env:SystemRoot\Temp\*"
 
-# For now, apply LGPO only on 2012R2
-$OsVersion = Get-OSVersion
-switch ($OsVersion) {
-  "windows2012R2" {
-    if (-Not $SkipLGPO) {
-      if (-Not (Test-Path "C:\Windows\LGPO.exe")) {
-        Throw "Error: LGPO.exe is expected to be installed to C:\Windows\LGPO.exe"
-      }
-      Enable-LocalSecurityPolicy
-    }
-  }
-}
+Write-Output "Optimizing disk..."
+Optimize-Disk
+Write-Output "Compressing disk..."
+Compress-Disk
 
-# Create Unattend from BOSH.Sysprep module
+Write-Output "Protecting CFCell..."
+Protect-CFCell
+
+# Re-enable RDP
+Set-ItemProperty `
+  -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" `
+  -Name "fDenyTSConnections" -Value 0 -Type DWord `
+  -Force -Verbose
+Enable-NetFirewallRule `
+  -DisplayGroup "Remote Desktop" `
+  -Force -Verbose
+Get-Service `
+  | Where-Object {$_.Name -eq "Termservice" } `
+  | Set-Service -StartupType Enabled
+
+# Create Unattend - copied from BOSH.Sysprep module
 Write-Log "Starting Create-Unattend"
 
 $UnattendPath = Join-Path $ScriptsPath "unattend.xml"
@@ -172,16 +169,8 @@ $PostUnattend = @"
 
 Out-File -FilePath $UnattendPath -InputObject $PostUnattend -Encoding utf8
 
-# Clean up
-Remove-Item -path "C:\Stemcell-Build\Downloads\*"
-Remove-Item -path "C:\Stemcell-Build\Temp\*"
-Remove-Item -path "$env:SystemRoot\Temp\*"
-
-Write-Output "Optimizing disk..."
-Optimize-Disk
-Write-Output "Compressing disk..."
-Compress-Disk
-  
 # Exec sysprep and shutdown
+Write-Log "Invoking Sysprep for IaaS: ${IaaS}"
+
 C:/windows/system32/sysprep/sysprep.exe `
   /generalize /oobe /unattend:"$UnattendPath" /quiet
