@@ -8,6 +8,7 @@ $DownloadPath = "C:\Stemcell-Build\Downloads"
 
 Start-Transcript -path "C:\Stemcell-Build\Logs\build.log" -append
 $ErrorActionPreference = "Stop"
+$ProgressPreference='SilentlyContinue'
 
 # Wait for internet connectivity
 Do {
@@ -28,7 +29,12 @@ $Message
   <== $DownloadURL
   ==> $DownloadPath\$OutputFile
 "@
+
 Invoke-WebRequest `
   -uri "$DownloadURL" `
   -outfile "$DownloadPath\$OutputFile"
+if ($LASTEXITCODE) {
+  throw "Failed with exit code $LASTEXITCODE"
+}
+  
 Unblock-File "$DownloadPath\$OutputFile"

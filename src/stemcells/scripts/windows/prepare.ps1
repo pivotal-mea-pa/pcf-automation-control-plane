@@ -1,5 +1,6 @@
 #ps1_sysnative 
 
+$ProgressPreference='SilentlyContinue'
 $ErrorActionPreference = "SilentlyContinue"
 Stop-Transcript | out-null
 

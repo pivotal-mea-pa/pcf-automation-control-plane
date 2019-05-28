@@ -58,6 +58,11 @@
     },
     {
       "type": "file",
+      "source": "{{user `root_dir`}}/src/stemcells/scripts/windows2012R2/",
+      "destination": "C:\\Stemcell-Build\\Scripts"
+    },
+    {
+      "type": "file",
       "source": "{{user `root_dir`}}/{{user `custom_ps1_script`}}",
       "destination": "C:\\Stemcell-Build\\Scripts\\custom-install.ps1"
     },
@@ -87,7 +92,7 @@
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-prereq-2012r2.ps1"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-prereq.ps1"
       ]
     },
     {

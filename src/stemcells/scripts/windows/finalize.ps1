@@ -32,6 +32,7 @@ Write-Output "Installing SSH service..."
 Install-SSHD -SSHZipFile "$DownloadPath\OpenSSH-Win64.zip"
 
 # Allow NTP Sync
+Write-Output "Allowing NTP Sync..."
 Set-ItemProperty `
   -Path "HKLM:\SYSTEM\CurrentControlSet\Services\W32Time\Config" `
   -Name "MaxNegPhaseCorrection" -Value 0xFFFFFFFF -Type DWord `
@@ -42,6 +43,7 @@ Set-ItemProperty `
   -Force -Verbose
 
 # Enable meltdown mitigation
+Write-Output "Enabling meltdown mitigation..."
 New-ItemProperty `
   -Path (New-Directory("HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management")) `
   -Name "FeatureSettingsOverride" -Value 0 -PropertyType DWord `
@@ -60,12 +62,14 @@ New-ItemProperty `
   -Force -Verbose
 
 # Set Administrator password
+Write-Output "Setting admin password..."
 Net User "Administrator" "$NewPassword" /logonpasswordchg:no
 
 # Clean up
-Remove-Item -path "C:\Stemcell-Build\Downloads\*"
-Remove-Item -path "C:\Stemcell-Build\Temp\*"
-Remove-Item -path "$env:SystemRoot\Temp\*"
+Write-Output "Cleaning up root disk..."
+Remove-Item -Path "C:\Stemcell-Build\Downloads\*" -Force
+Remove-Item -Path "C:\Stemcell-Build\Temp\*" -Force
+Remove-Item -Path "$env:SystemRoot\Temp\*" -Force
 
 Write-Output "Optimizing disk..."
 Optimize-Disk

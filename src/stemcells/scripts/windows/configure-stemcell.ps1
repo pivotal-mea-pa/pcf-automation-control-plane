@@ -24,6 +24,18 @@ $ErrorActionPreference = "SilentlyContinue"
 
 # Prepare windows for Bosh
 Write-Output "Installing CFFeatures..."
-Install-CFFeatures
+
+$OS = Get-WmiObject Win32_OperatingSystem
+switch -Wildcard ($OS.Version) {
+  "6.3.*" {
+    Install-CFFeatures2012
+  }
+  "10.0.*" {
+    Install-CFFeatures2016
+  }
+  default {
+    Write-Error "Unsupported Windows version $($OS.Version)"
+  }
+}
 
 $ErrorActionPreference = "Stop"

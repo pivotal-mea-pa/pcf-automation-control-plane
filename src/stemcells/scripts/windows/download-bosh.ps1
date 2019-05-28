@@ -8,6 +8,7 @@ $DownloadPath = "C:\Stemcell-Build\Downloads"
 
 Start-Transcript -path "C:\Stemcell-Build\Logs\build.log" -append
 $ErrorActionPreference = "Stop"
+$ProgressPreference='SilentlyContinue'
 
 # Wait for internet connectivity
 Do {
