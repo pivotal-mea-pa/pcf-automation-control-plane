@@ -1,0 +1,177 @@
+{
+  "variables": {
+    "iso_url": "",
+    "iso_checksum": "",
+    "iso_checksum_type": "",
+    "image_build_name": "",
+    "disk_size": "40960",
+    "vs_download_url": "",
+    "nuget_download_url": "",
+    "bosh_ps_modules_download_url": "",
+    "bosh_agent_download_url": "",
+    "openssh_win64_download_url": "",
+    "custom_file_upload": "",
+    "custom_ps1_script": "",
+    "admin_password": "",
+    "time_zone": "",
+    "organization": "",
+    "owner": "",
+    "product_key": "",
+    "root_dir": "",
+    "debug": "false"
+  },
+  "builders": [
+    {
+      "vm_name": "{{user `image_build_name`}}",
+      "type": "virtualbox-iso",
+      "guest_os_type": "Windows2016_64",
+      "guest_additions_mode": "disable",
+      "headless": true,
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "2048"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "2"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--vram",
+          "64"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--audio",
+          "none"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--nictype1",
+          "82540EM"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--nictype2",
+          "82540EM"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--nictype3",
+          "82540EM"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--nictype4",
+          "82540EM"
+        ]
+      ],
+      "disk_size": "{{user `disk_size`}}",
+      "hard_drive_interface": "sata",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "floppy_files": [
+        "{{ user `root_dir` }}/.stembuild/windows2019/autounattend.xml",
+        "{{ user `root_dir` }}/src/stemcells/scripts/windows/prepare.ps1"
+      ],
+      "http_directory": "{{user `root_dir`}}",
+      "communicator": "winrm",
+      "winrm_username": "Administrator",
+      "winrm_password": "P@ssw0rd",
+      "winrm_timeout": "4h",
+      "keep_registered": "{{user `debug`}}",
+      "output_directory": "{{user `root_dir`}}/.stembuild/windows2019/stemcell",
+      "virtualbox_version_file": ""
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "{{user `root_dir`}}/src/stemcells/scripts/windows/",
+      "destination": "C:\\Stemcell-Build\\Scripts",
+      "pause_before": "1m"
+    },
+    {
+      "type": "file",
+      "source": "{{user `root_dir`}}/{{user `custom_ps1_script`}}",
+      "destination": "C:\\Stemcell-Build\\Scripts\\custom-install.ps1"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading custom install archive...' http://$env:PACKER_HTTP_ADDR/{{user `custom_file_upload`}} custom-install-archive.zip"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading Windows VirtIO drivers...'  https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso virtio-win.iso"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading Cloud-Base Init package...' https://cloudbase.it/downloads/CloudbaseInitSetup_x64.msi CloudbaseInitSetup_x64.msi"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-bosh.ps1 {{user `bosh_ps_modules_download_url`}} {{user `bosh_agent_download_url`}} {{user `openssh_win64_download_url`}}"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-virtio-drivers.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-cloudbase-init.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\custom-install.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\configure-stemcell.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart",
+      "pause_before": "1m"
+    },
+    {
+      "type": "windows-update"
+    }
+  ]
+}

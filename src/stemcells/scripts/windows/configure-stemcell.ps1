@@ -1,6 +1,6 @@
-
 Start-Transcript -path "C:\Stemcell-Build\Logs\build.log" -append
 $ErrorActionPreference = "Stop"
+$ProgressPreference='SilentlyContinue'
 
 $DownloadPath = "C:\Stemcell-Build\Downloads"
 

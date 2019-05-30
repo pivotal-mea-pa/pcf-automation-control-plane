@@ -48,11 +48,10 @@
             </ImageInstall>
             <UserData>
                 <ProductKey>
+                    <Key>###product_key###</Key>
                     <WillShowUI>OnError</WillShowUI>
                 </ProductKey>
                 <AcceptEula>true</AcceptEula>
-                <FullName>Vagrant</FullName>
-                <Organization>Vagrant</Organization>
             </UserData>
         </component>
         <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -68,6 +67,7 @@
     </settings>
     <settings pass="oobeSystem">
         <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <ComputerName>BOSH-STEMCELL</ComputerName>
             <OOBE>
                 <HideEULAPage>true</HideEULAPage>
                 <HideLocalAccountScreen>true</HideLocalAccountScreen>
@@ -79,29 +79,29 @@
             <TimeZone>UTC</TimeZone>
             <UserAccounts>
                 <AdministratorPassword>
-                    <Value>dgBhAGcAcgBhAG4AdABBAGQAbQBpAG4AaQBzAHQAcgBhAHQAbwByAFAAYQBzAHMAdwBvAHIAZAA=</Value>
-                    <PlainText>false</PlainText>
+                    <Value>B05HStemce!!P@ssw0rd</Value>
+                    <PlainText>true</PlainText>
                 </AdministratorPassword>
                 <LocalAccounts>
                     <LocalAccount wcm:action="add">
                         <Password>
-                            <Value>dgBhAGcAcgBhAG4AdABQAGEAcwBzAHcAbwByAGQA</Value>
-                            <PlainText>false</PlainText>
+                            <Value>P@ssw0rd</Value>
+                            <PlainText>true</PlainText>
                         </Password>
-                        <Description>Vagrant</Description>
-                        <DisplayName>Vagrant</DisplayName>
+                        <Description>Admin User</Description>
+                        <DisplayName>Administrator</DisplayName>
                         <Group>Administrators</Group>
-                        <Name>vagrant</Name>
+                        <Name>admin</Name>
                     </LocalAccount>
                 </LocalAccounts>
             </UserAccounts>
             <AutoLogon>
                 <Password>
-                    <Value>dgBhAGcAcgBhAG4AdABQAGEAcwBzAHcAbwByAGQA</Value>
-                    <PlainText>false</PlainText>
+                    <Value>P@ssw0rd</Value>
+                    <PlainText>true</PlainText>
                 </Password>
                 <Enabled>true</Enabled>
-                <Username>vagrant</Username>
+                <Username>admin</Username>
             </AutoLogon>
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
@@ -115,8 +115,8 @@
                     <Description>Change the default PowerShell (32-bit) Execution Policy from Restricted to RemoteSigned</Description>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <Order>3</Order>
-                    <CommandLine>PowerShell -File a:\winrm.ps1</CommandLine>
+                    <Order>4</Order>
+                    <CommandLine>PowerShell -File a:\prepare.ps1</CommandLine>
                 </SynchronousCommand>
             </FirstLogonCommands>
         </component>

@@ -4,7 +4,7 @@
     "iso_checksum": "",
     "iso_checksum_type": "",
     "image_build_name": "",
-    "disk_size": "",
+    "disk_size": "40960",
     "vs_download_url": "",
     "nuget_download_url": "",
     "bosh_ps_modules_download_url": "",
@@ -12,6 +12,11 @@
     "openssh_win64_download_url": "",
     "custom_file_upload": "",
     "custom_ps1_script": "",
+    "admin_password": "",
+    "time_zone": "",
+    "organization": "",
+    "owner": "",
+    "product_key": "",
     "root_dir": "",
     "debug": "false"
   },
@@ -19,7 +24,7 @@
     {
       "vm_name": "{{user `image_build_name`}}",
       "type": "virtualbox-iso",
-      "guest_os_type": "Windows2016_64",
+      "guest_os_type": "Windows2012_64",
       "guest_additions_mode": "disable",
       "headless": true,
       "vboxmanage": [
@@ -27,7 +32,7 @@
           "modifyvm",
           "{{.Name}}",
           "--memory",
-          "2048"
+          "4096"
         ],
         [
           "modifyvm",
@@ -79,7 +84,7 @@
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
       "floppy_files": [
-        "{{ user `root_dir` }}/src/stemcells/config/windows2019/autounattend.xml",
+        "{{ user `root_dir` }}/.stembuild/windows2012R2/autounattend.xml",
         "{{ user `root_dir` }}/src/stemcells/scripts/windows/prepare.ps1"
       ],
       "http_directory": "{{user `root_dir`}}",
@@ -88,7 +93,7 @@
       "winrm_password": "P@ssw0rd",
       "winrm_timeout": "4h",
       "keep_registered": "{{user `debug`}}",
-      "output_directory": "{{user `root_dir`}}/.stembuild/windows2019",
+      "output_directory": "{{user `root_dir`}}/.stembuild/windows2012R2/stemcell",
       "virtualbox_version_file": ""
     }
   ],
@@ -101,6 +106,11 @@
     },
     {
       "type": "file",
+      "source": "{{user `root_dir`}}/src/stemcells/scripts/windows2012R2/",
+      "destination": "C:\\Stemcell-Build\\Scripts"
+    },
+    {
+      "type": "file",
       "source": "{{user `root_dir`}}/{{user `custom_ps1_script`}}",
       "destination": "C:\\Stemcell-Build\\Scripts\\custom-install.ps1"
     },
@@ -108,6 +118,12 @@
       "type": "windows-shell",
       "inline": [
         "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading custom install archive...' http://$env:PACKER_HTTP_ADDR/{{user `custom_file_upload`}} custom-install-archive.zip"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading Windows Management Framework 5.1...' 'https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win8.1AndW2K12R2-KB3191564-x64.msu' WindowsManagmentFramework.msu"
       ]
     },
     {
@@ -125,14 +141,17 @@
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-vs.ps1 {{user `vs_download_url`}} {{user `nuget_download_url`}}"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-bosh.ps1 {{user `bosh_ps_modules_download_url`}} {{user `bosh_agent_download_url`}} {{user `openssh_win64_download_url`}}"
       ]
     },
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-bosh.ps1 {{user `bosh_ps_modules_download_url`}} {{user `bosh_agent_download_url`}} {{user `openssh_win64_download_url`}}"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-prereq.ps1"
       ]
+    },
+    {
+      "type": "windows-restart"
     },
     {
       "type": "windows-shell",
@@ -155,15 +174,6 @@
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-vs.ps1"
-      ]
-    },
-    {
-      "type": "windows-restart"
-    },
-    {
-      "type": "windows-shell",
-      "inline": [
         "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\custom-install.ps1"
       ]
     },
@@ -177,10 +187,17 @@
       ]
     },
     {
-      "type": "windows-restart"
+      "type": "windows-restart",
+      "pause_before": "1m"
     },
     {
       "type": "windows-update"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize.ps1 openstack '{{user `admin_password`}}' '{{user `time_zone`}}' '{{user `organization`}}' '{{user `owner`}}' '{{user `product_key`}}'"
+      ]
     }
   ]
 }

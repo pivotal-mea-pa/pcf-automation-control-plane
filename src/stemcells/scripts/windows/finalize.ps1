@@ -9,6 +9,7 @@ Param(
 
 Start-Transcript -path "C:\Stemcell-Build\Logs\build.log" -append
 $ErrorActionPreference = "Stop"
+$ProgressPreference='SilentlyContinue'
 
 $DownloadPath = "C:\Stemcell-Build\Downloads"
 $ScriptsPath = "C:\Stemcell-Build\Scripts"
@@ -76,23 +77,23 @@ Optimize-Disk
 Write-Output "Compressing disk..."
 Compress-Disk
 
+$ErrorActionPreference = "SilentlyContinue"
 Write-Output "Protecting CFCell..."
 Protect-CFCell
+$ErrorActionPreference = "Stop"
 
 # Re-enable RDP
 Set-ItemProperty `
   -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" `
-  -Name "fDenyTSConnections" -Value 0 -Type DWord `
-  -Force -Verbose
+  -Name "fDenyTSConnections" -Value 0 -Type DWord -Verbose
 Enable-NetFirewallRule `
-  -DisplayGroup "Remote Desktop" `
-  -Force -Verbose
+  -DisplayGroup "Remote Desktop" -Verbose
 Get-Service `
   | Where-Object {$_.Name -eq "Termservice" } `
-  | Set-Service -StartupType Enabled
+  | Set-Service -StartupType Automatic -Verbose
 
 # Create Unattend - copied from BOSH.Sysprep module
-Write-Log "Starting Create-Unattend"
+Write-Log "Creating unattend.xml for sysprep..."
 
 $UnattendPath = Join-Path $ScriptsPath "unattend.xml"
 Write-Log "Writing unattend.xml to $UnattendPath"
@@ -177,4 +178,5 @@ Out-File -FilePath $UnattendPath -InputObject $PostUnattend -Encoding utf8
 Write-Log "Invoking Sysprep for IaaS: ${IaaS}"
 
 C:/windows/system32/sysprep/sysprep.exe `
-  /generalize /oobe /unattend:"$UnattendPath" /quiet
+  /quiet /generalize /oobe /quit `
+  /unattend:"$UnattendPath"

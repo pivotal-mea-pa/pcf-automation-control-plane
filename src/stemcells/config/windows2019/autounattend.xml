@@ -51,7 +51,7 @@
             </ImageInstall>
             <UserData>
                 <ProductKey>
-                    <Key>NR2CP-DJ28R-QDYR7-7J8MY-6VMMD</Key>
+                    <Key>###product_key###</Key>
                     <WillShowUI>OnError</WillShowUI>
                 </ProductKey>
                 <AcceptEula>true</AcceptEula>
