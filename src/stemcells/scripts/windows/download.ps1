@@ -23,6 +23,9 @@ Do {
   }
 } Until ($HTTP_Status -eq 200)
 
+# Enable TLS12
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 # Download file
 Write-Output @"
 $Message
