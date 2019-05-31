@@ -51,12 +51,13 @@ Vagrant.configure("2") do |config|
   #
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
-    vb.gui = true
+    vb.gui = false
   
     # Customize the amount of memory on the VM:
     vb.memory = "4096"
     vb.cpus = 2
 
+    vb.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
     vb.customize ["modifyvm", :id, "--ioapic", "on"]
     vb.customize ["modifyvm", :id, "--hwvirtex", "on"]
     vb.customize ["modifyvm", :id, "--vtxux", "on"]
@@ -69,8 +70,72 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-  apt-get update
-  sudo apt-get install -y qemu qemu-kvm virtinst virt-manager virt-viewer libvirt-bin
-  sudo usermod -a -G libvirtd vagrant
-  SHELL
+apt-get update
+
+apt-get update && apt-get install --no-install-recommends -y \
+  qemu qemu-kvm virtinst virt-manager virt-viewer libvirt-bin \
+  automake autotools-dev build-essential gawk \
+  libffi-dev libxslt-dev libxml2-dev libjson-c-dev libyaml-dev \
+  libcurl4-gnutls-dev openssl libssl-dev \
+  fuse libfuse-dev \
+  zip unzip zlibc zlib1g-dev \
+  mysql-client sqlite3 libsqlite3-dev \
+  python3 python3-dev \
+  ruby ruby-dev \
+  openssh-client sshpass \
+  whois netcat iputils-ping dnsutils ldap-utils \
+  wget curl ipcalc git nfs-common figlet
+
+# Setup python and install openstack CLI
+rm -f /usr/bin/python
+ln -s /usr/bin/python3 /usr/bin/python
+curl -sL https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py
+rm get-pip.py
+pip install pyyaml python-openstackclient python-neutronclient python-glanceclient
+
+# Install cf uaa cli
+gem install cf-uaac --no-document
+
+# Install CLIs
+pushd /usr/local/bin
+
+curl -o /tmp/packer.zip \
+  -sJL https://releases.hashicorp.com/packer/1.4.1/packer_1.4.1_linux_amd64.zip
+unzip /tmp/packer.zip
+rm -f /tmp/packer.zip
+
+curl \
+  -sJL https://github.com/rgl/packer-provisioner-windows-update/releases/download/v0.7.1/packer-provisioner-windows-update-linux.tgz \
+  | tar xvz
+chmod +x packer-provisioner-windows-update
+
+curl -o bosh \
+  -sJL https://github.com/cloudfoundry/bosh-cli/releases/download/v5.5.1/bosh-cli-5.5.1-linux-amd64
+chmod +x bosh
+
+curl \
+  -sJL https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/2.4.0/credhub-linux-2.4.0.tgz \
+  | tar xvz
+
+curl -o mc \
+  -sJL https://dl.minio.io/client/mc/release/linux-amd64/mc
+chmod +x mc
+
+# Setup direnv to manage environment variables
+curl -o direnv \
+  -sJL https://github.com/direnv/direnv/releases/download/v2.20.0/direnv.linux-amd64
+chmod +x direnv
+
+popd
+
+set +e
+grep 'figlet' /home/vagrant/.profile 2>&1 > /dev/null
+if [[ $? -ne 0 ]]; then
+  echo -e "eval \\"\\$(direnv hook bash)\\"" >> /home/vagrant/.profile
+  echo -e "\nfiglet \"PCF Automation\"" >> /home/vagrant/.profile
+fi
+
+SHELL
+
 end
