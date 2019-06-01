@@ -78,7 +78,7 @@
         ]
       ],
       "disk_size": "{{user `disk_size`}}",
-      "hard_drive_interface": "sata",
+      "hard_drive_interface": "ide",
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
@@ -130,6 +130,12 @@
     {
       "type": "windows-shell",
       "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading SDelete for disk optimization...' https://download.sysinternals.com/files/SDelete.zip SDelete.zip"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
         "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-bosh.ps1 {{user `bosh_ps_modules_download_url`}} {{user `bosh_agent_download_url`}} {{user `openssh_win64_download_url`}}"
       ]
     },
@@ -154,6 +160,12 @@
     {
       "type": "windows-shell",
       "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-sdelete.ps1"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
         "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\custom-install.ps1"
       ]
     },
@@ -172,6 +184,12 @@
     },
     {
       "type": "windows-update"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize.ps1 openstack '{{user `admin_password`}}' '{{user `time_zone`}}' '{{user `organization`}}' '{{user `owner`}}' '{{user `product_key`}}'"
+      ]
     }
   ]
 }

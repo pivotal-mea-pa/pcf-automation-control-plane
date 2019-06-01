@@ -1,5 +1,6 @@
-#Start-Transcript -path "C:\Stemcell-Build\Logs\build.log" -append
+Start-Transcript -path "C:\Stemcell-Build\Logs\build.log" -append
 $ErrorActionPreference = "Stop"
+$ProgressPreference='SilentlyContinue'
 
 $DownloadPath = "C:\Stemcell-Build\Downloads"
 $ScriptsPath = "C:\Stemcell-Build\Scripts"
@@ -47,11 +48,13 @@ Get-ChildItem -Recurse -Include "*.inf" -File "$VirtIODriverPath" | ForEach-Obje
     $CertStore.Close()
 
     # Install the driver.
+    $ErrorActionPreference = "SilentlyContinue"
     Write-Output "Installing driver $DriverName... : $DriverInfFile"
-    pnputil -i -a $DriverInfFile
+    pnputil /add-driver $DriverInfFile /install
     if ($LASTEXITCODE) {
-      throw "Failed with exit code $LASTEXITCODE"
+      Write-Output "PnPUtil returned an exit code of $LASTEXITCODE"
     }
+    $ErrorActionPreference = "Stop"
   }
 }
 

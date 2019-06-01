@@ -2,7 +2,7 @@
 
 set -eux
 
-stemcell_build_path=${root_dir}/.stembuild
+stemcell_build_path=${STEMCELL_BUILD_PATH:-${root_dir}/.stembuild}
 mkdir -p $stemcell_build_path
 
 touch ${stemcell_build_path}/noop.dat
@@ -43,6 +43,10 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
       --path /stemcell_build/$i/owner?)
     product_key=$(bosh interpolate ${root_dir}/vars.yml \
       --path /stemcell_build/$i/product_key?)
+    packer_builder=$(bosh interpolate ${root_dir}/vars.yml \
+      --path /stemcell_build/$i/packer_builder?)
+    debug=$(bosh interpolate ${root_dir}/vars.yml \
+      --path /stemcell_build/$i/debug?)
 
     iso_url=$(cd ${root_dir}/$(dirname $iso_url) && pwd)/$(basename $iso_url)
 
@@ -50,6 +54,18 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
       custom_file_upload=.stembuild/noop.dat
     [[ -n $custom_ps1_script && $custom_ps1_script != null ]] || \
       custom_ps1_script=.stembuild/noop.ps1
+    [[ -n $packer_builder && $packer_builder != null ]] || \
+      packer_builder=vbox
+    [[ -n $debug && $debug != null ]] || \
+      debug='false'
+
+    if [[ $debug == true ]]; then
+      packer_log=1
+      on_error=abort
+    else
+      packer_log=0
+      on_error=cleanup
+    fi
 
     set +u
     build_number=$(eval "echo \$${operating_system}_build_number")
@@ -72,9 +88,10 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
         sed "s|###product_key###|$product_key|" ${root_dir}/src/stemcells/config/${operating_system}/autounattend.xml \
           > ${stemcell_build_path}/${operating_system}/autounattend.xml
 
-        echo "Building base "$version" of the $iaas stemcell for OS '${operating_system}' ..."
+        echo "Building base "${version}" of the ${iaas} stemcell for OS '${operating_system}' ..."
 
-        packer build \
+        PACKER_LOG=${packer_log} packer build -force \
+          -on-error=${on_error} \
           -var "iso_url=${iso_url}" \
           -var "iso_checksum=${iso_checksum}" \
           -var "iso_checksum_type=${iso_checksum_type}" \
@@ -86,18 +103,18 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
           -var "openssh_win64_download_url=https://github.com/PowerShell/Win32-OpenSSH/releases/download/${openssh_version}/OpenSSH-Win64.zip" \
           -var "custom_file_upload=${custom_file_upload}" \
           -var "custom_ps1_script=${custom_ps1_script}" \
-          -var "admin_password=$admin_password" \
-          -var "time_zone=$time_zone" \
-          -var "organization=$organization" \
-          -var "owner=$owner" \
-          -var "product_key=$product_key" \
+          -var "admin_password=${admin_password}" \
+          -var "time_zone=${time_zone}" \
+          -var "organization=${organization}" \
+          -var "owner=${owner}" \
+          -var "product_key=${product_key}" \
           -var "root_dir=${root_dir}" \
-          -var "debug=true" \
-          src/stemcells/packer/$iaas/${operating_system}.json 2>&1 \
-          | tee ${root_dir}/build-$iaas-${operating_system}.log
+          -var "debug=${debug}" \
+          src/stemcells/packer/${iaas}/${operating_system}-${packer_builder}.json 2>&1 \
+          | tee ${root_dir}/build-${iaas}-${operating_system}.log
 
         # Exit with error if build did no complete successfuly
-        cat build-$iaas-${operating_system}.log | grep "Build '$iaas' finished." 2>&1 >/dev/null
+        cat build-$iaas-${operating_system}.log | grep "Build '.*' finished." 2>&1 >/dev/null
       fi
 
       source ${root_dir}/src/scripts/stemcell-build/build-${iaas}-stemcell.sh

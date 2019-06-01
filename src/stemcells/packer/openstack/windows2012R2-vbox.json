@@ -115,10 +115,9 @@
       "destination": "C:\\Stemcell-Build\\Scripts\\custom-install.ps1"
     },
     {
-      "type": "windows-shell",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading custom install archive...' http://$env:PACKER_HTTP_ADDR/{{user `custom_file_upload`}} custom-install-archive.zip"
-      ]
+      "type": "file",
+      "source": "{{user `root_dir`}}/{{user `custom_file_upload`}}",
+      "destination": "C:\\Stemcell-Build\\Downloads\\custom-install-archive.zip"
     },
     {
       "type": "windows-shell",
@@ -136,6 +135,12 @@
       "type": "windows-shell",
       "inline": [
         "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading Cloud-Base Init package...' https://cloudbase.it/downloads/CloudbaseInitSetup_x64.msi CloudbaseInitSetup_x64.msi"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading SDelete for disk optimization...' https://download.sysinternals.com/files/SDelete.zip SDelete.zip"
       ]
     },
     {
@@ -170,6 +175,12 @@
     },
     {
       "type": "windows-restart"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-sdelete.ps1"
+      ]
     },
     {
       "type": "windows-shell",
