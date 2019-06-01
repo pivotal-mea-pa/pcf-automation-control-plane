@@ -70,17 +70,14 @@ Net User "Administrator" "$NewPassword" /logonpasswordchg:no
 Write-Output "Cleaning up root disk..."
 Remove-Item -Path "C:\Stemcell-Build\Downloads\*" -Force
 Remove-Item -Path "C:\Stemcell-Build\Temp\*" -Force
-Remove-Item -Path "$env:SystemRoot\Temp\*" -Force
 
 Write-Output "Optimizing disk..."
 Optimize-Disk
 Write-Output "Compressing disk..."
 Compress-Disk
 
-$ErrorActionPreference = "SilentlyContinue"
 Write-Output "Protecting CFCell..."
 Protect-CFCell
-$ErrorActionPreference = "Stop"
 
 # Re-enable RDP
 Set-ItemProperty `
@@ -93,10 +90,8 @@ Get-Service `
   | Set-Service -StartupType Automatic -Verbose
 
 # Create Unattend - copied from BOSH.Sysprep module
-Write-Log "Creating unattend.xml for sysprep..."
-
+Write-Output "Creating unattend.xml for sysprep..."
 $UnattendPath = Join-Path $ScriptsPath "unattend.xml"
-Write-Log "Writing unattend.xml to $UnattendPath"
 
 $ProductKeyXML=""
 if ($ProductKey -ne "") {
@@ -172,10 +167,11 @@ $PostUnattend = @"
 </unattend>
 "@
 
+Write-Output "Writing unattend.xml to $UnattendPath"
 Out-File -FilePath $UnattendPath -InputObject $PostUnattend -Encoding utf8
 
 # Exec sysprep and shutdown
-Write-Log "Invoking Sysprep for IaaS: ${IaaS}"
+Write-Output "Invoking Sysprep for IaaS: ${IaaS}"
 
 C:/windows/system32/sysprep/sysprep.exe `
   /quiet /generalize /oobe /quit `
