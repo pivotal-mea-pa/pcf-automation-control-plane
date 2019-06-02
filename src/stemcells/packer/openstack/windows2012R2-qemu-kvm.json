@@ -50,20 +50,20 @@
       "disk_size": "{{user `disk_size`}}",
       "disk_interface": "virtio",
       "floppy_files": [
-        "{{ user `stemcell_build_path` }}/windows2019/autounattend.xml",
+        "{{ user `stemcell_build_path` }}/windows2012R2/autounattend.xml",
         "{{ user `root_dir` }}/src/stemcells/scripts/windows/prepare.ps1",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/vioserial/2k16/amd64/*.cat",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/vioserial/2k16/amd64/*.inf",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/vioserial/2k16/amd64/*.sys",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k16/amd64/*.cat",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k16/amd64/*.inf",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k16/amd64/*.sys",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/NetKVM/2k16/amd64/*.cat",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/NetKVM/2k16/amd64/*.inf",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/NetKVM/2k16/amd64/*.sys",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/qxldod/2k16/amd64/*.cat",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/qxldod/2k16/amd64/*.inf",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/qxldod/2k16/amd64/*.sys"
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/vioserial/2k12R2/amd64/*.cat",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/vioserial/2k12R2/amd64/*.inf",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/vioserial/2k12R2/amd64/*.sys",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k12R2/amd64/*.cat",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k12R2/amd64/*.inf",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k12R2/amd64/*.sys",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/NetKVM/2k12R2/amd64/*.cat",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/NetKVM/2k12R2/amd64/*.inf",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/NetKVM/2k12R2/amd64/*.sys",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/qxldod/2k12R2/amd64/*.cat",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/qxldod/2k12R2/amd64/*.inf",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/qxldod/2k12R2/amd64/*.sys"
       ],
       "net_device": "virtio-net",
       "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
@@ -73,7 +73,7 @@
       "winrm_username": "Administrator",
       "winrm_password": "P@ssw0rd",
       "winrm_timeout": "4h",
-      "output_directory": "{{user `stemcell_build_path`}}/windows2019/stemcell"
+      "output_directory": "{{user `stemcell_build_path`}}/windows2012R2/stemcell"
     }
   ],
   "provisioners": [
@@ -82,6 +82,27 @@
       "source": "{{user `root_dir`}}/src/stemcells/scripts/windows/",
       "destination": "C:\\Stemcell-Build\\Scripts",
       "pause_before": "1m"
+    },
+    {
+      "type": "shell-local",
+      "command": "echo '******************** Installing Windows 2012R2 pre-requisites ********************'"
+    },
+    {
+      "type": "file",
+      "source": "{{user `root_dir`}}/src/stemcells/scripts/windows2012R2/",
+      "destination": "C:\\Stemcell-Build\\Scripts"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading Windows Management Framework 5.1...' 'https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win8.1AndW2K12R2-KB3191564-x64.msu' WindowsManagmentFramework.msu"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-prereq.ps1"
+      ]
     },
     {
       "type": "shell-local",

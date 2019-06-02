@@ -66,6 +66,17 @@ New-ItemProperty `
 Write-Output "Setting admin password..."
 Net User "Administrator" "$NewPassword" /logonpasswordchg:no
 
+# Delete AutoLogon User
+Remove-ItemProperty `
+  -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" `
+  -Name "AutoAdminLogon" -Force -Verbose
+Remove-ItemProperty `
+  -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" `
+  -Name "DefaultUsername" -Force -Verbose
+Remove-ItemProperty `
+  -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" `
+  -Name "DefaultPassword" -Force -Verbose
+
 # Clean up
 Write-Output "Cleaning up root disk..."
 Remove-Item -Path "C:\Stemcell-Build\Downloads\*" -Force

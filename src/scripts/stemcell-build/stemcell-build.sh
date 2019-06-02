@@ -2,7 +2,7 @@
 
 set -eux
 
-stemcell_build_path=${STEMCELL_BUILD_PATH:-${root_dir}/.stembuild}
+stemcell_build_path=${root_dir}/.stembuild
 mkdir -p $stemcell_build_path
 
 touch ${stemcell_build_path}/noop.dat
@@ -71,6 +71,7 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
     build_number=$(eval "echo \$${operating_system}_build_number")
     build_number=${build_number:-0}
     set -u
+    version="${bosh_version}.${build_number}"
 
     num_iaas=$(bosh interpolate ${root_dir}/vars.yml --path /stemcell_build/$i/iaas | grep -e "^-" | wc -l)
     for j in $(seq 0 $((num_iaas-1))); do
@@ -78,15 +79,16 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
       iaas=$(bosh interpolate ${root_dir}/vars.yml \
         --path /stemcell_build/$i/iaas/$j/type)
 
-      version="${bosh_version}.${build_number}"
-      stemcell_base_ovf_file=${stemcell_build_path}/${operating_system}/stemcell/${operating_system}-stemcell.ovf
-
-      if [[ ! -e $stemcell_base_ovf_file || $action == clean ]]; then
+      if [[ ! -e ${stemcell_build_path}/${operating_system}/stemcell \
+        || $action == clean ]]; then
         rm -fr ${stemcell_build_path}/${operating_system}
 
         mkdir -p ${stemcell_build_path}/${operating_system}
-        sed "s|###product_key###|$product_key|" ${root_dir}/src/stemcells/config/${operating_system}/autounattend.xml \
+        sed "s|###product_key###|${product_key}|g" \
+          ${root_dir}/src/stemcells/config/${operating_system}/autounattend.xml \
           > ${stemcell_build_path}/${operating_system}/autounattend.xml
+        sed -i "s|###admin_password###|${admin_password}|g" \
+          ${stemcell_build_path}/${operating_system}/autounattend.xml
 
         echo "Building base "${version}" of the ${iaas} stemcell for OS '${operating_system}' ..."
 
@@ -109,6 +111,7 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
           -var "owner=${owner}" \
           -var "product_key=${product_key}" \
           -var "root_dir=${root_dir}" \
+          -var "stemcell_build_path=${stemcell_build_path}" \
           -var "debug=${debug}" \
           src/stemcells/packer/${iaas}/${operating_system}-${packer_builder}.json 2>&1 \
           | tee ${root_dir}/build-${iaas}-${operating_system}.log

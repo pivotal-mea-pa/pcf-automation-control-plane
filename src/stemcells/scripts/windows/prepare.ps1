@@ -16,9 +16,6 @@ Set-ExecutionPolicy Unrestricted -Scope LocalMachine -Force -ErrorAction Ignore
 Start-Transcript -path "C:\Stemcell-Build\Logs\build.log" -append
 $ErrorActionPreference = "stop"
 
-# Set Administrator password
-Net User "Administrator" "P@ssw0rd" /logonpasswordchg:no
-
 # Enable TLS12
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 

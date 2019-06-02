@@ -44,7 +44,7 @@
                     <InstallFrom>
                         <MetaData wcm:action="add">
                             <Key>/IMAGE/NAME</Key>
-                            <Value>Windows Server 2019 SERVERSTANDARD</Value>
+                            <Value>Windows Server 2019 SERVERDATACENTERCORE</Value>
                         </MetaData>
                     </InstallFrom>
                 </OSImage>
@@ -82,29 +82,17 @@
             <TimeZone>UTC</TimeZone>
             <UserAccounts>
                 <AdministratorPassword>
-                    <Value>B05HStemce!!P@ssw0rd</Value>
+                    <Value>###admin_password###</Value>
                     <PlainText>true</PlainText>
                 </AdministratorPassword>
-                <LocalAccounts>
-                    <LocalAccount wcm:action="add">
-                        <Password>
-                            <Value>P@ssw0rd</Value>
-                            <PlainText>true</PlainText>
-                        </Password>
-                        <Description>Admin User</Description>
-                        <DisplayName>Administrator</DisplayName>
-                        <Group>Administrators</Group>
-                        <Name>admin</Name>
-                    </LocalAccount>
-                </LocalAccounts>
             </UserAccounts>
             <AutoLogon>
                 <Password>
-                    <Value>P@ssw0rd</Value>
+                    <Value>###admin_password###</Value>
                     <PlainText>true</PlainText>
                 </Password>
                 <Enabled>true</Enabled>
-                <Username>admin</Username>
+                <Username>Administrator</Username>
             </AutoLogon>
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">

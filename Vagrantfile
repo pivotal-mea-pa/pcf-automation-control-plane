@@ -70,19 +70,26 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-apt-get update && apt-get install --no-install-recommends -y \
-  qemu qemu-kvm virtinst virt-manager virt-viewer libvirt-bin \
-  automake autotools-dev build-essential gawk \
-  libffi-dev libxslt-dev libxml2-dev libjson-c-dev libyaml-dev \
-  libcurl4-gnutls-dev openssl libssl-dev \
-  fuse libfuse-dev \
-  zip unzip zlibc zlib1g-dev \
-  mysql-client sqlite3 libsqlite3-dev \
-  python3 python3-dev \
-  ruby ruby-dev \
-  openssh-client sshpass \
-  whois netcat iputils-ping dnsutils ldap-utils \
-  wget curl ipcalc git nfs-common figlet
+
+USER=vagrant
+
+apt-get update \
+  && apt-get -y dist-update \
+  && apt-get install --no-install-recommends -y \
+    qemu qemu-kvm virtinst virt-manager virt-viewer libvirt-bin \
+    automake autotools-dev build-essential gawk \
+    libffi-dev libxslt-dev libxml2-dev libjson-c-dev libyaml-dev \
+    libcurl4-gnutls-dev openssl libssl-dev \
+    fuse libfuse-dev \
+    zip unzip zlibc zlib1g-dev \
+    mysql-client sqlite3 libsqlite3-dev \
+    python3 python3-dev \
+    ruby ruby-dev \
+    openssh-client sshpass \
+    whois netcat iputils-ping dnsutils ldap-utils \
+    wget curl ipcalc git nfs-common figlet
+
+usermod -a -G kvm $USER
 
 # Setup python and install openstack CLI
 rm -f /usr/bin/python
@@ -128,10 +135,12 @@ chmod +x direnv
 popd
 
 set +e
-grep 'figlet' /home/vagrant/.profile 2>&1 > /dev/null
+grep 'figlet' /home/$USER/.profile 2>&1 > /dev/null
 if [[ $? -ne 0 ]]; then
-  echo -e "eval \\"\\$(direnv hook bash)\\"" >> /home/vagrant/.profile
-  echo -e "\nfiglet \"PCF Automation\"" >> /home/vagrant/.profile
+  echo -e "eval \\"\\$(direnv hook bash)\\"" >> /home/$USER/.bashrc
+  echo -e "\necho \"\\n\\n\"" >> /home/$USER/.bashrc
+  echo -e "\nfiglet \"PCF Automation\"" >> /home/$USER/.bashrc
+  echo -e "\necho \"\\n\"" >> /home/$USER/.bashrc
 fi
 
 SHELL
