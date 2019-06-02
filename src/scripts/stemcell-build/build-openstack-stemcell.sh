@@ -9,7 +9,7 @@ set -eux
 stemcell_archive_name="bosh-stemcell-${version}-openstack-kvm-${operating_system}-go_agent-raw.tgz"
 stemcell_disk_image=${stemcell_build_path}/${operating_system}/stemcell/${operating_system}-stemcell
 
-if [[ ! -e $stemcell_archive_name \
+if [[ ! -e ${stemcell_build_path}/${stemcell_archive_name} \
   || $action == clean ]]; then
   rm -f ${stemcell_build_path}/${stemcell_archive_name}
 
@@ -21,7 +21,7 @@ if [[ ! -e $stemcell_archive_name \
   pushd ${stemcell_build_path}
   rm -f ${stemcell_archive_name}
 
-  qemu-img convert -p -c -O qcow2 ${stemcell_vmdk_path} root.img
+  qemu-img convert -p -c -O qcow2 ${stemcell_disk_image} root.img
 
   tar czf image root.img
   rm -f *.img
@@ -57,5 +57,5 @@ else
   echo "OpenStack stemcell version '$version' for OS '${operating_system}' exists ..."
 fi
 
-# [[ $action != test ]] || \
-#   source ${root_dir}/src/scripts/stemcell-build/test-windows-stemcell.sh
+[[ $action != test ]] || \
+  source ${root_dir}/src/scripts/stemcell-build/test-windows-stemcell.sh
