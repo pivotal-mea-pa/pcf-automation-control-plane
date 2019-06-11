@@ -7,7 +7,6 @@ set -eux
 # Although image is QCOW2 we need to name the stemcell file with
 # post fix "-raw.tgz" as otherwise Ops Manager rejects the file.
 stemcell_archive_name="bosh-stemcell-${version}-openstack-kvm-${operating_system}-go_agent-raw.tgz"
-stemcell_disk_image=${stemcell_build_path}/${operating_system}/stemcell/${operating_system}-stemcell
 
 if [[ ! -e ${stemcell_build_path}/${stemcell_archive_name} \
   || $action == clean ]]; then

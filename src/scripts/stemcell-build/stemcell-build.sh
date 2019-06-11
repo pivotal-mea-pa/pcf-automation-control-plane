@@ -42,8 +42,6 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
     debug=$(bosh interpolate ${root_dir}/vars.yml \
       --path /stemcell_build/$i/debug?)
 
-    iso_url=$(cd ${root_dir}/$(dirname $iso_url) && pwd)/$(basename $iso_url)
-
     [[ -n $custom_file_upload && $custom_file_upload != null ]] || \
       custom_file_upload=.stembuild/noop.dat
     [[ -n $custom_ps1_script && $custom_ps1_script != null ]] || \
@@ -67,14 +65,17 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
     set -u
     version="${bosh_version}.${build_number}"
 
+    iaas_scripts_path=${root_dir}/src/scripts/stemcell-build/${iaas}
+    stemcell_image_path=${stemcell_build_path}/${operating_system}
+
+    image_build_name=${operating_system}-stemcell
+    stemcell_disk_image=${stemcell_image_path}/stemcell/${image_build_name}
+
     num_iaas=$(bosh interpolate ${root_dir}/vars.yml --path /stemcell_build/$i/iaas | grep -e "^-" | wc -l)
     for j in $(seq 0 $((num_iaas-1))); do
 
       iaas=$(bosh interpolate ${root_dir}/vars.yml \
         --path /stemcell_build/$i/iaas/$j/type)
-
-      iaas_scripts_path=${root_dir}/src/scripts/stemcell-build/${iaas}
-      stemcell_image_path=${stemcell_build_path}/${operating_system}
 
       if [[ ! -e ${stemcell_image_path}/stemcell \
         || $action == clean ]]; then
@@ -96,7 +97,7 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
         PACKER_LOG=${packer_log} packer build -force \
           -on-error=${on_error} \
           $provider_specific_vars \
-          -var "image_build_name=${operating_system}-stemcell" \
+          -var "image_build_name=${image_build_name}" \
           -var "vs_download_url=https://s3.eu-central-1.amazonaws.com/mevansam-share/public/vs_community__378995140.1557481685.exe" \
           -var "nuget_download_url=https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" \
           -var "bosh_ps_modules_download_url=https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/releases/download/${bosh_version}/bosh-psmodules.zip" \

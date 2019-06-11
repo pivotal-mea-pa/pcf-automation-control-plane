@@ -31,7 +31,7 @@
       "password": "{{user `password`}}",
       "region": "{{user `region`}}",
       "source_image_name": "{{user `source_image_name`}}",
-      "volume_size": 40,
+      "volume_size": 45,
       "use_blockstorage_volume": true,
       "flavor": "m1.large",
       "networks": [
@@ -42,7 +42,7 @@
       ],
       "ssh_keypair_name": "{{user `ssh_keypair_name`}}",
       "ssh_private_key_file": "{{user `root_dir`}}/keys/pcf.pem",
-      "user_data_file": "{{user `root_dir`}}/src/stemcells/scripts/windows/prepare.ps1",
+      "user_data_file": "{{user `root_dir`}}/src/stemcells/scripts/windows2012R2/prepare-glance-kvm.ps1",
       "image_name": "{{user `image_build_name`}}",
       "communicator": "winrm",
       "winrm_username": "Administrator",
@@ -54,12 +54,55 @@
     {
       "type": "file",
       "source": "{{user `root_dir`}}/src/stemcells/scripts/windows/",
-      "destination": "C:\\Stemcell-Build\\Scripts"
+      "destination": "C:\\Stemcell-Build\\Scripts",
+      "pause_before": "1m"
+    },
+    {
+      "type": "shell-local",
+      "command": "echo '******************** Installing Windows 2012R2 pre-requisites ********************'"
     },
     {
       "type": "file",
       "source": "{{user `root_dir`}}/src/stemcells/scripts/windows2012R2/",
       "destination": "C:\\Stemcell-Build\\Scripts"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading Windows Management Framework 5.1...' 'https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win8.1AndW2K12R2-KB3191564-x64.msu' WindowsManagmentFramework.msu"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-prereq.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "shell-local",
+      "command": "echo '******************** Installing BOSH release packages ********************'"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-bosh.ps1 {{user `bosh_ps_modules_download_url`}} {{user `bosh_agent_download_url`}} {{user `openssh_win64_download_url`}}"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\configure-stemcell.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "shell-local",
+      "command": "echo '******************** Installing custom packages ********************'"
     },
     {
       "type": "file",
@@ -74,42 +117,6 @@
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading Windows Management Framework 5.1...' 'https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win8.1AndW2K12R2-KB3191564-x64.msu' WindowsManagmentFramework.msu"
-      ]
-    },
-    {
-      "type": "windows-shell",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-vs.ps1 {{user `vs_download_url`}} {{user `nuget_download_url`}}"
-      ]
-    },
-    {
-      "type": "windows-shell",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-bosh.ps1 {{user `bosh_ps_modules_download_url`}} {{user `bosh_agent_download_url`}} {{user `openssh_win64_download_url`}}"
-      ]
-    },
-    {
-      "type": "windows-shell",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-prereq.ps1"
-      ]
-    },
-    {
-      "type": "windows-restart"
-    },
-    {
-      "type": "windows-shell",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-vs.ps1"
-      ]
-    },
-    {
-      "type": "windows-restart"
-    },
-    {
-      "type": "windows-shell",
-      "inline": [
         "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\custom-install.ps1"
       ]
     },
@@ -117,13 +124,21 @@
       "type": "windows-restart"
     },
     {
-      "type": "windows-shell",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\configure-stemcell.ps1"
-      ]
+      "type": "shell-local",
+      "command": "echo '******************** Running Windows Updates ********************'"
     },
     {
       "type": "windows-update"
+    },
+    {
+      "type": "shell-local",
+      "command": "echo '******************** Finalizing Stemcell Image ********************'"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize.ps1 openstack '{{user `admin_password`}}' '{{user `time_zone`}}' '{{user `organization`}}' '{{user `owner`}}' '{{user `product_key`}}'"
+      ]
     }
   ]
 }

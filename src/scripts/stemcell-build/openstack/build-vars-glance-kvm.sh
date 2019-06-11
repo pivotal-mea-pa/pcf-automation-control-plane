@@ -13,4 +13,13 @@ security_group=$(bosh interpolate ${root_dir}/vars.yml \
 ssh_keypair_name=$(bosh interpolate ${root_dir}/vars.yml \
   --path /stemcell_build/$i/iaas/$j/ssh_keypair_name)
 
-provider_specific_vars="-var 'iso_url=${iso_url}' -var 'iso_checksum=${iso_checksum}' -var 'iso_checksum_type=${iso_checksum_type}'"
+provider_specific_vars="-var source_image_name=${source_image_name} -var network_uuid=${network_uuid} -var security_group=${security_group} -var ssh_keypair_name=${ssh_keypair_name}"
+
+# Delete packer volumes
+for i in $(openstack --insecure volume list | awk '/ packer_/{ print $2 }'); do
+  openstack --insecure volume delete $i
+done
+# Delete build images
+for i in $(openstack --insecure image list | awk "/ ${image_build_name} /{ print \$2 }"); do
+  openstack --insecure image delete $i
+done
