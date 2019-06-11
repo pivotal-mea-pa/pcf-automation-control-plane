@@ -52,9 +52,6 @@
       "floppy_files": [
         "{{ user `stemcell_build_path` }}/windows2012R2/autounattend.xml",
         "{{ user `root_dir` }}/src/stemcells/scripts/windows/prepare.ps1",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/vioserial/2k12R2/amd64/*.cat",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/vioserial/2k12R2/amd64/*.inf",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/vioserial/2k12R2/amd64/*.sys",
         "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k12R2/amd64/*.cat",
         "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k12R2/amd64/*.inf",
         "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k12R2/amd64/*.sys",
@@ -103,6 +100,9 @@
       "inline": [
         "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-prereq.ps1"
       ]
+    },
+    {
+      "type": "windows-restart"
     },
     {
       "type": "shell-local",
@@ -190,7 +190,15 @@
       "command": "echo '******************** Running Windows Updates ********************'"
     },
     {
+      "type": "breakpoint",
+      "note": "start windows update"
+    },
+    {
       "type": "windows-update"
+    },
+    {
+      "type": "breakpoint",
+      "note": "windows update finished"
     },
     {
       "type": "shell-local",

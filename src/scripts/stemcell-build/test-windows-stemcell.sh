@@ -18,7 +18,7 @@ pushd ${root_dir}/src/stemcells/tests/windows-test-bosh-release
 bosh create-release --force
 bosh upload-release
 bosh -n -d windows-stemcell-test deploy \
-  manifest.yml --var=stemcell_operating_system=$operating_system
+  manifest.yml --var=stemcell_os_name=$operating_system
 
 popd
 

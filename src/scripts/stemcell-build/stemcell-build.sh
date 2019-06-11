@@ -19,12 +19,6 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
       --path /stemcell_build/$i/operating_system)
     product=$(bosh interpolate ${root_dir}/vars.yml \
       --path /stemcell_build/$i/product)
-    iso_url=$(bosh interpolate ${root_dir}/vars.yml \
-      --path /stemcell_build/$i/iso_url)
-    iso_checksum=$(bosh interpolate ${root_dir}/vars.yml \
-      --path /stemcell_build/$i/iso_checksum)
-    iso_checksum_type=$(bosh interpolate ${root_dir}/vars.yml \
-      --path /stemcell_build/$i/iso_checksum_type)
     bosh_version=$(bosh interpolate ${root_dir}/vars.yml \
       --path /stemcell_build/$i/bosh_version)
     openssh_version=$(bosh interpolate ${root_dir}/vars.yml \
@@ -79,24 +73,29 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
       iaas=$(bosh interpolate ${root_dir}/vars.yml \
         --path /stemcell_build/$i/iaas/$j/type)
 
-      if [[ ! -e ${stemcell_build_path}/${operating_system}/stemcell \
-        || $action == clean ]]; then
-        rm -fr ${stemcell_build_path}/${operating_system}
+      iaas_scripts_path=${root_dir}/src/scripts/stemcell-build/${iaas}
+      stemcell_image_path=${stemcell_build_path}/${operating_system}
 
-        mkdir -p ${stemcell_build_path}/${operating_system}
+      if [[ ! -e ${stemcell_image_path}/stemcell \
+        || $action == clean ]]; then
+        rm -fr ${stemcell_image_path}
+
+        mkdir -p ${stemcell_image_path}
         sed "s|###product_key###|${product_key}|g" \
           ${root_dir}/src/stemcells/config/${operating_system}/autounattend.xml \
-          > ${stemcell_build_path}/${operating_system}/autounattend.xml
+          > ${stemcell_image_path}/autounattend.xml
         sed -i "s|###admin_password###|${admin_password}|g" \
-          ${stemcell_build_path}/${operating_system}/autounattend.xml
+          ${stemcell_image_path}/autounattend.xml
+
+        provider_specific_vars=""
+        [[ ! -e ${iaas_scripts_path}/build-vars-${packer_builder}.sh ]] || \
+          source ${iaas_scripts_path}/build-vars-${packer_builder}.sh
 
         echo "Building base "${version}" of the ${iaas} stemcell for OS '${operating_system}' ..."
 
         PACKER_LOG=${packer_log} packer build -force \
           -on-error=${on_error} \
-          -var "iso_url=${iso_url}" \
-          -var "iso_checksum=${iso_checksum}" \
-          -var "iso_checksum_type=${iso_checksum_type}" \
+          $provider_specific_vars \
           -var "image_build_name=${operating_system}-stemcell" \
           -var "vs_download_url=https://s3.eu-central-1.amazonaws.com/mevansam-share/public/vs_community__378995140.1557481685.exe" \
           -var "nuget_download_url=https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" \
@@ -118,8 +117,14 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
 
         # Exit with error if build did no complete successfuly
         cat build-$iaas-${operating_system}.log | grep "Build '.*' finished." 2>&1 >/dev/null
+
+        [[ ! -e ${iaas_scripts_path}/stemcell-build-${packer_builder}.sh ]] || \
+          source ${iaas_scripts_path}/stemcell-build-${packer_builder}.sh
       fi
 
-      source ${root_dir}/src/scripts/stemcell-build/build-${iaas}-stemcell.sh
+      source ${iaas_scripts_path}/package-stemcell.sh
+
+      [[ $action != test ]] || \
+        source ${root_dir}/src/scripts/stemcell-build/test-windows-stemcell.sh
     done
 done

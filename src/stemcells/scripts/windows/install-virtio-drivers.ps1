@@ -50,7 +50,11 @@ Get-ChildItem -Recurse -Include "*.inf" -File "$VirtIODriverPath" | ForEach-Obje
     # Install the driver.
     $ErrorActionPreference = "SilentlyContinue"
     Write-Output "Installing driver $DriverName... : $DriverInfFile"
-    pnputil /add-driver $DriverInfFile /install
+    if ($OsName -eq "2k16") {
+      pnputil /add-driver $DriverInfFile /install
+    } else {
+      pnputil -i -a $DriverInfFile
+    }
     if ($LASTEXITCODE) {
       Write-Output "PnPUtil returned an exit code of $LASTEXITCODE"
     }

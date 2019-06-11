@@ -3,5 +3,6 @@
 *.pem
 *vars.yml
 
+dev_releases/
 packer_cache/
 tmp/

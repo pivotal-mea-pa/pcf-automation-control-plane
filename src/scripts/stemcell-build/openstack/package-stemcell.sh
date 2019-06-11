@@ -56,6 +56,3 @@ if [[ ! -e ${stemcell_build_path}/${stemcell_archive_name} \
 else
   echo "OpenStack stemcell version '$version' for OS '${operating_system}' exists ..."
 fi
-
-[[ $action != test ]] || \
-  source ${root_dir}/src/scripts/stemcell-build/test-windows-stemcell.sh
