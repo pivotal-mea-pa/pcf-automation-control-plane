@@ -8,8 +8,8 @@ if [[ -n $downloads_dir && $downloads_dir != null ]]; then
 fi
 
 iaas_ops_rules=""
-if [[ -e ${ops_file_path}/minio/op-${iaas}.yml ]]; then
-  iaas_ops_rules="-o ${ops_file_path}/minio/op-${iaas}.yml"
+if [[ -e ${ops_file_path}/concourse/op-${iaas}.yml ]]; then
+  iaas_ops_rules="-o ${ops_file_path}/concourse/op-${iaas}.yml"
 fi
 
 bosh interpolate \
