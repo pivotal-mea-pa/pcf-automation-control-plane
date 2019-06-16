@@ -26,7 +26,7 @@ networks:
     static: ((pcf_releng_network_static_ips))
   type: manual
 - cloud_properties: {}
-  name: vip-network
+  name: public
   type: vip
 
 vm_types:
