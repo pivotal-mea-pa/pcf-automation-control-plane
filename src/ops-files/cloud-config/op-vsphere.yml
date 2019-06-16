@@ -43,3 +43,27 @@
     cpu: 8
     ram: 16384
     disk: 163840
+
+- type: replace
+  path: /vm_types/name=small/env?  
+  value:
+    bosh:
+      password: ((bosh_vm_password))
+
+- type: replace
+  path: /vm_types/name=medium/env?
+  value:
+    bosh:
+      password: ((bosh_vm_password))
+
+- type: replace
+  path: /vm_types/name=large/env?
+  value:
+    bosh:
+      password: ((bosh_vm_password))
+
+- type: replace
+  path: /vm_types/name=xlarge/env?
+  value:
+    bosh:
+      password: ((bosh_vm_password))

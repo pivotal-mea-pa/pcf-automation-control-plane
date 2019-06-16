@@ -51,7 +51,7 @@
       "disk_interface": "virtio",
       "floppy_files": [
         "{{ user `stemcell_build_path` }}/windows2012R2/autounattend.xml",
-        "{{ user `root_dir` }}/src/stemcells/scripts/windows/prepare.ps1",
+        "{{ user `root_dir` }}/src/stemcells/scripts/windows2012R2/prepare.ps1",
         "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k12R2/amd64/*.cat",
         "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k12R2/amd64/*.inf",
         "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k12R2/amd64/*.sys",
@@ -191,14 +191,7 @@
     },
     {
       "type": "breakpoint",
-      "note": "start windows update"
-    },
-    {
-      "type": "windows-update"
-    },
-    {
-      "type": "breakpoint",
-      "note": "windows update finished"
+      "note": "Please run Windows update manually."
     },
     {
       "type": "shell-local",

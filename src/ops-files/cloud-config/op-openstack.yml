@@ -44,3 +44,27 @@
     instance_type: m1.xlarge
     root_disk:
       size: 160
+
+- type: replace
+  path: /vm_types/name=small/env?  
+  value:
+    bosh:
+      password: ((bosh_vm_password))
+
+- type: replace
+  path: /vm_types/name=medium/env?
+  value:
+    bosh:
+      password: ((bosh_vm_password))
+
+- type: replace
+  path: /vm_types/name=large/env?
+  value:
+    bosh:
+      password: ((bosh_vm_password))
+
+- type: replace
+  path: /vm_types/name=xlarge/env?
+  value:
+    bosh:
+      password: ((bosh_vm_password))

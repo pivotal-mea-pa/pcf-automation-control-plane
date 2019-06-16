@@ -13,7 +13,6 @@ $ProgressPreference='SilentlyContinue'
 
 $ScriptsPath = "C:\Stemcell-Build\Scripts"
 $DownloadPath = "C:\Stemcell-Build\Downloads"
-$TempPath = "C:\Stemcell-Build\Temp"
 
 # Function to create registry path
 function New-Directory($path) {
@@ -71,18 +70,8 @@ Net User "Administrator" "$NewPassword" /logonpasswordchg:no
 Remove-ItemProperty `
   -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" `
   -Name "AutoAdminLogon" -Force -Verbose
-Remove-ItemProperty `
-  -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" `
-  -Name "DefaultUsername" -Force -Verbose
-Remove-ItemProperty `
-  -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" `
-  -Name "DefaultPassword" -Force -Verbose
 
 # Clean up
-Write-Output "Cleaning up root disk..."
-Remove-Item -Path "$DownloadPath\*" -Force
-Remove-Item -Path "$TempPath\*" -Force
-
 Write-Output "Optimizing disk..."
 Optimize-Disk
 Write-Output "Compressing disk..."
@@ -183,7 +172,7 @@ Write-Output "Writing unattend.xml to $UnattendPath"
 Out-File -FilePath $UnattendPath -InputObject $PostUnattend -Encoding utf8
 
 # Exec sysprep and shutdown
-Write-Output "Invoking Sysprep..."
+Write-Output "Invoking Sysprep for..."
 
 C:/windows/system32/sysprep/sysprep.exe `
   /quiet /generalize /oobe /quit `

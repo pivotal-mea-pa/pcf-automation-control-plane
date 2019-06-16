@@ -119,8 +119,8 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
         # Exit with error if build did no complete successfuly
         cat build-$iaas-${operating_system}.log | grep "Build '.*' finished." 2>&1 >/dev/null
 
-        [[ ! -e ${iaas_scripts_path}/stemcell-build-${packer_builder}.sh ]] || \
-          source ${iaas_scripts_path}/stemcell-build-${packer_builder}.sh
+        [[ ! -e ${iaas_scripts_path}/prepare-image-${packer_builder}.sh ]] || \
+          source ${iaas_scripts_path}/prepare-image-${packer_builder}.sh
       fi
 
       source ${iaas_scripts_path}/package-stemcell.sh
