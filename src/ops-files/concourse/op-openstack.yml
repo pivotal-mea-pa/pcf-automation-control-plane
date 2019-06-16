@@ -1,0 +1,7 @@
+---
+
+- type: replace
+  path: /instance_groups/name=web/networks/-
+  value:
+    name: public
+    static_ips: [((concourse_external_ip))]

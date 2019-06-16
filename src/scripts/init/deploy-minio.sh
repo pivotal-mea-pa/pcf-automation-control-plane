@@ -7,9 +7,15 @@ if [[ -n $downloads_dir && $downloads_dir != null ]]; then
   apply_local_download_ops_rules="-o ${ops_file_path}/minio/op-local-releases.yml"
 fi
 
+iaas_ops_rules=""
+if [[ -e ${ops_file_path}/minio/op-${iaas}.yml ]]; then
+  iaas_ops_rules="-o ${ops_file_path}/minio/op-${iaas}.yml"
+fi
+
 bosh interpolate \
   ${manifests_file_path}/minio.yml \
   $apply_local_download_ops_rules \
+  $iaas_ops_rules \
   -l ${root_dir}/vars.yml > $minio_manifest
 
 minio_name=$(bosh interpolate ${root_dir}/vars.yml --path /minio_name)
