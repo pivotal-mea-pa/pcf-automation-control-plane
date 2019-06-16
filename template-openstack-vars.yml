@@ -1,4 +1,42 @@
 ---
+
+# Download details
+
+downloads_dir:
+
+pivnet_products:
+- name: opsman
+  pivnet_slug: 'ops-manager'
+  pivnet_version: '2\.5\..*'
+  product_file_pattern: 'ops-manager-openstack-(.*).raw'
+- name: pas
+  pivnet_slug: 'elastic-runtime'
+  pivnet_version: '2\.5\..*'
+  product_file_pattern: 'srt-(.*).pivotal'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-ubuntu-xenial-go_agent-raw.tgz'
+- name: pas-windows2012R2
+  pivnet_slug: 'p-windows-runtime'
+  pivnet_version: '2\.5\..*'
+  product_file_pattern: 'p-windows-runtime-(.*)-build.56.pivotal'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-windows2012R2-go_agent-raw.tgz'
+- name: pas-windows
+  pivnet_slug: 'pas-windows'
+  pivnet_version: '2\.5\..*'
+  product_file_pattern: 'pas-windows-(.*).pivotal'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-windows2016-go_agent-raw.tgz'
+- name: healthwatch
+  pivnet_slug: 'p-healthwatch'
+  pivnet_version: '1\.5\..*'
+  product_file_pattern: 'p-healthwatch-(.*)-build.4.pivotal'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-ubuntu-xenial-go_agent-raw.tgz'
+- name: metrics
+  pivnet_slug: 'apm'
+  pivnet_version: '1\.6\..*'
+  product_file_pattern: 'apm-(.*)-build.12.pivotal'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-ubuntu-xenial-go_agent-raw.tgz'
+
+# Bosh Director Instance
+
 director_name: cp-bosh
 internal_cidr:
 internal_gw:
@@ -10,42 +48,7 @@ dns_name:
 ubuntu_sha1:
 ubuntu_stemcell:
 
-downloads_dir:
-
-# Concourse
-
-concourse_name: cp-concourse
-concourse_web_ip:
-concourse_external_host:
-
-# Minio
-
-minio_name: cp-minio
-minio_ip:
-minio_host:
-minio_default_bucket: pivnet-products
-
-# Ops Manager / PCF
-
-ops_manager_host:
-ops_manager_user:
-ops_manager_password:
-ops_manager_decryption_phrase:
-
-pas_credhub_encryption_key:
-
-# Automation configuration repo
-
-init_automation_repo: no
-automation_git_repo_path:
-automation_git_private_key:
-
-# Branding
-
-login_branding_company_name:
-login_branding_product_logo:
-login_branding_square_logo:
-login_branding_footer_legal_text:
+bosh_vm_password: '*' # generate using: mkpasswd -m sha-512 -s
 
 # CPI / Cloud Config Vars
 
@@ -73,3 +76,67 @@ pcf_releng_network_gateway:
 pcf_releng_network_reserved_ranges:
 pcf_releng_network_static_ips:
 pcf_releng_network_security_groups:
+
+# PCF Automation Configuration repo
+
+init_automation: false
+automation_config_repo_path:
+automation_state_repo_path:
+automation_git_private_key:
+
+# Concourse
+
+concourse_name: cp-concourse
+concourse_web_ip: <<CONCOURSE ATC STATIC IP>>
+concourse_external_host: cicd.<<DOMAIN>>
+
+concourse_worker_vm_type: large
+num_concourse_workers: 1
+
+# Minio
+
+minio_name: cp-minio
+minio_ip: <<MINIO WEB STATIC IP>>
+minio_host: s3.<<DOMAIN>>
+
+# Ops Manager / PCF
+
+foundations:
+- name: prod
+  opsman_host: om.<<DOMAIN>>
+  opsman_user: admin
+  opsman_password: '*'
+  opsman_decryption_phrase: '*'
+  opsman_ssh_password: '*'
+  products:
+
+  - name: pas
+    creds:
+    - name: pas_default_networking_poe_tls
+      type: certificate
+      common_name: '*.<<DOMAIN>>'
+      alternate_names: '*.apps.<<DOMAIN>>,*.sys.<<DOMAIN>>,*.login.sys.<<DOMAIN>>,*.uaa.sys.<<DOMAIN>>'
+      organization: <<ORGANIZATION NAME>>
+      regenerate: 'no'
+    - name: pas_uaa_service_provider
+      type: certificate
+      common_name: '*.<<DOMAIN>>'
+      alternate_names: '*.apps.<<DOMAIN>>,*.sys.<<DOMAIN>>,*.login.sys.<<DOMAIN>>,*.uaa.sys.<<DOMAIN>>'
+      organization: <<ORGANIZATION NAME>>
+      regenerate: 'no'
+    - name: pas_default_credhub_encryption_key
+      type: password
+      value: '*'
+      regenerate: 'no'
+
+  - name: pas-windows2012R2
+    creds:
+    - name: windows_admin_password
+      value: 'P@ssw0rd'
+
+# Branding
+
+login_branding_company_name:
+login_branding_product_logo:
+login_branding_square_logo:
+login_branding_footer_legal_text:
