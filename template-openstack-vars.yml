@@ -1,5 +1,36 @@
 ---
 
+# Windows stemcell builds
+
+stemcell_build:
+
+- operating_system: windows2019
+  product: pas-windows
+  iso_url: .downloads/stemcell/en_windows_server_2019_updated_march_2019_x64_dvd_2ae967ab.iso
+  iso_checksum: 55ac0f541bcc9ce2f70af4227239fc4a6a1e2b6e
+  iso_checksum_type: sha1
+  bosh_version: '2019.3'
+  openssh_version: 'v7.9.0.0p1-Beta'
+  admin_password: 'P@ssw0rd'
+  time_zone: 'Arabian Standard Time'
+  organization: 'Pivotal'
+  owner: 'MEA-PA-Team'
+  product_key: 'VNW2Q-39QJT-GPR34-MFTT9-GJHY4'
+  packer_builder: 'qemu-kvm'
+
+  ## If 'true' then Packer will run in verbose mode and 
+  ## build VM will not be deleted if an error occurs
+  #
+  # debug: 'true'
+
+  ## Custom add-on package installation files and script
+  #
+  # custom_file_upload: .downloads/stemcell/client_packages.zip
+  # custom_ps1_script: .downloads/stemcell/install_clients.ps1
+
+  iaas: 
+  - type: 'openstack'
+
 # Download details
 
 downloads_dir:
@@ -89,6 +120,7 @@ automation_git_private_key:
 concourse_name: cp-concourse
 concourse_web_ip: <<CONCOURSE ATC STATIC IP>>
 concourse_external_host: cicd.<<DOMAIN>>
+concourse_external_ip: <<CONCOURSE ATC FLOATING IP>>
 
 concourse_worker_vm_type: large
 num_concourse_workers: 1
@@ -98,6 +130,7 @@ num_concourse_workers: 1
 minio_name: cp-minio
 minio_ip: <<MINIO WEB STATIC IP>>
 minio_host: s3.<<DOMAIN>>
+minio_external_ip: <<MINIO FLOATING IP>>
 
 # Ops Manager / PCF
 
