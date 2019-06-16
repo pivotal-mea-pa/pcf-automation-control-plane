@@ -5,6 +5,10 @@
   value: pcf-releng
 
 - type: replace
+  path: /instance_groups/name=web/networks/name=pcf-releng/default?
+  value: [dns,gateway]
+
+- type: replace
   path: /instance_groups/name=web/networks/0/static_ips?
   value: [((concourse_web_ip))]
 

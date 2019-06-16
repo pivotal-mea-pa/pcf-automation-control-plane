@@ -36,6 +36,7 @@ instance_groups:
       port: 9000
   networks:
   - name: pcf-releng
+    default: [dns,gateway]
     static_ips: ((minio_ip))
   vm_type: small
   persistent_disk_type: "102400"
