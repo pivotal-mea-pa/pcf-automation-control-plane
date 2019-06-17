@@ -29,6 +29,8 @@ git clone $automation_state_repo_path ${pcf_state_repo_path}
 if [[ ! -e ${pcf_config_repo_path}/templates ]]; then
   mkdir -p ${pcf_config_repo_path}/templates
 
+  # Populate config and state repositories with initial templates
+
   find ${root_dir}/src/pipelines/config/templates/ -maxdepth 1 -name '*' \
     -exec cp {} ${pcf_config_repo_path}/templates \;
   find ${root_dir}/src/pipelines/config/templates/${iaas}/ -maxdepth 1 -name '*' \
