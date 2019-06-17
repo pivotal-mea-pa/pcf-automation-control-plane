@@ -11,6 +11,14 @@
     ssl_verify_peer: false
 
 - type: replace
+  path: /instance_groups/name=bosh/properties/openstack/state_timeout?
+  value: 600
+
+- type: replace
+  path: /cloud_provider/properties/openstack/state_timeout?
+  value: 600
+
+- type: replace
   path: /instance_groups/name=bosh/properties/openstack/boot_from_volume?
   value: true
 
