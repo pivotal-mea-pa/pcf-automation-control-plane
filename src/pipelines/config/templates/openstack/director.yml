@@ -16,6 +16,22 @@ networks-configuration:
       gateway: ((management_network_gateway))
       reserved_ip_ranges: ((management_network_reserved_ip_ranges))
       availability_zone_names: ((management_network_availability_zone_names))
+  - name: pcf-deployment
+    subnets:
+    - iaas_identifier: ((deployment_network_iaas_identifier))
+      cidr: ((deployment_network_cidr))
+      dns: ((deployment_network_dns))
+      gateway: ((deployment_network_gateway))
+      reserved_ip_ranges: ((deployment_network_reserved_ip_ranges))
+      availability_zone_names: ((deployment_network_availability_zone_names))
+  - name: pcf-prod
+    subnets:
+    - iaas_identifier: ((prod_network_iaas_identifier))
+      cidr: ((prod_network_cidr))
+      dns: ((prod_network_dns))
+      gateway: ((prod_network_gateway))
+      reserved_ip_ranges: ((prod_network_reserved_ip_ranges))
+      availability_zone_names: ((prod_network_availability_zone_names))
 properties-configuration:
   director_configuration:
     blobstore_type: local
@@ -65,6 +81,7 @@ properties-configuration:
     disable_dhcp: ((disable_dhcp))
     ssh_private_key: ((ssh_private_key))
   security_configuration:
+    trusted_certificates: ((trusted_certificates))
     generate_vm_passwords: true
     opsmanager_root_ca_trusted_certs: true
   syslog_configuration:
@@ -77,7 +94,8 @@ resource-configuration:
   director:
     instances: automatic
     persistent_disk:
-      size_mb: automatic
+      size_mb: ((director_persistent_disk))
     instance_type:
-      id: automatic
+      id: ((director_instance_type))
 vmextensions-configuration: []
+
