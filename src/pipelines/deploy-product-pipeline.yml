@@ -43,13 +43,40 @@ resources:
     private_key: ((git_private_key.private_key))
     uri: ((config_git_repo_url))
     branch: master
+    paths:
+    - foundations/((foundation_name))/vars/((pivnet_product)).yml
+    - templates/((pivnet_product)).yml
 
-# triggers used to have jobs do something in a timely manner
+# resource locking
+
+- name: environment-lock
+  type: pool
+  source:
+    private_key: ((git_private_key.private_key))
+    uri: ((state_git_repo_url))
+    branch: master
+    pool: locks/foundations/((foundation_name))
+
+# common tasks
+
+locks:
+# lock foundation
+- &lock-environment
+  put: environment-lock
+  params: {claim: opsman}
+# unlock foundation
+- &unlock-environment
+  put: environment-lock
+  params: {release: environment-lock}
+
+# jobs pipeline
 
 jobs:
 - name: upload-and-stage-((pivnet_product))
   serial: true
   plan:
+  - *lock-environment
+
   - aggregate:
     - get: pcf-automation-image
       params:
@@ -97,6 +124,10 @@ jobs:
 - name: configure-((pivnet_product))
   serial: true
   plan:
+  - get: environment-lock
+    passed:
+    - upload-and-stage-((pivnet_product))
+
   - aggregate:
     - get: pcf-automation-image
       params:
@@ -105,6 +136,7 @@ jobs:
       params:
         unpack: true
     - get: configuration
+      trigger: true
     - get: ((pivnet_product))-product
       trigger: true
       passed:
@@ -136,7 +168,9 @@ jobs:
       ENV_FILE: foundations/((foundation_name))/env/env.yml
       VARS_FILES: vars/foundations/((foundation_name))/vars/((pivnet_product)).yml
       CONFIG_FILE: templates/((pivnet_product)).yml
-      
+
+  ensure: *unlock-environment
+
 - name: upload-stemcell
   serial: true
   plan:
@@ -178,6 +212,8 @@ jobs:
 - name: apply-changes
   serial: true
   plan:
+  - *lock-environment
+
   - aggregate:
     - get: pcf-automation-image
       params:
@@ -186,10 +222,15 @@ jobs:
       params:
         unpack: true
     - get: configuration
+      trigger: true
+      passed:
+      - configure-((pivnet_product))
     - get: ((pivnet_product))-product
+      trigger: true
       passed:
       - configure-((pivnet_product))
     - get: ((pivnet_product))-stemcell
+      trigger: true
       passed:
       - upload-stemcell
 
@@ -215,3 +256,5 @@ jobs:
       env: interpolated-configs
     params:
       ENV_FILE: foundations/((foundation_name))/env/env.yml
+
+  ensure: *unlock-environment
