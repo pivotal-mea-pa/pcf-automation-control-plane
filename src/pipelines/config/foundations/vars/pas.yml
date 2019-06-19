@@ -14,6 +14,21 @@ diego_brain_static_ips:
 
 mysql_monitor_recipient_email:
 
+num_mysql_monitor_instances:
+num_control_instances:
+num_compute_instances:
+num_router_instances:
+num_ha_proxy_instances:
+
+branding_company_name:
+branding_product_logo:
+branding_square_logo:
+branding_footer_legal_text:
+
+# Openstack only
+ha_proxy_floating_ip:
+router_floating_ip:
+
 #
 # Certificates and passwords from credhub
 #
