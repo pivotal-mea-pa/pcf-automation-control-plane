@@ -120,12 +120,12 @@ jobs:
     params:
       ENV_FILE: foundations/((foundation_name))/env/env.yml
 
+  ensure: *unlock-environment
+
 - name: configure-((pivnet_product))
   serial: true
   plan:
-  - get: environment-lock
-    passed:
-    - upload-and-stage-((pivnet_product))
+  - *lock-environment
 
   - aggregate:
     - get: pcf-automation-image
