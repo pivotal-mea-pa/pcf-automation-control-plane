@@ -44,8 +44,7 @@ resources:
     uri: ((config_git_repo_url))
     branch: master
     paths:
-    - foundations/((foundation_name))/vars/((pivnet_product)).yml
-    - templates/((pivnet_product)).yml
+    - '**/((pivnet_product)).yml'
 
 # resource locking
 

@@ -56,8 +56,8 @@ resources:
     uri: ((config_git_repo_url))
     branch: master
     paths:
-    - foundations/((foundation_name))/vars/opsman.yml
-    - templates/opsman.yml
+    - '**/opsman.yml'
+    - '**/director.yml'
 
 # resource locking and state
 
