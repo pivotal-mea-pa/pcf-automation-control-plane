@@ -1,5 +1,11 @@
 #!/bin/bash
 
+which fly 2>&1 >/dev/null
+if [[ $? -ne 0 ]]; then
+  echo "ERROR! The fly CLI is not present in the system path."
+  exit 1
+fi
+
 set +e
 concourse_status=$(fly -t cp status 2>&1)
 

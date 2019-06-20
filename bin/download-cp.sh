@@ -3,6 +3,12 @@
 iaas=${1:-vsphere}
 echo=${2:-}
 
+which curl 2>&1 >/dev/null
+if [[ $? -ne 0 ]]; then
+  echo "ERROR! The curl CLI is not present in the system path."
+  exit 1
+fi
+
 set -eu
 root_dir=$(cd $(dirname "$(ls -l $0 | awk '{ print $NF }')")/.. && pwd)
 

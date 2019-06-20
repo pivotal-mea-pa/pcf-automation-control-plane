@@ -1,9 +1,22 @@
 #!/bin/bash
 
+which pivnet 2>&1 >/dev/null
+if [[ $? -ne 0 ]]; then
+  echo "ERROR! The pivnet CLI is not present in the system path."
+  exit 1
+fi
+
+products=$(pivnet products --format=json 2>&1)
+if [[ "$products" == "Please login first" ]]; then
+  echo "ERROR! Please login to https://network.pivotal.io using the pivnet cli."
+  exit 1
+fi
+
 set -eu
 root_dir=$(cd $(dirname "$(ls -l $0 | awk '{ print $NF }')")/.. && pwd)
 
 pivnet_download_dir=${root_dir}/.downloads/pivnet
+exit
 
 #
 # Download platform automation release

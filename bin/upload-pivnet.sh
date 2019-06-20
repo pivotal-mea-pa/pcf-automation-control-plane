@@ -1,5 +1,11 @@
 #!/bin/bash
 
+which mc 2>&1 >/dev/null
+if [[ $? -ne 0 ]]; then
+  echo "ERROR! The mc CLI is not present in the system path."
+  exit 1
+fi
+
 set -eu
 root_dir=$(cd $(dirname "$(ls -l $0 | awk '{ print $NF }')")/.. && pwd)
 
