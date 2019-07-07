@@ -48,22 +48,22 @@ pivnet_products:
 - name: pas-windows2012R2
   pivnet_slug: 'p-windows-runtime'
   pivnet_version: '2\.5\..*'
-  product_file_pattern: 'p-windows-runtime-(.*)-build.56.pivotal'
+  product_file_pattern: 'p-windows-runtime-(.*).pivotal'
   stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-windows2012R2-go_agent-raw.tgz'
 - name: pas-windows
   pivnet_slug: 'pas-windows'
   pivnet_version: '2\.5\..*'
   product_file_pattern: 'pas-windows-(.*).pivotal'
-  stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-windows2016-go_agent-raw.tgz'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-windows2019-go_agent-raw.tgz'
 - name: healthwatch
   pivnet_slug: 'p-healthwatch'
   pivnet_version: '1\.5\..*'
-  product_file_pattern: 'p-healthwatch-(.*)-build.4.pivotal'
+  product_file_pattern: 'p-healthwatch-(.*).pivotal'
   stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-ubuntu-xenial-go_agent-raw.tgz'
 - name: metrics
   pivnet_slug: 'apm'
   pivnet_version: '1\.6\..*'
-  product_file_pattern: 'apm-(.*)-build.12.pivotal'
+  product_file_pattern: 'apm-(.*).pivotal'
   stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-ubuntu-xenial-go_agent-raw.tgz'
 
 # Bosh Director Instance
