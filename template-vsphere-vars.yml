@@ -33,38 +33,39 @@ stemcell_build:
 
 # Download details
 
-downloads_dir:
-
 pivnet_products:
 - name: opsman
   pivnet_slug: 'ops-manager'
-  pivnet_version: '2\.5\..*'
-  product_file_pattern: 'ops-manager-openstack-(.*).raw'
+  pivnet_version: '2\.6\..*'
+  product_file_pattern: 'ops-manager-vsphere-(.*).ova'
 - name: pas
   pivnet_slug: 'elastic-runtime'
-  pivnet_version: '2\.5\..*'
+  pivnet_version: '2\.6\..*'
   product_file_pattern: 'srt-(.*).pivotal'
-  stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-ubuntu-xenial-go_agent-raw.tgz'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-vsphere-esxi-ubuntu-xenial-go_agent.tgz'
 - name: pas-windows2012R2
   pivnet_slug: 'p-windows-runtime'
-  pivnet_version: '2\.5\..*'
+  pivnet_version: '2\.6\..*'
   product_file_pattern: 'p-windows-runtime-(.*).pivotal'
-  stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-windows2012R2-go_agent-raw.tgz'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-vsphere-esxi-windows2012R2-go_agent-raw.tgz'
 - name: pas-windows
   pivnet_slug: 'pas-windows'
-  pivnet_version: '2\.5\..*'
+  pivnet_version: '2\.6\..*'
   product_file_pattern: 'pas-windows-(.*).pivotal'
-  stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-windows2019-go_agent-raw.tgz'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-vsphere-esxi-windows2019-go_agent-raw.tgz'
 - name: healthwatch
   pivnet_slug: 'p-healthwatch'
-  pivnet_version: '1\.5\..*'
+  pivnet_version: '1\.6\..*'
   product_file_pattern: 'p-healthwatch-(.*).pivotal'
-  stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-ubuntu-xenial-go_agent-raw.tgz'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-vsphere-esxi-ubuntu-xenial-go_agent.tgz'
 - name: metrics
   pivnet_slug: 'apm'
   pivnet_version: '1\.6\..*'
   product_file_pattern: 'apm-(.*).pivotal'
-  stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-ubuntu-xenial-go_agent-raw.tgz'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-vsphere-esxi-ubuntu-xenial-go_agent.tgz'
+
+# Control plane download dir
+downloads_dir: # <absolute path to download dir for control plane releases>
 
 # Bosh Director Instance
 
@@ -76,8 +77,8 @@ dns_servers:
 internal_ip:
 dns_name:
 
-ubuntu_sha1:
-ubuntu_stemcell:
+ubuntu_sha1: 650dfdefefbb176af39a5fb3c9be04ef196f70f6
+ubuntu_stemcell: https://bosh.io/d/stemcells/bosh-vsphere-esxi-ubuntu-xenial-go_agent?v=315.64
 
 bosh_vm_password: '*' # generate using: mkpasswd -m sha-512 -s
 
@@ -87,9 +88,9 @@ vcenter_ip:
 vcenter_user:
 vcenter_password:
 vcenter_dc:
+vcenter_cluster:
 vcenter_ds:
 vcenter_templates:
-vcenter_cluster:
 network_name:
 vcenter_vms: 
 vcenter_disks: 
