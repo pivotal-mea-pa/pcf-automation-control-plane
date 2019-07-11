@@ -59,11 +59,11 @@ upload_ubuntu_stemcell_sha1=$(bosh interpolate ${root_dir}/vars.yml --path /ubun
 if [[ "$upload_ubuntu_stemcell_sha1" != "$ubuntu_stemcell_sha1" ]]; then
 
   if [[ -n $downloads_dir && $downloads_dir != null ]]; then
-    stemcell_file=$(find $downloads_dir -name 'bosh-*-go_agent*' -print | head -1)
-    if [[ -n $stemcell_file ]]; then
-      stemcell_url="file://${stemcell_file}"
+    stemcell_file=$(bosh interpolate ${root_dir}/vars.yml --path /ubuntu_stemcell_file)
+    if [[ -n $stemcell_file && $stemcell_file != null ]]; then
+      stemcell_url="file://${downloads_dir}/${stemcell_file}"
     else
-      echo "Unable to find stemcell in downloads dir."
+      echo "The configuration value for 'ubuntu_stemcell_file' is empty. So cannot determine the file to upload."
       exit 1
     fi
   else

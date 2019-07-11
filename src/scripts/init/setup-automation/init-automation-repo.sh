@@ -41,9 +41,15 @@ if [[ ! -e ${pcf_config_repo_path}/templates ]]; then
 
     mkdir -p ${pcf_config_repo_path}/foundations/${name}/env
     mkdir -p ${pcf_config_repo_path}/foundations/${name}/vars
-    mkdir -p ${pcf_state_repo_path}/foundations/${name}/state
-    touch ${pcf_state_repo_path}/foundations/${name}/state/.keep
 
+    mkdir -p ${pcf_state_repo_path}/foundations/${name}/state
+    mkdir -p ${pcf_state_repo_path}/locks/foundations/${name}/claimed
+    mkdir -p ${pcf_state_repo_path}/locks/foundations/${name}/unclaimed
+    touch ${pcf_state_repo_path}/foundations/${name}/state/state.yml
+    touch ${pcf_state_repo_path}/locks/foundations/${name}/claimed/.keep
+    touch ${pcf_state_repo_path}/locks/foundations/${name}/unclaimed/.keep
+    touch ${pcf_state_repo_path}/locks/foundations/${name}/unclaimed/opsman
+    
     find ${root_dir}/src/pipelines/config/foundations/env/ -maxdepth 1 -name '*' \
       -exec cp {} ${pcf_config_repo_path}/foundations/${name}/env \;
     find ${root_dir}/src/pipelines/config/foundations/vars/ -maxdepth 1 -name '*' \
@@ -53,10 +59,18 @@ if [[ ! -e ${pcf_config_repo_path}/templates ]]; then
   done
 
   pushd ${pcf_config_repo_path}
-
   git config user.name "automation"
   git config push.default simple
   git add .
   git commit -m "initial"
   git push
+  popd
+
+  pushd ${pcf_state_repo_path}
+  git config user.name "automation"
+  git config push.default simple
+  git add .
+  git commit -m "initial"
+  git push
+  popd
 fi

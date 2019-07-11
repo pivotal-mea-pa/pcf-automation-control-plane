@@ -65,7 +65,6 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
     set -u
     version="${bosh_version}.${build_number}"
 
-    iaas_scripts_path=${root_dir}/src/scripts/stemcell-build/${iaas}
     stemcell_image_path=${stemcell_build_path}/${operating_system}
 
     image_build_name=${operating_system}-stemcell
@@ -76,6 +75,8 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
 
       iaas=$(bosh interpolate ${root_dir}/vars.yml \
         --path /stemcell_build/$i/iaas/$j/type)
+  
+      iaas_scripts_path=${root_dir}/src/scripts/stemcell-build/${iaas}
 
       if [[ ! -e ${stemcell_image_path}/stemcell \
         || $action == clean ]]; then
@@ -85,7 +86,7 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
         sed "s|###product_key###|${product_key}|g" \
           ${root_dir}/src/stemcells/config/${operating_system}/autounattend.xml \
           > ${stemcell_image_path}/autounattend.xml
-        sed -i "s|###admin_password###|${admin_password}|g" \
+        sed -i '' "s|###admin_password###|${admin_password}|g" \
           ${stemcell_image_path}/autounattend.xml
 
         provider_specific_vars=""
