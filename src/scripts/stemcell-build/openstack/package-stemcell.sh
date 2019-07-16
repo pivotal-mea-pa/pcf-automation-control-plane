@@ -4,10 +4,6 @@ set -eux
 
 # Read IaaS specific variables
 
-# Although image is QCOW2 we need to name the stemcell file with
-# post fix "-raw.tgz" as otherwise Ops Manager rejects the file.
-stemcell_archive_name="bosh-stemcell-${version}-openstack-kvm-${operating_system}-go_agent-raw.tgz"
-
 if [[ ! -e ${stemcell_build_path}/${stemcell_archive_name} \
   || $action == clean ]]; then
   rm -f ${stemcell_build_path}/${stemcell_archive_name}

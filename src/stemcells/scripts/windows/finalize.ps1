@@ -101,6 +101,18 @@ Get-Service `
   | Where-Object {$_.Name -eq "Termservice" } `
   | Set-Service -StartupType Automatic -Verbose
 
+
+# For now, apply LGPO only on 2012R2
+$OsVersion = Get-OSVersion
+switch ($OsVersion) {
+  "windows2012R2" {
+    if (-Not (Test-Path "C:\Windows\LGPO.exe")) {
+      Throw "Error: LGPO.exe is expected to be installed to C:\Windows\LGPO.exe"
+    }
+    Enable-LocalSecurityPolicy
+  }
+}
+
 # Create Unattend - copied from BOSH.Sysprep module
 Write-Output "Creating unattend.xml for sysprep..."
 $UnattendPath = Join-Path $ScriptsPath "unattend.xml"

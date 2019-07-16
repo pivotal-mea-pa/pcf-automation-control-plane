@@ -52,15 +52,15 @@
       "floppy_files": [
         "{{ user `stemcell_build_path` }}/windows2012R2/autounattend.xml",
         "{{ user `root_dir` }}/src/stemcells/scripts/windows2012R2/prepare.ps1",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k12R2/amd64/*.cat",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k12R2/amd64/*.inf",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k12R2/amd64/*.sys",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/NetKVM/2k12R2/amd64/*.cat",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/NetKVM/2k12R2/amd64/*.inf",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/NetKVM/2k12R2/amd64/*.sys",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/qxldod/2k12R2/amd64/*.cat",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/qxldod/2k12R2/amd64/*.inf",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/qxldod/2k12R2/amd64/*.sys"
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/viostor/2k12R2/amd64/*.cat",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/viostor/2k12R2/amd64/*.inf",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/viostor/2k12R2/amd64/*.sys",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/NetKVM/2k12R2/amd64/*.cat",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/NetKVM/2k12R2/amd64/*.inf",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/NetKVM/2k12R2/amd64/*.sys",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/qxldod/2k12R2/amd64/*.cat",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/qxldod/2k12R2/amd64/*.inf",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/qxldod/2k12R2/amd64/*.sys"
       ],
       "net_device": "virtio-net",
       "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
@@ -70,7 +70,7 @@
       "winrm_username": "Administrator",
       "winrm_password": "P@ssw0rd",
       "winrm_timeout": "4h",
-      "output_directory": "{{user `stemcell_build_path`}}/windows2012R2/stemcell"
+      "output_directory": "{{user `stemcell_build_path`}}/windows2012R2/openstack/stemcell"
     }
   ],
   "provisioners": [
@@ -144,6 +144,22 @@
     },
     {
       "type": "shell-local",
+      "command": "echo '******************** Installing LGPO ********************'"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading LGPO package...' https://download.microsoft.com/download/8/5/C/85C25433-A1B0-4FFA-9429-7E023E7DA8D8/LGPO.zip LGPO.zip"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-lgpo.ps1"
+      ]
+    },
+    {
+      "type": "shell-local",
       "command": "echo '******************** Installing BOSH release packages ********************'"
     },
     {
@@ -200,7 +216,7 @@
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize.ps1 openstack '{{user `admin_password`}}' '{{user `time_zone`}}' '{{user `organization`}}' '{{user `owner`}}' '{{user `product_key`}}'"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize-kvm.ps1 openstack '{{user `admin_password`}}' '{{user `time_zone`}}' '{{user `organization`}}' '{{user `owner`}}' '{{user `product_key`}}'"
       ]
     }
   ]

@@ -52,18 +52,18 @@
       "floppy_files": [
         "{{ user `stemcell_build_path` }}/windows2019/autounattend.xml",
         "{{ user `root_dir` }}/src/stemcells/scripts/windows/prepare.ps1",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/vioserial/2k16/amd64/*.cat",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/vioserial/2k16/amd64/*.inf",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/vioserial/2k16/amd64/*.sys",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k16/amd64/*.cat",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k16/amd64/*.inf",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/viostor/2k16/amd64/*.sys",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/NetKVM/2k16/amd64/*.cat",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/NetKVM/2k16/amd64/*.inf",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/NetKVM/2k16/amd64/*.sys",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/qxldod/2k16/amd64/*.cat",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/qxldod/2k16/amd64/*.inf",
-        "{{ user `root_dir` }}/src/stemcells/drivers/windows/qxldod/2k16/amd64/*.sys"
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/vioserial/2k16/amd64/*.cat",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/vioserial/2k16/amd64/*.inf",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/vioserial/2k16/amd64/*.sys",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/viostor/2k16/amd64/*.cat",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/viostor/2k16/amd64/*.inf",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/viostor/2k16/amd64/*.sys",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/NetKVM/2k16/amd64/*.cat",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/NetKVM/2k16/amd64/*.inf",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/NetKVM/2k16/amd64/*.sys",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/qxldod/2k16/amd64/*.cat",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/qxldod/2k16/amd64/*.inf",
+        "{{ user `root_dir` }}/src/stemcells/drivers/windows/kvm/qxldod/2k16/amd64/*.sys"
       ],
       "net_device": "virtio-net",
       "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
@@ -73,7 +73,7 @@
       "winrm_username": "Administrator",
       "winrm_password": "P@ssw0rd",
       "winrm_timeout": "4h",
-      "output_directory": "{{user `stemcell_build_path`}}/windows2019/stemcell"
+      "output_directory": "{{user `stemcell_build_path`}}/windows2019/openstack/stemcell"
     }
   ],
   "provisioners": [
@@ -178,7 +178,7 @@
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize.ps1 openstack '{{user `admin_password`}}' '{{user `time_zone`}}' '{{user `organization`}}' '{{user `owner`}}' '{{user `product_key`}}'"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize-kvm.ps1 openstack '{{user `admin_password`}}' '{{user `time_zone`}}' '{{user `organization`}}' '{{user `owner`}}' '{{user `product_key`}}'"
       ]
     }
   ]

@@ -3,6 +3,11 @@
     "iso_url": "",
     "iso_checksum": "",
     "iso_checksum_type": "",
+    "esxi_remote_host": "",
+    "esxi_datastore": "",
+    "esxi_remote_username": "",
+    "esxi_remote_password": "",
+    "esxi_vm_network": "",
     "image_build_name": "",
     "disk_size": "40960",
     "vs_download_url": "",
@@ -25,13 +30,24 @@
     {
       "vm_name": "{{user `image_build_name`}}",
       "type": "vmware-iso",
+      "remote_type": "esx5",
+      "remote_host": "{{ user `esxi_remote_host` }}",
+      "remote_username": "{{ user `esxi_remote_username` }}",
+      "remote_password": "{{ user `esxi_remote_password` }}",
+      "remote_datastore": "{{ user `esxi_datastore` }}",
       "guest_os_type": "windows9srv-64",
       "headless": false,
       "cpus": 2,
       "memory": 2048,
       "version": 14,
       "vmx_data": {
-        "scsi0.virtualDev": "lsisas1068"
+        "scsi0.virtualDev": "lsisas1068",
+        "ethernet0.networkName": "{{ user `vm_network` }}",
+        "ethernet0.present": "TRUE",
+        "ethernet0.startConnected": "TRUE",
+        "ethernet0.virtualDev": "vmxnet3",
+        "ethernet0.addressType": "generated",
+        "ethernet0.wakeOnPcktRcv": "FALSE"
       },
       "floppy_files": [
         "{{ user `root_dir` }}/.stembuild/windows2019/autounattend.xml",
