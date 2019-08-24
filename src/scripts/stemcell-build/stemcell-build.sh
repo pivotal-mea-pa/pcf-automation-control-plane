@@ -65,17 +65,20 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
     set -u
     version="${bosh_version}.${build_number}"
 
-    iaas_scripts_path=${root_dir}/src/scripts/stemcell-build/${iaas}
-    stemcell_image_path=${stemcell_build_path}/${operating_system}
-
     image_build_name=${operating_system}-stemcell
-    stemcell_disk_image=${stemcell_image_path}/stemcell/${image_build_name}
 
     num_iaas=$(bosh interpolate ${root_dir}/vars.yml --path /stemcell_build/$i/iaas | grep -e "^-" | wc -l)
     for j in $(seq 0 $((num_iaas-1))); do
 
       iaas=$(bosh interpolate ${root_dir}/vars.yml \
         --path /stemcell_build/$i/iaas/$j/type)
+  
+      stemcell_image_path=${stemcell_build_path}/${operating_system}/${iaas}
+      iaas_scripts_path=${root_dir}/src/scripts/stemcell-build/${iaas}
+
+      provider_specific_vars=""
+      [[ ! -e ${iaas_scripts_path}/build-vars-${packer_builder}.sh ]] || \
+        source ${iaas_scripts_path}/build-vars-${packer_builder}.sh
 
       if [[ ! -e ${stemcell_image_path}/stemcell \
         || $action == clean ]]; then
@@ -84,15 +87,11 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
         mkdir -p ${stemcell_image_path}
         sed "s|###product_key###|${product_key}|g" \
           ${root_dir}/src/stemcells/config/${operating_system}/autounattend.xml \
-          > ${stemcell_image_path}/autounattend.xml
-        sed -i "s|###admin_password###|${admin_password}|g" \
-          ${stemcell_image_path}/autounattend.xml
+          > ${stemcell_build_path}/${operating_system}/autounattend.xml
+        sed -i '' "s|###admin_password###|${admin_password}|g" \
+          ${stemcell_build_path}/${operating_system}/autounattend.xml
 
-        provider_specific_vars=""
-        [[ ! -e ${iaas_scripts_path}/build-vars-${packer_builder}.sh ]] || \
-          source ${iaas_scripts_path}/build-vars-${packer_builder}.sh
-
-        echo "Building base "${version}" of the ${iaas} stemcell for OS '${operating_system}' ..."
+        echo "Building "${version}" of the ${iaas} stemcell for OS '${operating_system}' ..."
 
         PACKER_LOG=${packer_log} packer build -force \
           -on-error=${on_error} \

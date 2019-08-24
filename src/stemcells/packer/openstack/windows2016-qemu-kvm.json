@@ -73,7 +73,7 @@
       "winrm_username": "Administrator",
       "winrm_password": "P@ssw0rd",
       "winrm_timeout": "4h",
-      "output_directory": "{{user `stemcell_build_path`}}/windows2016/stemcell"
+      "output_directory": "{{user `stemcell_build_path`}}/windows2016/openstack/stemcell"
     }
   ],
   "provisioners": [
@@ -178,7 +178,7 @@
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize.ps1 openstack '{{user `admin_password`}}' '{{user `time_zone`}}' '{{user `organization`}}' '{{user `owner`}}' '{{user `product_key`}}'"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize-kvm.ps1 openstack '{{user `admin_password`}}' '{{user `time_zone`}}' '{{user `organization`}}' '{{user `owner`}}' '{{user `product_key`}}'"
       ]
     }
   ]

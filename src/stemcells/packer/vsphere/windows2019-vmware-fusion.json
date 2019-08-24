@@ -1,0 +1,144 @@
+{
+  "variables": {
+    "iso_url": "",
+    "iso_checksum": "",
+    "iso_checksum_type": "",
+    "image_build_name": "",
+    "disk_size": "40960",
+    "vs_download_url": "",
+    "nuget_download_url": "",
+    "bosh_ps_modules_download_url": "",
+    "bosh_agent_download_url": "",
+    "openssh_win64_download_url": "",
+    "vmware_tools_download_url": "",
+    "custom_file_upload": "",
+    "custom_ps1_script": "",
+    "admin_password": "",
+    "time_zone": "",
+    "organization": "",
+    "owner": "",
+    "product_key": "",
+    "root_dir": "",
+    "debug": "false"
+  },
+  "builders": [
+    {
+      "vm_name": "{{user `image_build_name`}}",
+      "type": "vmware-iso",
+      "guest_os_type": "windows9srv-64",
+      "headless": false,
+      "cpus": 2,
+      "memory": 2048,
+      "version": 14,
+      "vmx_data": {
+        "scsi0.virtualDev": "lsisas1068"
+      },
+      "floppy_files": [
+        "{{ user `root_dir` }}/.stembuild/windows2019/autounattend.xml",
+        "{{ user `root_dir` }}/src/stemcells/scripts/windows/prepare.ps1"
+      ],
+      "disk_type_id": "0",
+      "disk_adapter_type": "scsi",
+      "disk_size": "{{user `disk_size`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "boot_wait": "{{user `5s`}}",
+      "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "shutdown_timeout": "30m",
+      "skip_compaction": false,
+      "http_directory": "{{user `root_dir`}}",
+      "communicator": "winrm",
+      "winrm_insecure": true,
+      "winrm_username": "Administrator",
+      "winrm_password": "P@ssw0rd",
+      "winrm_timeout": "4h",
+      "keep_registered": "{{user `debug`}}",
+      "output_directory": "{{user `root_dir`}}/.stembuild/windows2019/vsphere/stemcell"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "{{user `root_dir`}}/src/stemcells/scripts/windows/",
+      "destination": "C:\\Stemcell-Build\\Scripts",
+      "pause_before": "1m"
+    },
+    {
+      "type": "shell-local",
+      "command": "echo '******************** Installing VMware Tools ********************'"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading ESX VMware Tools ISO...' {{user `vmware_tools_download_url`}} VMware-tools-windows.exe"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-vmware-tools.ps1"
+      ]
+    },
+    {
+      "type": "shell-local",
+      "command": "echo '******************** Installing BOSH release packages ********************'"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download-bosh.ps1 {{user `bosh_ps_modules_download_url`}} {{user `bosh_agent_download_url`}} {{user `openssh_win64_download_url`}}"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\configure-stemcell.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "shell-local",
+      "command": "echo '******************** Installing custom packages ********************'"
+    },
+    {
+      "type": "file",
+      "source": "{{user `root_dir`}}/{{user `custom_ps1_script`}}",
+      "destination": "C:\\Stemcell-Build\\Scripts\\custom-install.ps1"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading custom install archive...' http://$env:PACKER_HTTP_ADDR/{{user `custom_file_upload`}} custom-install-archive.zip"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\custom-install.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "shell-local",
+      "command": "echo '******************** Running Windows Updates ********************'"
+    },
+    {
+      "type": "windows-update"
+    },
+    {
+      "type": "shell-local",
+      "command": "echo '******************** Finalizing Stemcell Image ********************'"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize.ps1 vsphere '{{user `admin_password`}}' '{{user `time_zone`}}' '{{user `organization`}}' '{{user `owner`}}' '{{user `product_key`}}'"
+      ]
+    }
+  ]
+}

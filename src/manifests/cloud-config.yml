@@ -8,7 +8,7 @@ networks:
   - azs:
     - AZ0
     cloud_properties: {}      
-    dns: [((dns_servers))]
+    dns: ((dns_servers))
     gateway: ((pcf_management_network_gateway))
     range: ((pcf_management_network_cidr))
     reserved: ((pcf_management_network_reserved_ranges))
@@ -19,7 +19,7 @@ networks:
   - azs:
     - AZ0
     cloud_properties: {}
-    dns: [((dns_servers))]
+    dns: ((dns_servers))
     gateway: ((pcf_releng_network_gateway))
     range: ((pcf_releng_network_cidr))
     reserved: ((pcf_releng_network_reserved_ranges))

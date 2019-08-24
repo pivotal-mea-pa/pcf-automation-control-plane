@@ -12,11 +12,15 @@ if [[ "$products" == "Please login first" ]]; then
   exit 1
 fi
 
+echo=""
+if [[ "$1" == "echo" ]]; then
+  echo="echo"
+fi
+
 set -eu
 root_dir=$(cd $(dirname "$(ls -l $0 | awk '{ print $NF }')")/.. && pwd)
 
 pivnet_download_dir=${root_dir}/.downloads/pivnet
-exit
 
 #
 # Download platform automation release
@@ -38,7 +42,7 @@ if [[ ! -e $pivnet_download_dir/automation/$product_file_name ]]; then
 
   concourse_task_archive_id=$(pivnet product-files -p "${platform_automation_slug}" -r "${release}" \
     | awk '/Concourse Tasks/{ print $2 }')
-  pivnet download-product-files --accept-eula \
+  ${echo} pivnet download-product-files --accept-eula \
     -p "${platform_automation_slug}" \
     -r "${release}" \
     -i "${concourse_task_archive_id}" \
@@ -53,7 +57,7 @@ if [[ ! -e $pivnet_download_dir/automation/$product_file_name ]]; then
 
   docker_image_archive_id=$(pivnet product-files -p "${platform_automation_slug}" -r "${release}" \
     | awk '/Docker Image for Concourse/{ print $2 }')
-  pivnet download-product-files --accept-eula \
+  ${echo} pivnet download-product-files --accept-eula \
     -p "${platform_automation_slug}" \
     -r "${release}" \
     -i "${docker_image_archive_id}" \
@@ -94,7 +98,7 @@ for i in $(seq 0 $((num_products-1))); do
 
   if [[ ! -e $pivnet_download_dir/$name/$product_file_name ]]; then
     echo "Downloading product $name ... "
-    pivnet download-product-files --accept-eula \
+    ${echo} pivnet download-product-files --accept-eula \
       -p "${pivnet_slug}" \
       -r "${release}" \
       -i "${product_file_id}" \
@@ -117,7 +121,7 @@ for i in $(seq 0 $((num_products-1))); do
 
       if [[ ! -e $pivnet_download_dir/$name/$stemcell_file_name ]]; then
         echo "Downloading stemcell for product $name ... "
-        pivnet download-product-files --accept-eula \
+        ${echo} pivnet download-product-files --accept-eula \
           -p "stemcells-ubuntu-xenial" \
           -r "${stemcell_version}" \
           -i "${stemcell_file_id}" \

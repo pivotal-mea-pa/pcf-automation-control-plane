@@ -117,61 +117,64 @@ for i in $(seq 0 $((num_foundations-1))); do
       --path /foundations/$i/products/$j/creds \
       | grep -e "^-" | wc -l)
 
-    for k in $(seq 0 $((num_creds-1))); do
+    if [[ $num_creds -gt 0 ]]; then
+      
+      for k in $(seq 0 $((num_creds-1))); do
 
-      cred_name=$(bosh interpolate ${root_dir}/vars.yml \
-        --path /foundations/$i/products/$j/creds/$k/name)
-      cred_type=$(bosh interpolate ${root_dir}/vars.yml \
-        --path /foundations/$i/products/$j/creds/$k/type?)
-      cred_scope=$(bosh interpolate ${root_dir}/vars.yml \
-        --path /foundations/$i/products/$j/creds/$k/scope?)
-      regenerate=$(bosh interpolate ${root_dir}/vars.yml \
-        --path /foundations/$i/products/$j/creds/$k/regenerate?)
-      overwrite=$(bosh interpolate ${root_dir}/vars.yml \
-        --path /foundations/$i/products/$j/creds/$k/overwrite?)
+        cred_name=$(bosh interpolate ${root_dir}/vars.yml \
+          --path /foundations/$i/products/$j/creds/$k/name)
+        cred_type=$(bosh interpolate ${root_dir}/vars.yml \
+          --path /foundations/$i/products/$j/creds/$k/type?)
+        cred_scope=$(bosh interpolate ${root_dir}/vars.yml \
+          --path /foundations/$i/products/$j/creds/$k/scope?)
+        regenerate=$(bosh interpolate ${root_dir}/vars.yml \
+          --path /foundations/$i/products/$j/creds/$k/regenerate?)
+        overwrite=$(bosh interpolate ${root_dir}/vars.yml \
+          --path /foundations/$i/products/$j/creds/$k/overwrite?)
 
-      if [[ $cred_scope == pipeline ]]; then
-        cred_path_prefix="/concourse/main/deploy-${name}-${product}"
-      else
-        cred_path_prefix="/pcf/${name}"
-      fi
+        if [[ $cred_scope == pipeline ]]; then
+          cred_path_prefix="/concourse/main/deploy-${name}-${product}"
+        else
+          cred_path_prefix="/pcf/${name}"
+        fi
 
-      case $cred_type in
-        password)
-          cred_value=$(bosh interpolate ${root_dir}/vars.yml \
-            --path /foundations/$i/products/$j/creds/$k/value)
-          set_credhub_password \
-            "${cred_path_prefix}/$cred_name" \
-            "$cred_value" \
-            "$regenerate"
-          ;;
+        case $cred_type in
+          password)
+            cred_value=$(bosh interpolate ${root_dir}/vars.yml \
+              --path /foundations/$i/products/$j/creds/$k/value)
+            set_credhub_password \
+              "${cred_path_prefix}/$cred_name" \
+              "$cred_value" \
+              "$regenerate"
+            ;;
 
-        certificate)
-          common_name=$(bosh interpolate ${root_dir}/vars.yml \
-            --path /foundations/$i/products/$j/creds/$k/common_name)
-          alternate_names=$(bosh interpolate ${root_dir}/vars.yml \
-            --path /foundations/$i/products/$j/creds/$k/alternate_names)
-          organization=$(bosh interpolate ${root_dir}/vars.yml \
-            --path /foundations/$i/products/$j/creds/$k/organization)
-          generate_credhub_certificate \
-            "${cred_path_prefix}/$cred_name" \
-            "$regenerate" \
-            "/cp/default_ca" \
-            "$common_name" \
-            "$alternate_names" \
-            "$organization"
-          ;;
+          certificate)
+            common_name=$(bosh interpolate ${root_dir}/vars.yml \
+              --path /foundations/$i/products/$j/creds/$k/common_name)
+            alternate_names=$(bosh interpolate ${root_dir}/vars.yml \
+              --path /foundations/$i/products/$j/creds/$k/alternate_names)
+            organization=$(bosh interpolate ${root_dir}/vars.yml \
+              --path /foundations/$i/products/$j/creds/$k/organization)
+            generate_credhub_certificate \
+              "${cred_path_prefix}/$cred_name" \
+              "$regenerate" \
+              "/cp/default_ca" \
+              "$common_name" \
+              "$alternate_names" \
+              "$organization"
+            ;;
 
-        # Treat all other types as values
-        *)
-          cred_value=$(bosh interpolate ${root_dir}/vars.yml \
-            --path /foundations/$i/products/$j/creds/$k/value)
-          set_credhub_value \
-            "${cred_path_prefix}/$cred_name" \
-            "$cred_value" \
-            "$overwrite"
-          ;;
-      esac
-    done
+          # Treat all other types as values
+          *)
+            cred_value=$(bosh interpolate ${root_dir}/vars.yml \
+              --path /foundations/$i/products/$j/creds/$k/value)
+            set_credhub_value \
+              "${cred_path_prefix}/$cred_name" \
+              "$cred_value" \
+              "$overwrite"
+            ;;
+        esac
+      done
+    fi
   done
 done

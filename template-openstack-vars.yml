@@ -33,8 +33,6 @@ stemcell_build:
 
 # Download details
 
-downloads_dir:
-
 pivnet_products:
 - name: opsman
   pivnet_slug: 'ops-manager'
@@ -65,6 +63,9 @@ pivnet_products:
   pivnet_version: '1\.6\..*'
   product_file_pattern: 'apm-(.*).pivotal'
   stemcell_file_pattern: 'bosh-stemcell-(.*)-openstack-kvm-ubuntu-xenial-go_agent-raw.tgz'
+
+# Control plane download dir
+downloads_dir: # <absolute path to download dir for control plane releases>
 
 # Bosh Director Instance
 
