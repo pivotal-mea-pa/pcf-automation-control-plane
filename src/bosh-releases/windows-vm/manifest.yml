@@ -1,7 +1,15 @@
+# bosh -n -d pdf-generator-service deploy manifest.yml \
+#   --var=deployment_name=pdf-generator-service \
+#   --var=stemcell_os_name=windows2012R2 \
+#   --var=admin_password=D3DPaSW@2020 \
+#   --var=vm_size=medium \
+#   --var=network=pcf-releng \
+#   --var=public_ip=172.28.112.17
+
 name: ((deployment_name))
 
 releases:
-- name: windows-test-vm
+- name: windows-vm
   version: latest
 - name: windows-utilities
   version: latest
@@ -23,17 +31,24 @@ instance_groups:
   instances: 1
   jobs:
   - name: run
-    release: windows-test-vm
+    release: windows-vm
   - name: enable_rdp
     release: windows-utilities
     properties:
       enable_rdp:
         enabled: true
-    provides: {}
+  - name: set_password
+    release: windows-utilities
+    properties:
+      set_password:
+        password: ((admin_password))
   vm_type: ((vm_size))
   stemcell: windows
   networks:
   - name: ((network))
+    default:
+    - dns
+    - gateway
   - name: public
     static_ips:
     - ((public_ip))

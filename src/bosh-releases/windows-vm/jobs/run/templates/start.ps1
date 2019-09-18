@@ -1,5 +1,5 @@
 while ($true)
 {
-  Write-Host "Run: <%= p("enable_rdp.enabled") %>"
+  Write-Host "Run: <%= p("message") %>"
   Start-Sleep -s <%= p("sleep_interval") %>
 }

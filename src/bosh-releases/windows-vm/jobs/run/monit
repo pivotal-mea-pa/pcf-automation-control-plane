@@ -1,12 +1,9 @@
 {
   "processes": [
     {
-      "name": "say-hello",
+      "name": "run",
       "executable": "powershell",
-      "args": [ "/var/vcap/jobs/say-hello/bin/start.ps1" ],
-      "env": {
-        "FOO": "BAR"
-      }
+      "args": [ "/var/vcap/jobs/run/bin/start.ps1" ]
     }
   ]
 }
