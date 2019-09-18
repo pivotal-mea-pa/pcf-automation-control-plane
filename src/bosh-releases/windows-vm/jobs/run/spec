@@ -1,0 +1,17 @@
+---
+name: run
+
+description: "BOSH instance keep alive loop."
+
+templates:
+  start.ps1: bin/start.ps1
+
+packages: []
+
+properties:
+  sleep_interval:
+    description: "Interval to sleep in infinite run loop"
+    default: 86400
+  message:
+    description: "A message to print at the end of each sleep cycle"
+    default "stand alone bosh vm keep alive loop"

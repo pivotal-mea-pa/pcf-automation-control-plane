@@ -1,0 +1,39 @@
+name: ((deployment_name))
+
+releases:
+- name: windows-test-vm
+  version: latest
+- name: windows-utilities
+  version: latest
+
+stemcells:
+- alias: windows
+  os: ((stemcell_os_name))
+  version: latest
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  canary_watch_time: 30000-300000
+  update_watch_time: 30000-300000
+
+instance_groups:
+- name: ((stemcell_os_name))
+  azs: [AZ0]
+  instances: 1
+  jobs:
+  - name: run
+    release: windows-test-vm
+  - name: enable_rdp
+    release: windows-utilities
+    properties:
+      enable_rdp:
+        enabled: true
+    provides: {}
+  vm_type: ((vm_size))
+  stemcell: windows
+  networks:
+  - name: ((network))
+  - name: public
+    static_ips:
+    - ((public_ip))
