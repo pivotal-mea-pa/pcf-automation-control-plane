@@ -14,9 +14,13 @@ if [[ ! -e ${stemcell_build_path}/${stemcell_archive_name} \
   mkdir -p ${stemcell_build_path}/tmp
   pushd ${stemcell_build_path}/tmp
 
-  # stembuild package \
-  #   -vmdk $stemcell_disk_image
-  #   -outputDir ${stemcell_build_path}/tmp
+  curl -L https://github.com/cloudfoundry-incubator/stembuild/releases/download/${bosh_version}/stembuild-linux-x86_64-${bosh_version} \
+    -o ${stemcell_build_path}/tmp/stembuild
+  chmod +x ${stemcell_build_path}/tmp/stembuild
+
+  ./stembuild package \
+    -vmdk $stemcell_disk_image \
+    -outputDir ${stemcell_build_path}/tmp
 
   # Repackage stemcell with correct version
   tar -xzf bosh-stemcell-*.tgz
