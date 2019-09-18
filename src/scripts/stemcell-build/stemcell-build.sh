@@ -88,7 +88,7 @@ for i in $(seq 0 $((num_stemcell_builds-1))); do
         sed "s|###product_key###|${product_key}|g" \
           ${root_dir}/src/stemcells/config/${operating_system}/autounattend.xml \
           > ${stemcell_build_path}/${operating_system}/autounattend.xml
-        sed -i '' "s|###admin_password###|${admin_password}|g" \
+        sed -i'' "s|###admin_password###|${admin_password}|g" \
           ${stemcell_build_path}/${operating_system}/autounattend.xml
 
         echo "Building "${version}" of the ${iaas} stemcell for OS '${operating_system}' ..."

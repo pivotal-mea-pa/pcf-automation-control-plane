@@ -85,6 +85,25 @@
     },
     {
       "type": "shell-local",
+      "command": "echo '******************** Installing VirtIO drivers ********************'"
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading Windows VirtIO drivers...' https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso virtio-win.iso"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-virtio-drivers.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "shell-local",
       "command": "echo '******************** Installing Cloudbase-Init ********************'"
     },
     {
@@ -97,25 +116,6 @@
       "type": "windows-shell",
       "inline": [
         "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-cloudbase-init.ps1"
-      ]
-    },
-    {
-      "type": "windows-restart"
-    },
-    {
-      "type": "shell-local",
-      "command": "echo '******************** Installing VirtIO drivers ********************'"
-    },
-    {
-      "type": "windows-shell",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\download.ps1 'Downloading Windows VirtIO drivers...'  https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso virtio-win.iso"
-      ]
-    },
-    {
-      "type": "windows-shell",
-      "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\install-virtio-drivers.ps1"
       ]
     },
     {
@@ -178,7 +178,7 @@
     {
       "type": "windows-shell",
       "inline": [
-        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize-kvm.ps1 openstack '{{user `admin_password`}}' '{{user `time_zone`}}' '{{user `organization`}}' '{{user `owner`}}' '{{user `product_key`}}'"
+        "PowerShell.exe -ExecutionPolicy Bypass C:\\Stemcell-Build\\Scripts\\finalize.ps1 openstack '{{user `admin_password`}}' '{{user `time_zone`}}' '{{user `organization`}}' '{{user `owner`}}' '{{user `product_key`}}'"
       ]
     }
   ]

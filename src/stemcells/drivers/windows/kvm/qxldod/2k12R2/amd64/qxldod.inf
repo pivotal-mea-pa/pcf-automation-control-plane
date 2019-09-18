@@ -11,7 +11,7 @@ Signature="$Windows NT$"
 Class=Display
 ClassGUID={4d36e968-e325-11ce-bfc1-08002be10318}
 Provider=%RHEL%
-DriverVer=05/28/2017,10.0.0.18000
+DriverVer=04/11/2019,10.0.0.19000
 CatalogFile=qxldod.cat
 
 ;
@@ -35,9 +35,9 @@ QxlDod_Files_Driver = 12
 ;
 
 [Manufacturer]
-%RHEL%=RHEL,NTamd64
+%RHEL%=RHEL,NTamd64.6.2
 
-[RHEL.NTamd64]
+[RHEL.NTamd64.6.2]
 %RHELQxl.DeviceDesc% = QxlDod_Inst, PCI\VEN_1B36&DEV_0100&SUBSYS_11001AF4
 
 [QxlDod_Files_Driver]

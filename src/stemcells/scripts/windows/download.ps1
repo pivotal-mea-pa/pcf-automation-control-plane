@@ -39,5 +39,5 @@ Invoke-WebRequest `
 if ($LASTEXITCODE) {
   throw "Failed with exit code $LASTEXITCODE"
 }
-  
+
 Unblock-File "$DownloadPath\$OutputFile"
