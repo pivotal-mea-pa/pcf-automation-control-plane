@@ -141,7 +141,7 @@ $PostUnattend = @"
       <HelpCustomized>false</HelpCustomized>
     </OEMInformation>
     <ComputerName>*</ComputerName>
-    <TimeZone>UTC</TimeZone>
+    <TimeZone>$TimeZone</TimeZone>
     $ProductKeyXML
     $OrganizationXML
     $OwnerXML
