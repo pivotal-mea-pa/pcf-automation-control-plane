@@ -8,3 +8,4 @@ dev_releases/
 packer_cache/
 tmp/
 keys/
+*.code-workspace
