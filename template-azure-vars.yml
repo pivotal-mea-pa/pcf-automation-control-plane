@@ -1,0 +1,172 @@
+---
+
+# Windows stemcell builds
+
+stemcell_build:
+
+- operating_system: windows2019
+  product: pas-windows
+  iso_url: .downloads/stemcell/en_windows_server_2019_updated_march_2019_x64_dvd_2ae967ab.iso
+  iso_checksum: 55ac0f541bcc9ce2f70af4227239fc4a6a1e2b6e
+  iso_checksum_type: sha1
+  bosh_version: '2019.3'
+  openssh_version: 'v7.9.0.0p1-Beta'
+  admin_password: 'P@ssw0rd'
+  time_zone: 'Arabian Standard Time'
+  organization: 'Pivotal'
+  owner: 'MEA-PA-Team'
+  product_key: 'VNW2Q-39QJT-GPR34-MFTT9-GJHY4'
+  packer_builder: 'qemu-kvm'
+
+  ## If 'true' then Packer will run in verbose mode and 
+  ## build VM will not be deleted if an error occurs
+  #
+  # debug: 'true'
+
+  ## Custom add-on package installation files and script
+  #
+  # custom_file_upload: .downloads/stemcell/client_packages.zip
+  # custom_ps1_script: .downloads/stemcell/install_clients.ps1
+
+  iaas: 
+  - type: 'vmware'
+
+# Download details
+
+pivnet_products:
+- name: opsman
+  pivnet_slug: 'ops-manager'
+  pivnet_version: '2\.7\..*'
+  product_file_pattern: 'ops-manager-vsphere-(.*).ova'
+- name: pas
+  pivnet_slug: 'elastic-runtime'
+  pivnet_version: '2\.7\..*'
+  product_file_pattern: 'srt-(.*).pivotal'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-vsphere-esxi-ubuntu-xenial-go_agent.tgz'
+- name: pas-windows
+  pivnet_slug: 'pas-windows'
+  pivnet_version: '2\.7\..*'
+  product_file_pattern: 'pas-windows-(.*).pivotal'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-vsphere-esxi-windows2019-go_agent-raw.tgz'
+- name: healthwatch
+  pivnet_slug: 'p-healthwatch'
+  pivnet_version: '1\.6\..*'
+  product_file_pattern: 'p-healthwatch-(.*).pivotal'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-vsphere-esxi-ubuntu-xenial-go_agent.tgz'
+- name: metrics
+  pivnet_slug: 'apm'
+  pivnet_version: '1\.6\..*'
+  product_file_pattern: 'apm-(.*).pivotal'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-vsphere-esxi-ubuntu-xenial-go_agent.tgz'
+
+# Control plane download dir
+downloads_dir: /home/hodeh/pcf-automation-control-plane/.downloads
+
+
+# Bosh Director Instance
+
+director_name: control-plane-bosh-director
+internal_cidr: 10.0.0.0/24
+internal_gw: 10.0.0.1
+dns_servers: 168.63.129.16
+
+internal_ip: 10.0.0.50
+dns_name: control-plane.pas-mea.pivotal-platform.me
+
+ubuntu_sha1: 650dfdefefbb176af39a5fb3c9be04ef196f70f6
+ubuntu_stemcell: https://bosh.io/d/stemcells/bosh-vsphere-esxi-ubuntu-xenial-go_agent?v=315.64
+
+bosh_vm_password: '*' # generate using: mkpasswd -m sha-512 -s
+
+# CPI / Cloud Config Vars
+
+vnet_name: 
+subnet_name:
+internal_ip: 
+client_id:
+client_secret:
+default_security_group:
+resource_group_name:
+ssh.public_key:
+storage_account_name:
+subscription_id:
+tenant_id:
+internal_cidr:
+internal_gw:
+
+
+pcf_management_network_name:
+pcf_management_network_cidr:
+pcf_management_network_gateway:
+pcf_management_network_reserved_ranges:
+pcf_management_network_static_ips:
+
+pcf_releng_network_name:
+pcf_releng_network_cidr:
+pcf_releng_network_gateway:
+pcf_releng_network_reserved_ranges:
+pcf_releng_network_static_ips:
+
+# PCF Automation Configuration repo
+
+init_automation: false
+automation_config_repo_path:
+automation_state_repo_path:
+automation_git_private_key:
+
+# Concourse
+
+concourse_name: cp-concourse
+concourse_web_ip: <<CONCOURSE ATC STATIC IP>>
+concourse_external_host: cicd.<<DOMAIN>>
+
+concourse_worker_vm_type: large
+num_concourse_workers: 1
+
+# Minio
+
+minio_name: cp-minio
+minio_ip: <<MINIO WEB STATIC IP>>
+minio_host: s3.<<DOMAIN>>
+
+# Ops Manager / PCF
+
+foundations:
+- name: prod
+  opsman_host: om.<<DOMAIN>>
+  opsman_user: admin
+  opsman_password: '*'
+  opsman_decryption_phrase: '*'
+  opsman_ssh_password: '*'
+  products:
+
+  - name: pas
+    creds:
+    - name: pas_default_networking_poe_tls
+      type: certificate
+      common_name: '*.<<DOMAIN>>'
+      alternate_names: '*.apps.<<DOMAIN>>,*.sys.<<DOMAIN>>,*.login.sys.<<DOMAIN>>,*.uaa.sys.<<DOMAIN>>'
+      organization: <<ORGANIZATION NAME>>
+      regenerate: 'no'
+    - name: pas_uaa_service_provider
+      type: certificate
+      common_name: '*.<<DOMAIN>>'
+      alternate_names: '*.apps.<<DOMAIN>>,*.sys.<<DOMAIN>>,*.login.sys.<<DOMAIN>>,*.uaa.sys.<<DOMAIN>>'
+      organization: <<ORGANIZATION NAME>>
+      regenerate: 'no'
+    - name: pas_default_credhub_encryption_key
+      type: password
+      value: '*'
+      regenerate: 'no'
+
+  - name: pas-windows2012R2
+    creds:
+    - name: windows_admin_password
+      value: 'P@ssw0rd'
+
+# Branding
+
+login_branding_company_name:
+login_branding_product_logo:
+login_branding_square_logo:
+login_branding_footer_legal_text:

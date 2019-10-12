@@ -1,0 +1,29 @@
+---
+
+- type: replace
+  path: /azs/name=AZ0/cloud_properties?
+
+
+- type: replace
+  path: /vm_types/name=small/env?  
+  value:
+    cloud_properties:
+      instance_type: Standard_D1_v2
+
+- type: replace
+  path: /vm_types/name=medium/env?
+  value:
+    cloud_properties:
+      instance_type: Standard_D2_v2
+
+- type: replace
+  path: /vm_types/name=large/env?
+  value:
+    cloud_properties:
+      instance_type: Standard_D3_v2
+
+- type: replace
+  path: /vm_types/name=xlarge/env?
+  value:
+    cloud_properties:
+      instance_type: Standard_D4_v2
