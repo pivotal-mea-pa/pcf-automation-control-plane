@@ -1,0 +1,14 @@
+---
+#
+# Ensure download names are synced with urls in vendor/bosh-deployment
+#
+
+- type: replace
+  path: /releases/name=bosh-vsphere-cpi/url
+  value: file://((downloads_dir))/bosh-vsphere-cpi-release-50.tgz
+  # https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-vsphere-cpi-release?v=50
+
+- type: replace
+  path: /resource_pools/name=vms/stemcell/url
+  value: file://((downloads_dir))/bosh-stemcell-3586.24-vsphere-esxi-ubuntu-trusty-go_agent.tgz
+  # https://bosh.io/d/stemcells/bosh-vsphere-esxi-ubuntu-trusty-go_agent?v=3586.24
