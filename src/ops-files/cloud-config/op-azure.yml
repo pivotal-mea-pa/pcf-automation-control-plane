@@ -27,3 +27,19 @@
   value:
     cloud_properties:
       instance_type: Standard_D4_v2
+
+
+- type: replace
+  path: /networks/name=pcf-releng/subnets/0/cloud_properties?
+  value:
+      virtual_network_name: ((pcf_releng_network_name))
+      subnet_name: ((pcf_releng_subnet_name))
+      security_group: ((pcf_releng_security_group))
+
+
+- type: replace
+  path: /networks/name=pcf-management/subnets/0/cloud_properties?
+  value:
+      virtual_network_name: ((pcf_management_network_name))
+      subnet_name: ((subnet_name))
+      security_group: ((security_group))    
