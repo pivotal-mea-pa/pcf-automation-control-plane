@@ -2,7 +2,8 @@
 
 - type: replace
   path: /azs/name=AZ0/cloud_properties?
-
+  value:
+      availability_zone: '1'
 
 - type: replace
   path: /vm_types/name=small/env?  
@@ -41,5 +42,5 @@
   path: /networks/name=pcf-management/subnets/0/cloud_properties?
   value:
       virtual_network_name: ((pcf_management_network_name))
-      subnet_name: ((subnet_name))
-      security_group: ((security_group))    
+      subnet_name: ((pcf_management_subnet_name))
+      security_group: (pcf_management_security_group))
