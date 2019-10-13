@@ -1,11 +1,6 @@
 ---
 
 - type: replace
-  path: /azs/name=AZ0/cloud_properties?
-  value:
-      availability_zone: '1'
-
-- type: replace
   path: /vm_types/name=small/cloud_properties?  
   value:
     instance_type: Standard_D1_v2
