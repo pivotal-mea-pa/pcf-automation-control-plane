@@ -5,7 +5,7 @@ set -eux
 azure_subscription_id=$(bosh interpolate ${root_dir}/vars.yml --path /subscription_id)
 azure_tenant_id=$(bosh interpolate ${root_dir}/vars.yml --path /tenant_id)
 azure_resource_group=$(bosh interpolate ${root_dir}/vars.yml --path /resource_group_name)
-azure_client_id=$(bosh interpolate ${root_dir}/vars.yml --path /azure_client_id)
+azure_client_id=$(bosh interpolate ${root_dir}/vars.yml --path /client_id)
 azure_client_secret=$(bosh interpolate ${root_dir}/vars.yml --path /client_secret)
 azure_location=$(bosh interpolate ${root_dir}/vars.yml --path /location)
 azure_network_security_group=$(bosh interpolate ${root_dir}/vars.yml --path /default_security_group)
