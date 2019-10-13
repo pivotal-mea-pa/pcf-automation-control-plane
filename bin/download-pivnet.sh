@@ -29,7 +29,7 @@ pivnet_download_dir=${root_dir}/.downloads/pivnet
 mkdir -p $pivnet_download_dir/automation
 
 platform_automation_slug="platform-automation"
-platform_automation_version='3\..*\..*'
+platform_automation_version='4\..*\..*'
 release=$(pivnet releases -p "${platform_automation_slug}" \
   | awk "/^\\|\\s+[0-9]+ \\| ${platform_automation_version}/{ print \$4 }" \
   | head -1)
