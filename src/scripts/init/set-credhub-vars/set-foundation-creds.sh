@@ -15,7 +15,7 @@ function set_pipeline_defaults() {
     -t value -v "$name"
 
   credhub set -n "/concourse/main/deploy-${name}-${product}/default_ca" \
-    -t certificate -r "$default_ca"
+    -t certificate -c "$default_ca"
 
   credhub set -n "/concourse/main/deploy-${name}-${product}/config_git_repo_url" -t value \
     -v "$automation_config_repo_path"
