@@ -1,6 +1,6 @@
 ---
 
 - type: replace
-  path: /instance_groups/name=minio/networks/-
+  path: /instance_groups/name=minio/networks/pcf-releng?
   value:
-    static_ips: 
+    static_ips: []
