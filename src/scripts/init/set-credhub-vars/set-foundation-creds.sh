@@ -74,7 +74,7 @@ for i in $(seq 0 $((num_foundations-1))); do
   #
 
   credhub set -n "/pcf/${name}/default_ca" \
-    -t certificate -r "$default_ca"
+    -t certificate -c "$default_ca"
   
   [[ ! -e ${root_dir}/src/scripts/init/set-credhub-vars/set-foundation-${iaas}-creds.sh ]] || \
     source ${root_dir}/src/scripts/init/set-credhub-vars/set-foundation-${iaas}-creds.sh
