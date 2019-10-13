@@ -6,28 +6,24 @@
       availability_zone: '1'
 
 - type: replace
-  path: /vm_types/name=small/env?  
+  path: /vm_types/name=small/cloud_properties?  
   value:
-    cloud_properties:
-      instance_type: Standard_D1_v2
+    instance_type: Standard_D1_v2
 
 - type: replace
-  path: /vm_types/name=medium/env?
+  path: /vm_types/name=medium/cloud_properties?
   value:
-    cloud_properties:
-      instance_type: Standard_D2_v2
+    instance_type: Standard_D2_v2
 
 - type: replace
-  path: /vm_types/name=large/env?
+  path: /vm_types/name=large/cloud_properties?
   value:
-    cloud_properties:
-      instance_type: Standard_D3_v2
+    instance_type: Standard_D3_v2
 
 - type: replace
-  path: /vm_types/name=xlarge/env?
+  path: /vm_types/name=xlarge/cloud_properties?
   value:
-    cloud_properties:
-      instance_type: Standard_D4_v2
+    instance_type: Standard_D4_v2
 
 
 - type: replace
