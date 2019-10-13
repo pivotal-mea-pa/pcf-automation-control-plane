@@ -34,4 +34,4 @@
   value:
       virtual_network_name: ((pcf_management_network_name))
       subnet_name: ((pcf_management_subnet_name))
-      security_group: (pcf_management_security_group))
+      security_group: ((pcf_management_security_group))
