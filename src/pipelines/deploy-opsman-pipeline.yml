@@ -91,7 +91,7 @@ locks:
 - &make-state-commit
   do:
   - task: make-commit
-    image: pcf-automation-image
+    image: pcf-automation-image 
     file: platform-automation-tasks/tasks/make-git-commit.yml
     input_mapping:
       repository: state
@@ -139,7 +139,7 @@ jobs:
       CREDHUB_SERVER: ((credhub_url))
       CREDHUB_CLIENT: ((credhub_client_id))
       CREDHUB_SECRET: ((credhub_client_secret))
-      CREDHUB_CA_CERT: ((default_ca.ca))
+      CREDHUB_CA_CERT:  
       PREFIX: '/pcf/((foundation_name))'
       INTERPOLATION_PATH: "foundations/((foundation_name))"
     input_mapping:
@@ -217,7 +217,7 @@ jobs:
       CREDHUB_SERVER: ((credhub_url))
       CREDHUB_CLIENT: ((credhub_client_id))
       CREDHUB_SECRET: ((credhub_client_secret))
-      CREDHUB_CA_CERT: ((default_ca.ca))
+      CREDHUB_CA_CERT: ((default_ca.certificate))
       PREFIX: '/pcf/((foundation_name))'
       INTERPOLATION_PATH: "foundations/((foundation_name))"
     input_mapping:
@@ -265,7 +265,7 @@ jobs:
       CREDHUB_SERVER: ((credhub_url))
       CREDHUB_CLIENT: ((credhub_client_id))
       CREDHUB_SECRET: ((credhub_client_secret))
-      CREDHUB_CA_CERT: ((default_ca.ca))
+      CREDHUB_CA_CERT: ((default_ca.certificate))
       PREFIX: '/pcf/((foundation_name))'
       INTERPOLATION_PATH: "foundations/((foundation_name))"
     input_mapping:
