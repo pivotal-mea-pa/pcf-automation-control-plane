@@ -55,9 +55,6 @@ resources:
     private_key: ((git_private_key.private_key))
     uri: ((config_git_repo_url))
     branch: master
-    paths:
-    - '**/opsman.yml'
-    - '**/director.yml'
 
 # resource locking and state
 
