@@ -92,7 +92,7 @@ locks:
   do:
   - task: make-commit
     image: pcf-automation-image
-    file: platform-automation-tasks/make-git-commit.yml
+    file: platform-automation-tasks/tasks/make-git-commit.yml
     input_mapping:
       repository: state
       file-source: generated-state
@@ -134,7 +134,7 @@ jobs:
 
   - task: credhub-interpolate
     image: pcf-automation-image
-    file: platform-automation-tasks/credhub-interpolate.yml
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
     params:
       CREDHUB_SERVER: ((credhub_url))
       CREDHUB_CLIENT: ((credhub_client_id))
@@ -149,7 +149,7 @@ jobs:
 
   - task: create-vm
     image: pcf-automation-image
-    file: platform-automation-tasks/create-vm.yml
+    file: platform-automation-tasks/tasks/create-vm.yml
     input_mapping:
       image: opsman-image
       state: state
@@ -163,7 +163,7 @@ jobs:
 
   - task: configure-authentication
     image: pcf-automation-image
-    file: platform-automation-tasks/configure-authentication.yml
+    file: platform-automation-tasks/tasks/configure-authentication.yml
     attempts: 10
     input_mapping:
       config: interpolated-configs
@@ -174,7 +174,7 @@ jobs:
 
   - task: configure-director
     image: pcf-automation-image
-    file: platform-automation-tasks/configure-director.yml
+    file: platform-automation-tasks/tasks/configure-director.yml
     input_mapping:
       config: configuration
       vars: interpolated-configs
@@ -186,7 +186,7 @@ jobs:
 
   - task: apply-director-changes
     image: pcf-automation-image
-    file: platform-automation-tasks/apply-director-changes.yml
+    file: platform-automation-tasks/tasks/apply-director-changes.yml
     input_mapping:
       env: interpolated-configs
     params:
@@ -212,7 +212,7 @@ jobs:
 
   - task: credhub-interpolate
     image: pcf-automation-image
-    file: platform-automation-tasks/credhub-interpolate.yml
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
     params:
       CREDHUB_SERVER: ((credhub_url))
       CREDHUB_CLIENT: ((credhub_client_id))
@@ -227,7 +227,7 @@ jobs:
 
   - task: export-installation
     image: pcf-automation-image
-    file: platform-automation-tasks/export-installation.yml
+    file: platform-automation-tasks/tasks/export-installation.yml
     input_mapping:
       env: interpolated-configs
     params:
@@ -260,7 +260,7 @@ jobs:
 
   - task: credhub-interpolate
     image: pcf-automation-image
-    file: platform-automation-tasks/credhub-interpolate.yml
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
     params:
       CREDHUB_SERVER: ((credhub_url))
       CREDHUB_CLIENT: ((credhub_client_id))
@@ -275,7 +275,7 @@ jobs:
 
   - task: upgrade-opsman
     image: pcf-automation-image
-    file: platform-automation-tasks/upgrade-opsman.yml
+    file: platform-automation-tasks/tasks/upgrade-opsman.yml
     input_mapping:
       image: opsman-image
       state: configuration
@@ -290,7 +290,7 @@ jobs:
     
   - task: apply-director-changes
     image: pcf-automation-image
-    file: platform-automation-tasks/apply-director-changes.yml
+    file: platform-automation-tasks/tasks/apply-director-changes.yml
     input_mapping:
       env: interpolated-configs
     params:
