@@ -13,7 +13,7 @@ opsman-configuration:
     # Note that there are several environment-specific details in this path
     vpc_subnet: ((azure_network_vpc_subnet))
 
-    storage_account: opsman                       # account name of container
+    storage_account: ((azure_network_storage_account))                       # account name of container
 
     # Optional
     # only needed if your client doesn't have the needed storage permissions
