@@ -34,10 +34,10 @@ router_floating_ip:
 #
 
 haproxy_forward_tls_backend_ca: |
-  ((default_ca.ca))
+  ((default_ca.certificate))
 
 routing_custom_ca_certificates: |
-  ((default_ca.ca))
+  ((default_ca.certificate))
 
 default_networking_poe_tls_cert: ((pas_default_networking_poe_tls.certificate))
 default_networking_poe_tls_key: ((pas_default_networking_poe_tls.private_key))
