@@ -139,7 +139,7 @@ jobs:
       CREDHUB_SERVER: ((credhub_url))
       CREDHUB_CLIENT: ((credhub_client_id))
       CREDHUB_SECRET: ((credhub_client_secret))
-      CREDHUB_CA_CERT:  
+      CREDHUB_CA_CERT: ((default_ca.certificate))
       PREFIX: '/pcf/((foundation_name))'
       INTERPOLATION_PATH: "foundations/((foundation_name))"
     input_mapping:
