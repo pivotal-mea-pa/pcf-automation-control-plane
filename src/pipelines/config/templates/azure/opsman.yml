@@ -6,7 +6,7 @@ opsman-configuration:
     tenant_id: ((azure_tenant_id))
     client_id: ((azure_client_id))
     client_secret: ((azure_client_secret))
-    location: ((azure_location))
+    location: ((azure_client_id))
     container: opsmanagerimage                    # container for opsman image
     network_security_group: ((azure_network_security_group))
 
