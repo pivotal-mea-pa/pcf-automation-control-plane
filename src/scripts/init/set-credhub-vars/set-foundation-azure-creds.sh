@@ -34,5 +34,5 @@ credhub set -n "/pcf/${name}/azure_network_storage_account" \
   -t value -v "$azure_network_storage_account"
 credhub set -n "/pcf/${name}/azure_network_ssh_public_key" \
   -t ssh -v "$azure_network_ssh_public_key"
-credhub set -n "/pcf/${name}/azure_network_ssh_private_key" -t ssh \
-  -p "$azure_network_ssh_private_key"
+echo $azure_network_ssh_private_key
+credhub set -n "/pcf/${name}/azure_network_ssh_private_key" -t ssh -p "$azure_network_ssh_private_key"
