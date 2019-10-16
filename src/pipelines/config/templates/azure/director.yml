@@ -71,8 +71,8 @@ properties-configuration:
     environment: AzureCloud
     name: default
     resource_group_name: pcfazure
-    ssh_private_key: ((azure_network_ssh_private_key))
-    ssh_public_key: ((azure_network_ssh_public_key))
+    ssh_private_key: ((azure_network_ssh.private_key))
+    ssh_public_key: ((azure_network_ssh.public_key))
     storage_account_type: Premium_LRS
     subscription_id: ((azure_subscription_id))
     tenant_id: ((azure_tenant_id))
