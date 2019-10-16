@@ -1,43 +1,63 @@
+az-configuration:
+- name: Availability Sets
+  iaas_configuration_name: default
+  guid: 46dc6b2eff829a4d5354
+  iaas_identifier: null
+iaas-configurations:
+- additional_cloud_properties: {}
+  availability_mode: availability_sets
+  bosh_storage_account_name: boshcpstorage
+  client_id: ((azure_client_id))
+  client_secret: ((azure_client_secret))
+  cloud_storage_type: managed_disks
+  default_security_group: pas-mea-bosh-deployed-vms-security-group
+  environment: AzureCloud
+  name: default
+  resource_group_name: pas-mea
+  ssh_private_key: ((azure_network_ssh.private_key))
+  ssh_public_key: ((azure_network_ssh.public_key))
+  storage_account_type: Standard_LRS
+  subscription_id: ((azure_subscription_id))
+  tenant_id: ((azure_tenant_id))
 network-assignment:
   network:
     name: infrastructure
   other_availability_zones:
-  - name: "null"
+  - name: Availability Sets
   singleton_availability_zone:
-    name: "null"
+    name: Availability Sets
 networks-configuration:
   icmp_checks_enabled: false
   networks:
   - name: infrastructure
     subnets:
-    - iaas_identifier: pcfazure-virtual-network/pcfazure-infrastructure-subnet
+    - iaas_identifier: pas-mea-virtual-network/pas-mea-infrastructure-subnet
       cidr: 10.0.8.0/26
       dns: 168.63.129.16
       gateway: 10.0.8.1
       reserved_ip_ranges: 10.0.8.1-10.0.8.9
       availability_zone_names:
-      - "null"
+      - Availability Sets
   - name: pas
     subnets:
-    - iaas_identifier: pcfazure-virtual-network/pcfazure-pas-subnet
+    - iaas_identifier: pas-mea-virtual-network/pas-mea-pas-subnet
       cidr: 10.0.0.0/22
       dns: 168.63.129.16
       gateway: 10.0.0.1
       reserved_ip_ranges: 10.0.0.1-10.0.0.9
       availability_zone_names:
-      - "null"
+      - Availability Sets
   - name: services
     subnets:
-    - iaas_identifier: pcfazure-virtual-network/pcfazure-services-subnet
+    - iaas_identifier: pas-mea-virtual-network/pas-mea-services-subnet
       cidr: 10.0.4.0/22
       dns: 168.63.129.16
       gateway: 10.0.4.1
       reserved_ip_ranges: 10.0.4.1-10.0.4.9
       availability_zone_names:
-      - "null"
+      - Availability Sets
 properties-configuration:
   director_configuration:
-    allow_legacy_agents: true
     blobstore_type: local
     bosh_recreate_on_next_deploy: true
     bosh_recreate_persistent_disks_on_next_deploy: true
@@ -51,6 +71,7 @@ properties-configuration:
     hm_pager_duty_options:
       enabled: false
     identification_tags: {}
+    job_configuration_on_tmpfs: false
     keep_unreachable_vms: true
     local_blobstore_options:
       tls_enabled: true
@@ -58,24 +79,10 @@ properties-configuration:
     post_deploy_enabled: true
     resurrector_enabled: true
     retry_bosh_deploys: true
+    skip_director_drain: false
   dns_configuration:
     excluded_recursors: []
     handlers: []
-  iaas_configuration:
-    additional_cloud_properties: {}
-    bosh_storage_account_name: py8qk63z3ototrb7adze
-    client_id: ((azure_client_id))
-    client_secret: ((azure_client_secret))
-    cloud_storage_type: managed_disks
-    default_security_group: pcfazure-bosh-deployed-vms-security-group
-    environment: AzureCloud
-    name: default
-    resource_group_name: pcfazure
-    ssh_private_key: ((azure_network_ssh.private_key))
-    ssh_public_key: ((azure_network_ssh.public_key))
-    storage_account_type: Premium_LRS
-    subscription_id: ((azure_subscription_id))
-    tenant_id: ((azure_tenant_id))
   security_configuration:
     generate_vm_passwords: true
     opsmanager_root_ca_trusted_certs: true
@@ -83,15 +90,25 @@ properties-configuration:
     enabled: false
 resource-configuration:
   compilation:
-    instances: automatic
+    additional_networks: []
+    additional_vm_extensions: []
+    elb_names: []
     instance_type:
       id: automatic
-    internet_connected: false
-  director:
     instances: automatic
+    internet_connected: false
+    swap_as_percent_of_memory_size: automatic
+  director:
+    additional_networks: []
+    additional_vm_extensions: []
+    elb_names: []
+    instance_type:
+      id: automatic
+    instances: automatic
+    internet_connected: false
     persistent_disk:
       size_mb: automatic
-    instance_type:
-      id: automatic
-    internet_connected: false
+    swap_as_percent_of_memory_size: automatic
 vmextensions-configuration: []
+vmtypes-configuration: {}
+
