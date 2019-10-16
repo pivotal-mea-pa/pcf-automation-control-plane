@@ -12,7 +12,7 @@ azure_network_security_group=$(bosh interpolate ${root_dir}/vars.yml --path /def
 azure_network_vpc_subnet=$(bosh interpolate ${root_dir}/vars.yml --path /vpc_subnet)
 azure_network_storage_account=$(bosh interpolate ${root_dir}/vars.yml --path /storage_account_name)
 azure_network_ssh_public_key=$(bosh interpolate ${root_dir}/vars.yml --path /ssh.public_key)
-
+azure_network_ssh_private_key=$(bosh interpolate ${root_dir}/vars.yml --path /ssh.private_key)
 # PCF automation interpolated
 credhub set -n "/pcf/${name}/azure_subscription_id" \
   -t value -v "$azure_subscription_id"
@@ -33,4 +33,6 @@ credhub set -n "/pcf/${name}/azure_network_vpc_subnet" \
 credhub set -n "/pcf/${name}/azure_network_storage_account" \
   -t value -v "$azure_network_storage_account"
 credhub set -n "/pcf/${name}/azure_network_ssh_public_key" \
-  -t value -v "$azure_network_ssh_public_key"
+  -t ssh -v "$azure_network_ssh_public_key"
+credhub set -n "/pcf/${name}/azure_network_ssh_private_key" -t ssh \
+  -p "$azure_network_ssh_private_key"
