@@ -19,7 +19,7 @@ opsman-configuration:
     # only needed if your client doesn't have the needed storage permissions
     #storage_key: ((pEuXDaDK/WWo...))
 
-    ssh_public_key: ((azure_network_ssh_public_key))  # ssh key to access VM
+    ssh_public_key: ((azure_network_ssh.public_key))  # ssh key to access VM
     vm_name: ops-manager-vm                       # default: Ops Manager-vm
     boot_disk_size: 100                           # default: 200
     cloud_name: AzureCloud                        # default: AzureCloud
