@@ -5,3 +5,6 @@ azure_network_ssh_private_key: ((azure_network_ssh.private_key))
 azure_network_ssh_public_key: ((azure_network_ssh.public_key))
 azure_subscription_id: ((azure_subscription_id))
 azure_tenant_id: ((azure_tenant_id))
+network_infra_name: infrastructure
+network_services_name: services
+network_pas_name: pas
