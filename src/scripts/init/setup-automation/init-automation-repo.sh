@@ -62,7 +62,7 @@ if [[ ! -e ${pcf_config_repo_path}/templates ]]; then
   git config user.name "automation"
   git config push.default simple
   git add .
-  git commit -m "dummy commit"
+  git commit -m "initial"
   git push
   popd
 
