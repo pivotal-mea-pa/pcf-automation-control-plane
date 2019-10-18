@@ -1,19 +1,8 @@
 ---
-network_name:
-availability_zones:
-- name:
-singleton_availability_zone:
-
-apps_domain:
-system_domain:
-
-ha_proxy_static_ips:
-router_static_ips:
-tcp_router_static_ips:
-diego_brain_static_ips:
-
-mysql_monitor_recipient_email:
-
+network_name: pas
+apps_domain: 
+system_domain: 
+mysql_monitor_recipient_email: 
 num_mysql_monitor_instances:
 num_control_instances:
 num_compute_instances:
@@ -32,13 +21,9 @@ router_floating_ip:
 #
 # Certificates and passwords from credhub
 #
-
-haproxy_forward_tls_backend_ca: |
-  ((default_ca.certificate))
-
-routing_custom_ca_certificates: |
-  ((default_ca.certificate))
-
+haproxy_forward_tls: disable
+haproxy_forward_tls_backend_ca:
+routing_custom_ca_certificates:
 default_networking_poe_tls_cert: ((pas_default_networking_poe_tls.certificate))
 default_networking_poe_tls_key: ((pas_default_networking_poe_tls.private_key))
 
@@ -46,3 +31,15 @@ uaa_service_provider_cert: ((pas_uaa_service_provider.certificate))
 uaa_service_provider_key: ((pas_uaa_service_provider.private_key))
 
 default_credhub_encryption_key: ((pas_default_credhub_encryption_key))
+
+router_web_lb_names: pas-mea-web-lb
+router_tcp_lb_names: pas-mea-tcp-lb
+
+
+diego_brain_static_ips:
+ha_proxy_static_ips:
+tls_termination_entity: router
+router_static_ips:
+tcp_router_static_ips:
+availability_zones: Availability Sets
+singleton_availability_zone: Availability Sets

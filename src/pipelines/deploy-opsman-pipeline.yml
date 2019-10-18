@@ -55,8 +55,19 @@ resources:
     private_key: ((git_private_key.private_key))
     uri: ((config_git_repo_url))
     branch: master
+    paths:
+    - '**/opsman.yml'
+    - '**/director.yml'
+   
 
 # resource locking and state
+- name: environment-lock
+  type: pool
+  source:
+    private_key: ((git_private_key.private_key))
+    uri: ((state_git_repo_url))
+    branch: master
+    pool: locks/foundations/((foundation_name))
 
 - name: state
   type: git
@@ -68,10 +79,19 @@ resources:
 # common tasks
 
 locks:
+# lock foundation
+- &lock-environment
+  put: environment-lock
+  params: {claim: opsman}
+# unlock foundation
+- &unlock-environment
+  put: environment-lock
+  params: {release: environment-lock}
+# commit opsman instance state
 - &make-state-commit
   do:
   - task: make-commit
-    image: pcf-automation-image 
+    image: pcf-automation-image
     file: platform-automation-tasks/tasks/make-git-commit.yml
     input_mapping:
       repository: state
@@ -88,7 +108,7 @@ locks:
     params:
       repository: state-commit
       merge: true
-      
+       
 # jobs pipeline
 
 jobs:
@@ -96,6 +116,7 @@ jobs:
   serial: true
   serial_groups: [ install ]
   plan:
+  - *lock-environment
 
   - aggregate:
     - get: one-time-trigger
@@ -170,11 +191,13 @@ jobs:
       env: interpolated-configs
     params:
       ENV_FILE: foundations/((foundation_name))/env/env.yml
+  ensure: *unlock-environment
   
 
 - name: export-installation
   serial: true
   plan:
+  - *lock-environment
 
   - aggregate:
     - get: daily-trigger
@@ -212,12 +235,14 @@ jobs:
   - put: installation
     params:
       file: installation/installation-*.zip
+  ensure: *unlock-environment
   
 
 - name: upgrade-opsman
   serial: true
   serial_groups: [ install ]
   plan:
+  - *lock-environment
 
   - aggregate:
     - get: one-time-trigger
@@ -270,4 +295,4 @@ jobs:
       env: interpolated-configs
     params:
       ENV_FILE: ((foundation_name))/config/env.yml
-  
+  ensure: *unlock-environment   

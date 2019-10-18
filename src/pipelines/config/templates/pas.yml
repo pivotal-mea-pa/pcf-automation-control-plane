@@ -83,8 +83,9 @@ product-properties:
     value: 120
   .properties.cf_networking_enable_space_developer_self_service:
     value: false
-  .properties.cf_networking_internal_domain:
-    value: apps.internal
+  .properties.cf_networking_internal_domains:
+    value:
+    - name: apps.internal
   .properties.cloud_controller_completed_tasks_cutoff_age_in_days:
     value: 31
   .properties.cloud_controller_default_health_check_timeout:
@@ -116,13 +117,12 @@ product-properties:
     value: {}
   .properties.credhub_hsm_provider_partition_password:
     value: {}
-  .properties.credhub_key_encryption_passwords:
+  .properties.credhub_internal_provider_keys:
     value:
     - key:
         secret: ((default_credhub_encryption_key))
       name: default
       primary: true
-      provider: internal
   .properties.diego_database_max_open_connections:
     value: 100
   .properties.diego_log_timestamp_format:
@@ -143,10 +143,10 @@ product-properties:
     selected_option: none
     value: none
   .properties.haproxy_forward_tls:
-    selected_option: enable
-    value: enable
-  .properties.haproxy_forward_tls.enable.backend_ca:
-    value: ((haproxy_forward_tls_backend_ca))
+    selected_option: ((haproxy_forward_tls))
+    value: ((haproxy_forward_tls))
+#  .properties.haproxy_forward_tls.enable.backend_ca:
+#    value: ((haproxy_forward_tls_backend_ca))
   .properties.haproxy_hsts_support:
     selected_option: disable
     value: disable
@@ -162,7 +162,7 @@ product-properties:
   .properties.metric_registrar_blacklisted_tags:
     value: deployment,job,index,id
   .properties.metric_registrar_enabled:
-    value: false
+    value: true
   .properties.metric_registrar_scrape_interval_in_seconds:
     value: 35
   .properties.mysql_activity_logging:
@@ -201,6 +201,14 @@ product-properties:
     value: false
   .properties.push_apps_manager_enable_invitations:
     value: true
+  .properties.push_apps_manager_nav_links:
+    value:
+    - href: /marketplace
+      name: Marketplace
+    - href: https://docs.pivotal.io/pivotalcf/2-7/pas/intro.html
+      name: Docs
+    - href: /tools
+      name: Tools    
   .properties.push_apps_manager_poll_interval:
     value: 30
   .properties.route_integrity:
@@ -215,6 +223,9 @@ product-properties:
     value: false
   .properties.router_backend_max_conn:
     value: 500
+  .properties.router_balancing_algorithm:
+    selected_option: round_robin
+    value: round-robin    
   .properties.router_client_cert_validation:
     selected_option: request
     value: request
@@ -234,12 +245,12 @@ product-properties:
     selected_option: tls_v1_2
     value: tls_v1_2
   .properties.routing_tls_termination:
-    selected_option: load_balancer
-    value: load_balancer
+    selected_option: ((tls_termination_entity))
+    value:  ((tls_termination_entity))
   .properties.saml_signature_algorithm:
     value: SHA256
   .properties.secure_service_instance_credentials:
-    value: true
+    value: false
   .properties.security_acknowledgement:
     value: X
   .properties.silk_database_max_open_connections:
@@ -249,15 +260,9 @@ product-properties:
     value: on_demand
   .properties.smtp_auth_mechanism:
     value: plain
-  .properties.smtp_credentials:
-    value: {}
   .properties.smtp_enable_starttls_auto:
     value: false
-  .properties.stack_migration_acknowledgement:
-    value: X
   .properties.syslog_drop_debug:
-    value: true
-  .properties.syslog_metrics_to_syslog_enabled:
     value: true
   .properties.syslog_tls:
     selected_option: disabled
@@ -267,6 +272,9 @@ product-properties:
   .properties.system_blobstore:
     selected_option: internal
     value: internal
+  .properties.system_blobstore_backup_level:
+    selected_option: all
+    value: all    
   .properties.system_blobstore_ccdroplet_max_staged_droplets_stored:
     value: 2
   .properties.system_blobstore_ccpackage_max_valid_packages_stored:
@@ -347,63 +355,111 @@ network-properties:
     name: ((singleton_availability_zone))
 resource-config:
   backup_restore:
-    instances: automatic
-    persistent_disk:
-      size_mb: automatic
+    max_in_flight: 1
+    additional_vm_extensions: []
+    elb_names: []
     instance_type:
       id: automatic
+    instances: automatic
+    internet_connected: false
+    persistent_disk:
+      size_mb: automatic
   blobstore:
-    instances: automatic
-    persistent_disk:
-      size_mb: automatic
+    max_in_flight: 1
+    additional_vm_extensions: []
+    elb_names: []
     instance_type:
       id: automatic
+    instances: automatic
+    internet_connected: false
+    persistent_disk:
+      size_mb: automatic
   compute:
-    instances: ((num_compute_instances))
+    max_in_flight: 4%
+    additional_vm_extensions: []
+    elb_names: []
     instance_type:
       id: automatic
-  control:
-    instances: ((num_control_instances))
-    instance_type:
-      id: automatic
-  database:
     instances: automatic
-    persistent_disk:
-      size_mb: automatic
+    internet_connected: false
+  control:
+    max_in_flight: 1
+    additional_vm_extensions: []
+    elb_names: []
     instance_type:
       id: automatic
+    instances: automatic
+    internet_connected: false
+  database:
+    max_in_flight: 1
+    additional_vm_extensions: []
+    elb_names: []
+    instance_type:
+      id: automatic
+    instances: automatic
+    internet_connected: false
+    persistent_disk:
+      size_mb: automatic
   ha_proxy:
-    instances: ((num_ha_proxy_instances))
+    max_in_flight: 1
+    additional_vm_extensions: []
+    elb_names: []
     instance_type:
       id: automatic
-    floating_ips: ((ha_proxy_floating_ip))
+    instances: automatic
+    internet_connected: false
   istio_control:
-    instances: 0
+    max_in_flight: 1
+    additional_vm_extensions: []
+    elb_names: []
     instance_type:
       id: automatic
+    instances: 0
+    internet_connected: false
   istio_router:
-    instances: 0
+    max_in_flight: 1
+    additional_vm_extensions: []
+    elb_names: []
     instance_type:
       id: automatic
+    instances: 0
+    internet_connected: false
   mysql_monitor:
-    instances: ((num_mysql_monitor_instances))
+    max_in_flight: 1
+    additional_vm_extensions: []
+    elb_names: []
     instance_type:
       id: automatic
+    instances: automatic
+    internet_connected: false
   route_syncer:
-    instances: 0
+    max_in_flight: 1
+    additional_vm_extensions: []
+    elb_names: []
     instance_type:
       id: automatic
+    instances: 0
+    internet_connected: false
   router:
-    instances: ((num_router_instances))
+    max_in_flight: 1
+    additional_vm_extensions: []
+    elb_names:
+    - ((router_web_lb_names))
     instance_type:
       id: automatic
-    floating_ips: ((router_floating_ip))
+    instances: automatic
+    internet_connected: false
   tcp_router:
+    max_in_flight: 1
+    additional_vm_extensions: []
+    elb_names:
+    - ((router_tcp_lb_names))
+    instance_type:
+      id: automatic
     instances: 0
+    internet_connected: false
     persistent_disk:
       size_mb: automatic
-    instance_type:
-      id: automatic
 errand-config:
   deploy-autoscaler:
     post-deploy-state: true
@@ -419,10 +475,11 @@ errand-config:
     post-deploy-state: true
   push-usage-service:
     post-deploy-state: true
+  rotate_cc_database_key:
+    post-deploy-state: false
   smbbrokerpush:
     post-deploy-state: false
   smoke_tests:
     post-deploy-state: true
   test-autoscaling:
     post-deploy-state: true
-

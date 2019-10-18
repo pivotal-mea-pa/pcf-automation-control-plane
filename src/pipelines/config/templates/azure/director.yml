@@ -50,8 +50,8 @@
   properties-configuration:
     director_configuration:
       blobstore_type: local
-      bosh_recreate_on_next_deploy: true
-      bosh_recreate_persistent_disks_on_next_deploy: true
+      bosh_recreate_on_next_deploy: false
+      bosh_recreate_persistent_disks_on_next_deploy: false
       database_type: internal
       director_worker_count: 5
       encryption:
