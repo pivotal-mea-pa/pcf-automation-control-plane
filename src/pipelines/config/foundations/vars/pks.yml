@@ -2,11 +2,9 @@
 product-name: pivotal-container-service
 network-properties:
   singleton_availability_zone:
-    name: ((pks))
+    name: Availability Sets
   other_availability_zones:
-  - name: ((az1))
-  - name: ((az2))
-  - name: ((az3))
+  - name: Availability Sets
   network:
     name: pks
   service_network:
