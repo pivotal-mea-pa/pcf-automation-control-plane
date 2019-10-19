@@ -1,6 +1,7 @@
 pks_api_cert_public_key: ((pks_api_tls.certificate))
 pks_api_cert_private_key: ((pks_api_tls.private_key))
 cloud_provider: azure
+cloud_provider_value: Azure
 azure_cloud_name: AzurePublicCloud
 azure_master_managed_identity: pks-master
 azure_worker_managed_identity: pks-worker

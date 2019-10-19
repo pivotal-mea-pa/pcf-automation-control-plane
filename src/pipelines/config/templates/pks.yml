@@ -11,7 +11,7 @@ product-properties:
       [[outputs.discard]]
   .properties.cloud_provider:
     selected_option: ((cloud_provider))
-    value: ((cloud_provider))
+    value: ((cloud_provider_value))
   .properties.cloud_provider.azure.azure_cloud_name:
     value: ((azure_cloud_name))
   .properties.cloud_provider.azure.azure_master_managed_identity:
@@ -238,16 +238,15 @@ network-properties:
 resource-config:
   pivotal-container-service:
     max_in_flight: 1
-    additional_networks: []
     additional_vm_extensions: []
-    elb_names: []
+    elb_names:
+    - ((pks_lb_name))
     instance_type:
       id: automatic
     instances: automatic
     internet_connected: false
     persistent_disk:
       size_mb: automatic
-    swap_as_percent_of_memory_size: automatic
 errand-config:
   delete-all-clusters:
     pre-delete-state: true
