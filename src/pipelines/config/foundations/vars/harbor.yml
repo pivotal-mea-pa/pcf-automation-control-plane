@@ -1,0 +1,4 @@
+harbor-password: ((opsman_password))
+network_name: services
+availability_zones: Availability Sets
+harbor-domain-name: harbor.pks-mea.pivotal-platform.me
