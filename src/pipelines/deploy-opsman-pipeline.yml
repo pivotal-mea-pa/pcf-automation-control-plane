@@ -257,6 +257,7 @@ jobs:
     - get: installation
       passed: [ export-installation ]
     - get: configuration
+    - get: state
 
   - task: credhub-interpolate
     image: pcf-automation-image
@@ -281,6 +282,7 @@ jobs:
       state: configuration
       config: interpolated-configs
       env: interpolated-configs
+      state: state
     params:
       ENV_FILE: foundations/((foundation_name))/env/env.yml
       STATE_FILE: foundations/((foundation_name))/state/state.yml
