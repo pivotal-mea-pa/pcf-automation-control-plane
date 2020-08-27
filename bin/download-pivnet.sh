@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 which pivnet 2>&1 >/dev/null
 if [[ $? -ne 0 ]]; then
