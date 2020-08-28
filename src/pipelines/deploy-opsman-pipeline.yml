@@ -1,5 +1,5 @@
 resources:
-- name: pcf-automation-tasks
+- name: platform-automation-tasks
   type: s3
   source:
     access_key_id: ((s3_accesskey))
@@ -58,9 +58,9 @@ resources:
     paths:
     - '**/opsman.yml'
     - '**/director.yml'
+   
 
 # resource locking and state
-
 - name: environment-lock
   type: pool
   source:
@@ -92,7 +92,7 @@ locks:
   do:
   - task: make-commit
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/make-git-commit.yml
+    file: platform-automation-tasks/tasks/make-git-commit.yml
     input_mapping:
       repository: state
       file-source: generated-state
@@ -108,7 +108,7 @@ locks:
     params:
       repository: state-commit
       merge: true
-      
+       
 # jobs pipeline
 
 jobs:
@@ -124,7 +124,7 @@ jobs:
     - get: pcf-automation-image
       params:
         unpack: true
-    - get: pcf-automation-tasks
+    - get: platform-automation-tasks
       params:
         unpack: true
     - get: opsman-image
@@ -134,12 +134,12 @@ jobs:
 
   - task: credhub-interpolate
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/credhub-interpolate.yml
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
     params:
       CREDHUB_SERVER: ((credhub_url))
       CREDHUB_CLIENT: ((credhub_client_id))
       CREDHUB_SECRET: ((credhub_client_secret))
-      CREDHUB_CA_CERT: ((default_ca.ca))
+      CREDHUB_CA_CERT: ((default_ca.certificate))
       PREFIX: '/pcf/((foundation_name))'
       INTERPOLATION_PATH: "foundations/((foundation_name))"
     input_mapping:
@@ -149,7 +149,7 @@ jobs:
 
   - task: create-vm
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/create-vm.yml
+    file: platform-automation-tasks/tasks/create-vm.yml
     input_mapping:
       image: opsman-image
       state: state
@@ -163,7 +163,7 @@ jobs:
 
   - task: configure-authentication
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/configure-authentication.yml
+    file: platform-automation-tasks/tasks/configure-authentication.yml
     attempts: 10
     input_mapping:
       config: interpolated-configs
@@ -174,7 +174,7 @@ jobs:
 
   - task: configure-director
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/configure-director.yml
+    file: platform-automation-tasks/tasks/configure-director.yml
     input_mapping:
       config: configuration
       vars: interpolated-configs
@@ -186,13 +186,13 @@ jobs:
 
   - task: apply-director-changes
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/apply-director-changes.yml
+    file: platform-automation-tasks/tasks/apply-director-changes.yml
     input_mapping:
       env: interpolated-configs
     params:
       ENV_FILE: foundations/((foundation_name))/env/env.yml
-  
   ensure: *unlock-environment
+  
 
 - name: export-installation
   serial: true
@@ -205,19 +205,19 @@ jobs:
     - get: pcf-automation-image
       params:
         unpack: true
-    - get: pcf-automation-tasks
+    - get: platform-automation-tasks
       params:
         unpack: true
     - get: configuration
 
   - task: credhub-interpolate
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/credhub-interpolate.yml
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
     params:
       CREDHUB_SERVER: ((credhub_url))
       CREDHUB_CLIENT: ((credhub_client_id))
       CREDHUB_SECRET: ((credhub_client_secret))
-      CREDHUB_CA_CERT: ((default_ca.ca))
+      CREDHUB_CA_CERT: ((default_ca.certificate))
       PREFIX: '/pcf/((foundation_name))'
       INTERPOLATION_PATH: "foundations/((foundation_name))"
     input_mapping:
@@ -227,7 +227,7 @@ jobs:
 
   - task: export-installation
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/export-installation.yml
+    file: platform-automation-tasks/tasks/export-installation.yml
     input_mapping:
       env: interpolated-configs
     params:
@@ -235,8 +235,8 @@ jobs:
   - put: installation
     params:
       file: installation/installation-*.zip
-  
   ensure: *unlock-environment
+  
 
 - name: upgrade-opsman
   serial: true
@@ -250,22 +250,23 @@ jobs:
     - get: pcf-automation-image
       params:
         unpack: true
-    - get: pcf-automation-tasks
+    - get: platform-automation-tasks
       params:
         unpack: true
     - get: opsman-image
     - get: installation
       passed: [ export-installation ]
     - get: configuration
+    - get: state
 
   - task: credhub-interpolate
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/credhub-interpolate.yml
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
     params:
       CREDHUB_SERVER: ((credhub_url))
       CREDHUB_CLIENT: ((credhub_client_id))
       CREDHUB_SECRET: ((credhub_client_secret))
-      CREDHUB_CA_CERT: ((default_ca.ca))
+      CREDHUB_CA_CERT: ((default_ca.certificate))
       PREFIX: '/pcf/((foundation_name))'
       INTERPOLATION_PATH: "foundations/((foundation_name))"
     input_mapping:
@@ -275,12 +276,13 @@ jobs:
 
   - task: upgrade-opsman
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/upgrade-opsman.yml
+    file: platform-automation-tasks/tasks/upgrade-opsman.yml
     input_mapping:
       image: opsman-image
       state: configuration
       config: interpolated-configs
       env: interpolated-configs
+      state: state
     params:
       ENV_FILE: foundations/((foundation_name))/env/env.yml
       STATE_FILE: foundations/((foundation_name))/state/state.yml
@@ -290,10 +292,9 @@ jobs:
     
   - task: apply-director-changes
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/apply-director-changes.yml
+    file: platform-automation-tasks/tasks/apply-director-changes.yml
     input_mapping:
       env: interpolated-configs
     params:
       ENV_FILE: ((foundation_name))/config/env.yml
-  
-  ensure: *unlock-environment
+  ensure: *unlock-environment   

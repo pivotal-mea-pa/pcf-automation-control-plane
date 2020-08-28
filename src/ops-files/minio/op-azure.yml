@@ -1,0 +1,4 @@
+---
+
+- type: remove
+  path: /instance_groups/name=minio/networks/0/static_ips

@@ -1,0 +1,16 @@
+pks_api_cert_public_key: ((pks_api_tls.certificate))
+pks_api_cert_private_key: ((pks_api_tls.private_key))
+cloud_provider: azure
+cloud_provider_value: Azure
+azure_cloud_name: AzurePublicCloud
+azure_master_managed_identity: pks-master
+azure_worker_managed_identity: pks-worker
+azure_default_security_group: pks-mea-bosh-deployed-vms-security-group
+azure_cloud_location: ((azure_location))
+azure_cloud_pks_availability_set: pks-mea-availability-set
+azure_cloud_pks_resouce_group: pks-mea
+azure_cloud_pks_sub_id: ((azure_subscription_id))
+azure_cloud_pks_tenant_id: ((azure_tenant_id))
+azure_cloud_pks_vnet: pks-mea-virtual-network
+main_az: Availability Sets
+pks_api_hostname: api.pks-mea.pivotal-platform.me

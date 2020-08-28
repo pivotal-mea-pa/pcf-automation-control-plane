@@ -1,0 +1,11 @@
+---
+azure_subscription_id: ((azure_subscription_id))
+azure_resource_group: ((azure_resource_group))
+azure_tenant_id: ((azure_tenant_id))
+azure_client_id: ((azure_client_id))
+azure_client_secret: ((azure_client_secret))
+azure_location: ((azure_location))
+azure_network_vpc_subnet: ((azure_network_vpc_subnet))
+azure_network_ssh_public_key: ((azure_network_ssh.public_key))
+azure_network_security_group: ((azure_network_security_group))
+azure_network_storage_account: ((azure_network_storage_account))

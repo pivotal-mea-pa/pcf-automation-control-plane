@@ -1,0 +1,227 @@
+---
+
+# Windows stemcell builds
+
+stemcell_build:
+
+- operating_system: windows2019
+  product: pas-windows
+  iso_url: .downloads/stemcell/en_windows_server_2019_updated_march_2019_x64_dvd_2ae967ab.iso
+  iso_checksum: 55ac0f541bcc9ce2f70af4227239fc4a6a1e2b6e
+  iso_checksum_type: sha1
+  bosh_version: '2019.3'
+  openssh_version: 'v7.9.0.0p1-Beta'
+  admin_password: 'P@ssw0rd'
+  time_zone: 'Arabian Standard Time'
+  organization: 'Pivotal'
+  owner: 'MEA-PA-Team'
+  product_key: 'VNW2Q-39QJT-GPR34-MFTT9-GJHY4'
+  packer_builder: 'qemu-kvm'
+
+  ## If 'true' then Packer will run in verbose mode and 
+  ## build VM will not be deleted if an error occurs
+  #
+  # debug: 'true'
+
+  ## Custom add-on package installation files and script
+  #
+  # custom_file_upload: .downloads/stemcell/client_packages.zip
+  # custom_ps1_script: .downloads/stemcell/install_clients.ps1
+
+  iaas: 
+  - type: 'vmware'
+
+# Download details
+
+pivnet_products:
+- name: opsman
+  pivnet_slug: 'ops-manager'
+  pivnet_version: '2\.7\..*'
+  product_file_pattern: 'ops-manager-vsphere-(.*).ova'
+- name: pas
+  pivnet_slug: 'elastic-runtime'
+  pivnet_version: '2\.7\..*'
+  product_file_pattern: 'srt-(.*).pivotal'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-vsphere-esxi-ubuntu-xenial-go_agent.tgz'
+- name: pas-windows
+  pivnet_slug: 'pas-windows'
+  pivnet_version: '2\.7\..*'
+  product_file_pattern: 'pas-windows-(.*).pivotal'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-vsphere-esxi-windows2019-go_agent-raw.tgz'
+- name: healthwatch
+  pivnet_slug: 'p-healthwatch'
+  pivnet_version: '1\.6\..*'
+  product_file_pattern: 'p-healthwatch-(.*).pivotal'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-vsphere-esxi-ubuntu-xenial-go_agent.tgz'
+- name: metrics
+  pivnet_slug: 'apm'
+  pivnet_version: '1\.6\..*'
+  product_file_pattern: 'apm-(.*).pivotal'
+  stemcell_file_pattern: 'bosh-stemcell-(.*)-vsphere-esxi-ubuntu-xenial-go_agent.tgz'
+
+# Control plane download dir
+downloads_dir: /home/hodeh/pcf-automation-control-plane/.downloads/cp
+
+
+# Bosh Director Instance
+
+director_name: control-plane-bosh-director
+internal_cidr: 10.0.9.0/24
+internal_gw: 10.0.9.1
+dns_servers: 168.63.129.16
+
+internal_ip: 10.0.9.1
+dns_name: control-plane.pas-mea.pivotal-platform.me
+
+ubuntu_sha1: 650dfdefefbb176af39a5fb3c9be04ef196f70f6
+ubuntu_stemcell: https://bosh.io/d/stemcells/bosh-vsphere-esxi-ubuntu-xenial-go_agent?v=315.64
+
+bosh_vm_password: "$6$IOOCjK7lEx/6tp$G6.SKUqcLozIPaQm/JR3PR.3.s1a4tswk1DBBX39CTZJGJpAyeBz8qn9ko9Bg/Me3DcsO7.au/Wo.0zttXEPL0"
+
+# CPI / Cloud Config Vars
+
+vnet_name: pas-mea-virtual-network
+subnet_name: pas-mea-cp-subnet
+client_id: 4c484439-941c-4eeb-b55c-aafa4921cce5
+client_secret: abc123123
+default_security_group: pcf
+resource_group_name: pas-mea
+ssh.public_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyMUHPgOK0jfq6i/baRf/dnh/IObBimzaiPp6zhB0jHwC1rgvzmGbNi1JiNHSxyLO+F7qZLILWpIpZ2EmTFZdmidkXoHcO+VdJapCdhIxGZCpUVBynMd09GTx3J2ASdJ/6C5VUYLp/E6Nvy46dPD3ovJGZdS0m7N1pHCxA2JQRcdQiNjk66WwBMzHu3AWTp+f2BKFZsNhZWBnQ0a6sNLa04sflqpQJjqFZ+lAAcUhsBzYwfBM0u+DvqzCWp+wlaSNL5lmza3vrZAf5x+s/lwIHqSwIj5oN1ED51b5eM0UVodGig2k2h8sMbl3RUHBS00IqQtvVWIrlCM1xQneyis3B hodeh@Hatems-MacBook-Pro.local
+storage_account_name: pcf-control-plane
+subscription_id: d62bed94-e6c5-470e-b584-2cf22e2a69ef
+tenant_id: 29248f74-371f-4db2-9a50-c62a6877a0c1
+
+pcf_management_security_group: pcf-mgmt-sg
+pcf_management_network_name: pas-mea-virtual-network
+pcf_management_network_cidr: 10.0.8.0/26
+pcf_management_subnet_name: pas-mea-infrastructure-subnet
+pcf_management_network_gateway: 10.0.8.1
+pcf_management_network_reserved_ranges: 10.0.8.1-10.0.8.10
+pcf_management_network_static_ips: 
+
+pcf_releng_security_group: pcf-cp-sg
+pcf_releng_network_name: pas-mea-virtual-network
+pcf_releng_subnet_name: pas-mea-cp-subnet
+pcf_releng_network_cidr: 10.0.9.0/24
+pcf_releng_network_gateway: 10.0.9.1
+pcf_releng_network_reserved_ranges: 10.0.9.1-10.0.9.10
+pcf_releng_network_static_ips:
+
+# PCF Automation Configuration repo
+
+init_automation: true
+automation_config_repo_path: 
+automation_state_repo_path:
+automation_git_private_key:
+
+# Concourse
+
+concourse_name: cp-concourse
+concourse_web_ip: 40.123.206.213
+concourse_external_host: concourse.pas-mea.pivotal-platform.me
+
+concourse_worker_vm_type: large
+num_concourse_workers: 1
+
+# Minio
+
+minio_name: cp-minio
+minio_ip: 40.123.211.130
+minio_host: s3.pas-mea.pivotal-platform.me
+
+# Ops Manager / PCF
+
+foundations:
+- name: prod
+  opsman_host: om.pas-mea.pivotal-platform.me
+  opsman_user: admin
+  opsman_password: 'P!v0t@l'
+  opsman_decryption_phrase: 'P!v0t@l'
+  opsman_ssh_password: 'P!v0t@l'
+  products:
+
+  - name: pas
+    creds:
+    - name: pas_default_networking_poe_tls
+      type: certificate
+      common_name: '*.pas-mea.pivotal-platform.me'
+      alternate_names: '*.apps.pas-mea.pivotal-platform.me,*.sys.pas-mea.pivotal-platform.me,*.login.sys.pas-mea.pivotal-platform.me,*.uaa.sys.pas-mea.pivotal-platform.me'
+      organization: pcf-dubai
+      regenerate: 'no'
+    - name: pas_uaa_service_provider
+      type: certificate
+      common_name: '*.pas-mea.pivotal-platform.me'
+      alternate_names: '*.apps.pas-mea.pivotal-platform.me,*.sys.pas-mea.pivotal-platform.me,*.login.sys.pas-mea.pivotal-platform.me,*.uaa.sys.pas-mea.pivotal-platform.me'
+      organization: pcf-dubai
+      regenerate: 'no'
+    - name: pas_default_credhub_encryption_key
+      type: password
+      value: '*'
+      regenerate: 'no'
+
+  - name: pas-windows2012R2
+    creds:
+    - name: windows_admin_password
+      value: 'P@ssw0rd'
+
+# Branding
+
+login_branding_company_name:
+login_branding_product_logo:
+login_branding_square_logo:
+login_branding_footer_legal_text:
+ssh.private_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  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
+  -----END RSA PRIVATE KEY-----
+ssh.public_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDp6SUSE85Dr1OnSIHU6MsZ9+TIhob3SgEw9aqDSO8xC0jSjKBsGpWxiNSTXI9M+FD4s/kqrPevkotUhyWZfOGES54X3gALJFQwL/fK1sj1X/OpFDfj8uReqHgM1z7wrlG+el423NasT69sAXVZIWk1BHGDiwUWsBbuC0HLjtHtxiNQOpG4gDZptaErmXO0T6apjjUntrQdXiwVpDaXjMiYUyS+n41TIsfDP+Z9hQaVXPpEOiZOEDkjtgAzWYAIcBxiv+sbNRlzCBp6lvEgCgOqYmq8Yg03rv0aAJ2j/Y3/Ol3XGhqRdzoS4KB4wtRKim0uohaqnsCYlq96HE7aUQy+CZR2wYZOGOO2nba8OpPEoQK7rxB4qT2Kol7pi/OuSV/V1ZfzEtxG4zktR/MA3ngJa7YQYMM4gGTP8Oyr7VtlDJOWT7HgkexWktbzrS336ipgcu1K28nSA9cYrCTYHjqyGYJ6CwKFAB4gmVYa9w1wNCN9uTMOaSXic76mo7gMiwOBbIw1xGNXAKD4n1gPbcDpC0fw/e3HCB8tFep4v3WmH4ZNzSmVmGEz9Qz+tITYP9bRRzB1q/PmM79S3oPLR4Cux5kQEsWsH4mwTCT9GnWzSqpeYOu1e1LLfp15fMdqenXTUw30AHt0R5dDkGeAPEwuqeQJaZ/XWftoQHvcH8JTDQ== bosh-cp
+
+
